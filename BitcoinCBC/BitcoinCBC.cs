@@ -1,17 +1,17 @@
 ﻿/*
-   ██████╗██╗   ██╗██████╗ ██╗ ██████╗
-  ██╔════╝██║   ██║██╔══██╗██║██╔════╝                       
-  ██║     ██║   ██║██████╔╝██║██║ |_) o _|_  _  _  o ._  
+   ██████╗ost      ██████╗asis  ██████╗alculator
+  ██╔════╝         ██╔══██╗   ██╔════╝                       
+  ██║     ██╗   ██╗██████╔╝██╗██║ |_) o _|_  _  _  o ._  
   ██║     ██║   ██║██╔══██╗██║██║ |_) |  |_ (_ (_) | | | 
   ╚██████╗╚██████╔╝██████╔╝██║╚██████╗
    ╚═════╝ ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝
 
- names - CuBiC, BitcoinBasis, Bitcoin CuBiC
  currently getting the historic prices twice - once to estimate prices and once for chart. Reduce to one
  currency conversion
  option to expand listview or chart to obscure the other?
  help screen for chart and table
  add fiat and btc amount to the coordinate text on chart?
+ check cost basis being correctly calculated in all circumstances
 */
 
 #region Using
