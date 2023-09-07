@@ -166,9 +166,11 @@ namespace BitcoinCBC
             panel22.Paint += Panel_Paint;
             panel23.Paint += Panel_Paint;
             panel24.Paint += Panel_Paint;
+            //panel12.Paint += Panel_Paint;
+            panelTXListFooter.Paint += Panel_Paint;
             panelTXSelectContainer.Paint += Panel_Paint;
             panelHelpAddTransaction.Paint += Panel_Paint;
-            panelTransactionsContainer.Paint += Panel_Paint;
+            //panelTransactionsContainer.Paint += Panel_Paint;
             panelScrollbarContainer.Paint += Panel_Paint;
             panelSpeechBubble.Paint += Panel_Paint;
             #endregion
@@ -220,10 +222,12 @@ namespace BitcoinCBC
             panel22.Invalidate();
             panel23.Invalidate();
             panel24.Invalidate();
+            // panel12.Invalidate();
             panelTXSelectContainer.Invalidate();
             panelHelpAddTransaction.Invalidate();
-            panelTransactionsContainer.Invalidate();
+            //panelTransactionsContainer.Invalidate();
             panelScrollbarContainer.Invalidate();
+            panelTXListFooter.Invalidate();
             panelSpeechBubble.Invalidate();
             #endregion
 
@@ -866,7 +870,7 @@ namespace BitcoinCBC
             });
             btnTXSelectUp.Enabled = false;
             btnTXSelectDown.Enabled = false;
-
+            numericUpDownSelectTX.Enabled = false;
 
             string robotConfirmation = "";
 
@@ -928,6 +932,7 @@ namespace BitcoinCBC
                 BtnCancelDelete_Click(sender, e); // revert buttons back to original state
                 btnTXSelectUp.Enabled = true;
                 btnTXSelectDown.Enabled = true;
+                numericUpDownSelectTX.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -949,6 +954,9 @@ namespace BitcoinCBC
             {
                 btnCancelDelete.Visible = false;
             });
+            btnTXSelectUp.Enabled = true;
+            btnTXSelectDown.Enabled = true;
+            numericUpDownSelectTX.Enabled = true;
         }
 
         #endregion
@@ -1170,7 +1178,7 @@ namespace BitcoinCBC
         {
             GetPrice();
         }
-        
+
         #endregion
 
         #region get current price
@@ -2094,7 +2102,7 @@ namespace BitcoinCBC
 
         private void BtnListReverse_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.ListView listView = listViewTransactions; 
+            System.Windows.Forms.ListView listView = listViewTransactions;
             listView.BeginUpdate();
 
             List<ListViewItem> items = new();
@@ -2122,7 +2130,7 @@ namespace BitcoinCBC
                 });
             }
         }
-        
+
         #endregion
 
         #endregion
@@ -2503,6 +2511,272 @@ namespace BitcoinCBC
                 HandleException(ex, "rendering mouse-over chart coordinates data");
             }
         }
+
+        #region expand and shrink chart panels
+
+        #region expand
+
+        private void StartExpandingPanel(Panel panel)
+        {
+            panelToExpand = panel;
+            ExpandPanelTimer.Start();
+        }
+
+        private void ExpandPanelTimer_Tick(object sender, EventArgs e)
+        {
+            currentWidthExpandingPanel += 4;
+            if (panelToExpand == panel18)
+            {
+                panelMaxWidth = 212;
+            }
+            if (panelToExpand == panel21)
+            {
+                panelMaxWidth = 292;
+            }
+            if (panelToExpand == panel22)
+            {
+                panelMaxWidth = 264;
+            }
+            if (panelToExpand == panel23)
+            {
+                panelMaxWidth = 443;
+            }
+
+            if (currentWidthExpandingPanel >= panelMaxWidth) // expanding is complete
+            {
+                ExpandPanelTimer.Stop();
+            }
+            else // expand further
+            {
+                panelToExpand.Width = currentWidthExpandingPanel;
+                panelToExpand.Invalidate();
+
+                //shift the other panels along
+                panel21.Invoke((MethodInvoker)delegate
+                {
+                    panel21.Location = new Point(panel18.Location.X + panel18.Width + 8, panel21.Location.Y);
+                });
+                panel22.Invoke((MethodInvoker)delegate
+                {
+                    panel22.Location = new Point(panel21.Location.X + panel21.Width + 8, panel22.Location.Y);
+                });
+                panel23.Invoke((MethodInvoker)delegate
+                {
+                    panel23.Location = new Point(panel22.Location.X + panel22.Width + 8, panel23.Location.Y);
+                });
+                panel24.Invoke((MethodInvoker)delegate
+                {
+                    panel24.Location = new Point(panel23.Location.X + panel23.Width + 8, panel24.Location.Y);
+                });
+            }
+        }
+
+        #endregion
+
+        #region shrink
+
+        private void StartShrinkingPanel(Panel panel)
+        {
+            panelToShrink = panel;
+            ShrinkPanelTimer.Start();
+        }
+
+        private void ShrinkOpenPanels() // used whenever any panel is expanded to close all others 
+        {
+            if (btnExpandGridlinesPanel.Text == "◀")
+            {
+                currentWidthShrinkingPanel = panel18.Width;
+                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandGridlinesPanel.Text = "▶";
+                });
+                StartShrinkingPanel(panel18);
+            }
+            if (btnExpandDatelinesPanel.Text == "◀")
+            {
+                currentWidthShrinkingPanel = panel21.Width;
+                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandDatelinesPanel.Text = "▶";
+                });
+                StartShrinkingPanel(panel21);
+            }
+            if (btnExpandTransactionsPanel.Text == "◀")
+            {
+                currentWidthShrinkingPanel = panel22.Width;
+                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTransactionsPanel.Text = "▶";
+                });
+                StartShrinkingPanel(panel22);
+            }
+            if (btnExpandTrackingPanel.Text == "◀")
+            {
+                currentWidthShrinkingPanel = panel23.Width;
+                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTrackingPanel.Text = "▶";
+                });
+                StartShrinkingPanel(panel23);
+            }
+        }
+
+        private void ShrinkPanelTimer_Tick(object sender, EventArgs e)
+        {
+            currentWidthShrinkingPanel -= 4;
+            if (panelToShrink == panel18)
+            {
+                panelMinWidth = 92;
+            }
+            if (panelToShrink == panel21)
+            {
+                panelMinWidth = 84;
+            }
+            if (panelToShrink == panel22)
+            {
+                panelMinWidth = 64;
+            }
+            if (panelToShrink == panel23)
+            {
+                panelMinWidth = 121;
+            }
+
+            if (currentWidthShrinkingPanel <= panelMinWidth) // expanding is complete
+            {
+                panelToShrink.Invoke((MethodInvoker)delegate
+                {
+                    panelToShrink.Width = panelMinWidth;
+                });
+                panelToShrink.Invalidate();
+                ShrinkPanelTimer.Stop();
+            }
+            else // shrink further
+            {
+                panelToShrink.Width = currentWidthShrinkingPanel;
+                panelToShrink.Invalidate();
+
+                if (!ExpandPanelTimer.Enabled) // if the expand timer is running, it will handle these relocates instead
+                {
+                    //shift the other panels along
+                    panel21.Invoke((MethodInvoker)delegate
+                    {
+                        panel21.Location = new Point(panel18.Location.X + panel18.Width + 10, panel21.Location.Y);
+                    });
+                    panel22.Invoke((MethodInvoker)delegate
+                    {
+                        panel22.Location = new Point(panel21.Location.X + panel21.Width + 10, panel22.Location.Y);
+                    });
+                    panel23.Invoke((MethodInvoker)delegate
+                    {
+                        panel23.Location = new Point(panel22.Location.X + panel22.Width + 10, panel23.Location.Y);
+                    });
+                    panel24.Invoke((MethodInvoker)delegate
+                    {
+                        panel24.Location = new Point(panel23.Location.X + panel23.Width + 10, panel24.Location.Y);
+                    });
+                }
+            }
+        }
+
+        #endregion
+
+        #region buttons to expand/shrink panels
+
+        private void BtnExpandGridlinesPanel_Click(object sender, EventArgs e)
+        {
+            if (btnExpandGridlinesPanel.Text == "▶")
+            {
+                ShrinkOpenPanels();
+                StartExpandingPanel(panel18);
+                currentWidthExpandingPanel = panel18.Width;
+                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandGridlinesPanel.Text = "◀";
+                });
+            }
+            else
+            {
+                StartShrinkingPanel(panel18);
+                currentWidthShrinkingPanel = panel18.Width;
+                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandGridlinesPanel.Text = "▶";
+                });
+            }
+        }
+
+        private void BtnExpandDatelinesPanel_Click(object sender, EventArgs e)
+        {
+            if (btnExpandDatelinesPanel.Text == "▶")
+            {
+                ShrinkOpenPanels();
+                StartExpandingPanel(panel21);
+                currentWidthExpandingPanel = panel21.Width;
+                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandDatelinesPanel.Text = "◀";
+                });
+            }
+            else
+            {
+                StartShrinkingPanel(panel21);
+                currentWidthShrinkingPanel = panel21.Width;
+                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandDatelinesPanel.Text = "▶";
+                });
+            }
+        }
+
+        private void BtnExpandTransactionsPanel_Click(object sender, EventArgs e)
+        {
+            if (btnExpandTransactionsPanel.Text == "▶")
+            {
+                ShrinkOpenPanels();
+                StartExpandingPanel(panel22);
+                currentWidthExpandingPanel = panel22.Width;
+                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTransactionsPanel.Text = "◀";
+                });
+            }
+            else
+            {
+                StartShrinkingPanel(panel22);
+                currentWidthShrinkingPanel = panel22.Width;
+                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTransactionsPanel.Text = "▶";
+                });
+            }
+        }
+
+        private void BtnExpandTrackingPanel_Click(object sender, EventArgs e)
+        {
+            if (btnExpandTrackingPanel.Text == "▶")
+            {
+                ShrinkOpenPanels();
+                StartExpandingPanel(panel23);
+                currentWidthExpandingPanel = panel23.Width;
+                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTrackingPanel.Text = "◀";
+                });
+            }
+            else
+            {
+                StartShrinkingPanel(panel23);
+                currentWidthShrinkingPanel = panel23.Width;
+                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandTrackingPanel.Text = "▶";
+                });
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         #region hide/show chart elements
 
@@ -3066,7 +3340,7 @@ namespace BitcoinCBC
                     panelSpeechBubble.Height = 0;
                 });
                 SpeechBubblecurrentHeight = 0;
-                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 720);
+                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 790);
                 panelSpeechBubble.Visible = true;
                 lblRobotSpeak.Text = "";
 
@@ -3212,273 +3486,6 @@ namespace BitcoinCBC
 
         #endregion
 
-
-        #endregion
-
-        #region expand and shrink chart panels
-
-        #region expand
-
-        private void StartExpandingPanel(Panel panel)
-        {
-            panelToExpand = panel;
-            ExpandPanelTimer.Start();
-        }
-
-        private void ExpandPanelTimer_Tick(object sender, EventArgs e)
-        {
-            currentWidthExpandingPanel += 4;
-            if (panelToExpand == panel18)
-            {
-                panelMaxWidth = 212;
-            }
-            if (panelToExpand == panel21)
-            {
-                panelMaxWidth = 292;
-            }
-            if (panelToExpand == panel22)
-            {
-                panelMaxWidth = 264;
-            }
-            if (panelToExpand == panel23)
-            {
-                panelMaxWidth = 512;
-            }
-
-            if (currentWidthExpandingPanel >= panelMaxWidth) // expanding is complete
-            {
-                ExpandPanelTimer.Stop();
-            }
-            else // expand further
-            {
-                panelToExpand.Width = currentWidthExpandingPanel;
-                panelToExpand.Invalidate();
-
-                //shift the other panels along
-                panel21.Invoke((MethodInvoker)delegate
-                {
-                    panel21.Location = new Point(panel18.Location.X + panel18.Width + 10, panel21.Location.Y);
-                });
-                panel22.Invoke((MethodInvoker)delegate
-                {
-                    panel22.Location = new Point(panel21.Location.X + panel21.Width + 10, panel22.Location.Y);
-                });
-                panel23.Invoke((MethodInvoker)delegate
-                {
-                    panel23.Location = new Point(panel22.Location.X + panel22.Width + 10, panel23.Location.Y);
-                });
-                panel24.Invoke((MethodInvoker)delegate
-                {
-                    panel24.Location = new Point(panel23.Location.X + panel23.Width + 10, panel24.Location.Y);
-                });
-            }
-        }
-
-        #endregion
-
-        #region shrink
-
-        private void StartShrinkingPanel(Panel panel)
-        {
-            panelToShrink = panel;
-            ShrinkPanelTimer.Start();
-        }
-
-        private void ShrinkOpenPanels() // used whenever any panel is expanded to close all others 
-        {
-            if (btnExpandGridlinesPanel.Text == "◀")
-            {
-                currentWidthShrinkingPanel = panel18.Width;
-                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandGridlinesPanel.Text = "▶";
-                });
-                StartShrinkingPanel(panel18);
-            }
-            if (btnExpandDatelinesPanel.Text == "◀")
-            {
-                currentWidthShrinkingPanel = panel21.Width;
-                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandDatelinesPanel.Text = "▶";
-                });
-                StartShrinkingPanel(panel21);
-            }
-            if (btnExpandTransactionsPanel.Text == "◀")
-            {
-                currentWidthShrinkingPanel = panel22.Width;
-                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTransactionsPanel.Text = "▶";
-                });
-                StartShrinkingPanel(panel22);
-            }
-            if (btnExpandTrackingPanel.Text == "◀")
-            {
-                currentWidthShrinkingPanel = panel23.Width;
-                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTrackingPanel.Text = "▶";
-                });
-                StartShrinkingPanel(panel23);
-            }
-        }
-
-        private void ShrinkPanelTimer_Tick(object sender, EventArgs e)
-        {
-            currentWidthShrinkingPanel -= 4;
-            if (panelToShrink == panel18)
-            {
-                panelMinWidth = 92;
-            }
-            if (panelToShrink == panel21)
-            {
-                panelMinWidth = 100;
-            }
-            if (panelToShrink == panel22)
-            {
-                panelMinWidth = 68;
-            }
-            if (panelToShrink == panel23)
-            {
-                panelMinWidth = 180;
-            }
-
-            if (currentWidthShrinkingPanel <= panelMinWidth) // expanding is complete
-            {
-                panelToShrink.Invoke((MethodInvoker)delegate
-                {
-                    panelToShrink.Width = panelMinWidth;
-                });
-                panelToShrink.Invalidate();
-                ShrinkPanelTimer.Stop();
-            }
-            else // shrink further
-            {
-                panelToShrink.Width = currentWidthShrinkingPanel;
-                panelToShrink.Invalidate();
-
-                if (!ExpandPanelTimer.Enabled) // if the expand timer is running, it will handle these relocates instead
-                {
-                    //shift the other panels along
-                    panel21.Invoke((MethodInvoker)delegate
-                    {
-                        panel21.Location = new Point(panel18.Location.X + panel18.Width + 10, panel21.Location.Y);
-                    });
-                    panel22.Invoke((MethodInvoker)delegate
-                    {
-                        panel22.Location = new Point(panel21.Location.X + panel21.Width + 10, panel22.Location.Y);
-                    });
-                    panel23.Invoke((MethodInvoker)delegate
-                    {
-                        panel23.Location = new Point(panel22.Location.X + panel22.Width + 10, panel23.Location.Y);
-                    });
-                    panel24.Invoke((MethodInvoker)delegate
-                    {
-                        panel24.Location = new Point(panel23.Location.X + panel23.Width + 10, panel24.Location.Y);
-                    });
-                }
-            }
-        }
-
-        #endregion
-
-        #region buttons to expand/shrink panels
-
-        private void BtnExpandGridlinesPanel_Click(object sender, EventArgs e)
-        {
-            if (btnExpandGridlinesPanel.Text == "▶")
-            {
-                ShrinkOpenPanels();
-                StartExpandingPanel(panel18);
-                currentWidthExpandingPanel = panel18.Width;
-                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandGridlinesPanel.Text = "◀";
-                });
-            }
-            else
-            {
-                StartShrinkingPanel(panel18);
-                currentWidthShrinkingPanel = panel18.Width;
-                btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandGridlinesPanel.Text = "▶";
-                });
-            }
-        }
-
-        private void BtnExpandDatelinesPanel_Click(object sender, EventArgs e)
-        {
-            if (btnExpandDatelinesPanel.Text == "▶")
-            {
-                ShrinkOpenPanels();
-                StartExpandingPanel(panel21);
-                currentWidthExpandingPanel = panel21.Width;
-                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandDatelinesPanel.Text = "◀";
-                });
-            }
-            else
-            {
-                StartShrinkingPanel(panel21);
-                currentWidthShrinkingPanel = panel21.Width;
-                btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandDatelinesPanel.Text = "▶";
-                });
-            }
-        }
-
-        private void BtnExpandTransactionsPanel_Click(object sender, EventArgs e)
-        {
-            if (btnExpandTransactionsPanel.Text == "▶")
-            {
-                ShrinkOpenPanels();
-                StartExpandingPanel(panel22);
-                currentWidthExpandingPanel = panel22.Width;
-                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTransactionsPanel.Text = "◀";
-                });
-            }
-            else
-            {
-                StartShrinkingPanel(panel22);
-                currentWidthShrinkingPanel = panel22.Width;
-                btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTransactionsPanel.Text = "▶";
-                });
-            }
-        }
-
-        private void BtnExpandTrackingPanel_Click(object sender, EventArgs e)
-        {
-            if (btnExpandTrackingPanel.Text == "▶")
-            {
-                ShrinkOpenPanels();
-                StartExpandingPanel(panel23);
-                currentWidthExpandingPanel = panel23.Width;
-                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTrackingPanel.Text = "◀";
-                });
-            }
-            else
-            {
-                StartShrinkingPanel(panel23);
-                currentWidthShrinkingPanel = panel23.Width;
-                btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandTrackingPanel.Text = "▶";
-                });
-            }
-        }
-
-        #endregion
-
         #endregion
 
         #region rounded form & panels
@@ -3567,7 +3574,7 @@ namespace BitcoinCBC
 
             InterruptAndStartNewRobotSpeak(errorMessage);
         }
-        
+
         #endregion
 
         #endregion
