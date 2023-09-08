@@ -10,7 +10,7 @@ Cubic/Cubit?
 currently getting the historic prices three times - once to estimate prices and once for each chart. Reduce to just one.
 currency conversion
 option to expand listview or chart to obscure the other?
-help screen text for chart and table
+help screen text for table
 check cost basis being correctly calculated in all circumstances
 fix resolution - looks crap in any resolution other than 2560x1440!
 */
@@ -1287,7 +1287,7 @@ namespace BitcoinCBC
             await SetupTransactionsList();
             isRobotSpeaking = false;
             InterruptAndStartNewRobotSpeak("Transaction added to list and saved.");
-            DrawPriceChartLinear();
+            DrawPriceChart();
         }
 
         #endregion
@@ -1361,8 +1361,56 @@ namespace BitcoinCBC
                 {
                     InterruptAndStartNewRobotSpeak("You don't have any transactions yet. Let's create your first one.");
                     lblTransactionCount.Text = "0 transactions";
+                    listViewTransactions.Invoke((MethodInvoker)delegate
+                    {
+                        listViewTransactions.Items.Clear(); // remove any data that may be there already
+                        listViewTransactions.Visible = false;
+                    });
+                    numericUpDownSelectTX.Invoke((MethodInvoker)delegate
+                    {
+                        numericUpDownSelectTX.Minimum = 0;
+                        numericUpDownSelectTX.Maximum = 0;
+                        numericUpDownSelectTX.Value = 0;
+                    });
+                    lbl1.Invoke((MethodInvoker)delegate
+                    {
+                        lbl1.Visible = false;
+                    });
+                    lbl2.Invoke((MethodInvoker)delegate
+                    {
+                        lbl2.Visible = false;
+                    });
+                    lbl3.Invoke((MethodInvoker)delegate
+                    {
+                        lbl3.Visible = false;
+                    });
+                    lblTransactionCount.Invoke((MethodInvoker)delegate
+                    {
+                        lblTransactionCount.Text = "0 transactions";
+                    });
+                    panelScrollbarContainer.Invoke((MethodInvoker)delegate
+                    {
+                        panelScrollbarContainer.Height = 25;
+                    });
                     return;
                 }
+
+                panelScrollbarContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelScrollbarContainer.Height = 142;
+                });
+                lbl1.Invoke((MethodInvoker)delegate
+                {
+                    lbl1.Visible = true;
+                });
+                lbl2.Invoke((MethodInvoker)delegate
+                {
+                    lbl2.Visible = true;
+                });
+                lbl3.Invoke((MethodInvoker)delegate
+                {
+                    lbl3.Visible = true;
+                });
 
                 lblTransactionCount.Text = Convert.ToString(transactions.Count) + " transactions";
 
@@ -1370,6 +1418,7 @@ namespace BitcoinCBC
                 listViewTransactions.Invoke((MethodInvoker)delegate
                 {
                     listViewTransactions.Items.Clear(); // remove any data that may be there already
+                    listViewTransactions.Visible = true;
                 });
                 listViewTransactions.GetType().InvokeMember("DoubleBuffered", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.SetProperty, null, listViewTransactions, new object[] { true });
                 // Check if the column header already exists
@@ -1471,7 +1520,7 @@ namespace BitcoinCBC
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("P/L %", 95);
+                        listViewTransactions.Columns.Add("P/L %", 75);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 14)
@@ -1594,7 +1643,14 @@ namespace BitcoinCBC
 
                     rollingBTCBalance = Math.Round(rollingBTCBalance + Convert.ToDecimal(transaction.BTCAmount), 8);
                     rollingFiatBalance = Math.Round(rollingFiatBalance + Convert.ToDecimal(transaction.FiatAmount), 2);
-                    rollingCostBasis = Math.Abs(Math.Round(rollingFiatBalance / rollingBTCBalance, 2));
+                    if (rollingBTCBalance > 0)
+                    {
+                        rollingCostBasis = Math.Abs(Math.Round(rollingFiatBalance / rollingBTCBalance, 2));
+                    }
+                    else
+                    {
+                        rollingCostBasis = 0;
+                    }
                     item.SubItems.Add(Convert.ToString(rollingCostBasis));
                     lbl1.Text = Convert.ToString(rollingBTCBalance);
                     lbl2.Text = Convert.ToString(rollingFiatBalance);
@@ -1608,17 +1664,7 @@ namespace BitcoinCBC
                         listViewTransactions.Items.Add(item); // add row
                     });
 
-                    if (listViewTransactions.Items.Count > 6)
-                    {
-                        btnTransactionsListUp.Visible = true;
-                        btnTransactionsListDown.Visible = true;
-                    }
-                    else
-                    {
-                        btnTransactionsListUp.Visible = false;
-                        btnTransactionsListDown.Visible = false;
 
-                    }
 
                     // Get the height of each item to set height of whole listview
                     int rowHeight = listViewTransactions.Margin.Vertical + listViewTransactions.Padding.Vertical + listViewTransactions.GetItemRect(0).Height;
@@ -1628,6 +1674,17 @@ namespace BitcoinCBC
                     listViewTransactions.Height = listBoxHeight; // Set the height of the ListBox
 
                     counterAllTransactions++;
+                }
+
+                if (listViewTransactions.Items.Count > 6)
+                {
+                    btnTransactionsListUp.Visible = true;
+                    btnTransactionsListDown.Visible = true;
+                }
+                else
+                {
+                    btnTransactionsListUp.Visible = false;
+                    btnTransactionsListDown.Visible = false;
                 }
 
                 // now reverse the order so most recent are first (did it this way round to calculate the rolling balances and cost basis first)
@@ -2177,6 +2234,20 @@ namespace BitcoinCBC
             }
         }
 
+        private void BtnPriceChartScaleLinear_Click(object sender, EventArgs e)
+        {
+            btnPriceChartScaleLinear.Enabled = false;
+            btnPriceChartScaleLog.Enabled = true;
+            DrawPriceChart();
+        }
+
+        private void BtnPriceChartScaleLog_Click(object sender, EventArgs e)
+        {
+            btnPriceChartScaleLinear.Enabled = true;
+            btnPriceChartScaleLog.Enabled = false;
+            DrawPriceChart();
+        }
+
         private async void DrawPriceChartLinear()
         {
             try
@@ -2516,7 +2587,7 @@ namespace BitcoinCBC
                 formsPlot1.Plot.XAxis.TickLabelStyle(fontSize: 10);
                 formsPlot1.Plot.XAxis.Ticks(true);
                 formsPlot1.Plot.XAxis.Label("");
-                
+
 
                 #region cost basis horizontal line
 
@@ -3419,7 +3490,7 @@ namespace BitcoinCBC
 
         private void btnHelpChart_Click(object sender, EventArgs e)
         {
-            lblHelpChartText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            lblHelpChartText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
             panelHelpChart.Visible = true;
             panelHelpChart.BringToFront();
         }
@@ -3530,7 +3601,7 @@ namespace BitcoinCBC
                     panelSpeechBubble.Height = 0;
                 });
                 SpeechBubblecurrentHeight = 0;
-                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 790);
+                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 66);
                 panelSpeechBubble.Visible = true;
                 lblRobotSpeak.Text = "";
 
@@ -3646,7 +3717,7 @@ namespace BitcoinCBC
         {
             SpeechBubblecurrentHeight += 4;
 
-            if (SpeechBubblecurrentHeight >= 118) // expanding is complete
+            if (SpeechBubblecurrentHeight >= 100) // expanding is complete
             {
                 ExpandRobotTimer.Stop();
                 expandRobotTimerRunning = false;
@@ -3833,19 +3904,5 @@ namespace BitcoinCBC
         }
 
         #endregion
-
-        private void btnPriceChartScaleLinear_Click(object sender, EventArgs e)
-        {
-            btnPriceChartScaleLinear.Enabled = false;
-            btnPriceChartScaleLog.Enabled = true;
-            DrawPriceChart();
-        }
-
-        private void btnPriceChartScaleLog_Click(object sender, EventArgs e)
-        {
-            btnPriceChartScaleLinear.Enabled = true;
-            btnPriceChartScaleLog.Enabled = false;
-            DrawPriceChart();
-        }
     }
 }

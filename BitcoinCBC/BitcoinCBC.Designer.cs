@@ -35,7 +35,6 @@
             comboBoxYearInput = new CustomControls.RJControls.RJComboBox();
             comboBoxMonthInput = new CustomControls.RJControls.RJComboBox();
             comboBoxDayInput = new CustomControls.RJControls.RJComboBox();
-            pictureBoxRobot = new PictureBox();
             textBoxFiatInput = new TextBox();
             lblFiatAmountSpentRecd = new Label();
             lblBitcoinAmountBoughtSold = new Label();
@@ -43,7 +42,6 @@
             label4 = new Label();
             label7 = new Label();
             label8 = new Label();
-            lblRobotSpeak = new Label();
             lblEstimatedPrice = new Label();
             label1 = new Label();
             textBoxPriceInput = new TextBox();
@@ -57,7 +55,6 @@
             btnUsePriceEstimateFlag = new CustomControls.RJControls.RJButton();
             btnBoughtBitcoin = new CustomControls.RJControls.RJButton();
             btnSoldBitcoin = new CustomControls.RJControls.RJButton();
-            panelSpeechBubble = new Panel();
             ShrinkRobotTimer = new System.Windows.Forms.Timer(components);
             ExpandRobotTimer = new System.Windows.Forms.Timer(components);
             blinkTimer = new System.Windows.Forms.Timer(components);
@@ -85,7 +82,6 @@
             btnUseBTCEstimateFlag = new CustomControls.RJControls.RJButton();
             label19 = new Label();
             lblEstimatedBTC = new Label();
-            panelHideSpeechTriangle = new Panel();
             label18 = new Label();
             textBoxLabelInput = new TextBox();
             panel7 = new Panel();
@@ -115,6 +111,7 @@
             btnTransactionsListUp = new CustomControls.RJControls.RJButton();
             btnTransactionsListDown = new CustomControls.RJControls.RJButton();
             panel13 = new Panel();
+            panelTransactionsContainer = new Panel();
             panel11 = new Panel();
             label51 = new Label();
             label34 = new Label();
@@ -132,7 +129,6 @@
             label22 = new Label();
             label20 = new Label();
             label16 = new Label();
-            panelTransactionsContainer = new Panel();
             panelTXListFooter = new Panel();
             panel10 = new Panel();
             btnListReverse = new CustomControls.RJControls.RJButton();
@@ -207,14 +203,17 @@
             panel31 = new Panel();
             btnCloseHelpChart = new CustomControls.RJControls.RJButton();
             label69 = new Label();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
+            panel16 = new Panel();
+            panelSpeechBubble = new Panel();
+            lblRobotSpeak = new Label();
+            panelHideSpeechTriangle = new Panel();
+            pictureBoxRobot = new PictureBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
             panel4.SuspendLayout();
             panel5.SuspendLayout();
             panel6.SuspendLayout();
-            panelSpeechBubble.SuspendLayout();
             panel7.SuspendLayout();
             panel8.SuspendLayout();
             panel9.SuspendLayout();
@@ -224,8 +223,8 @@
             panel19.SuspendLayout();
             panel20.SuspendLayout();
             panel13.SuspendLayout();
-            panel11.SuspendLayout();
             panelTransactionsContainer.SuspendLayout();
+            panel11.SuspendLayout();
             panelTXListFooter.SuspendLayout();
             panelTXSelectContainer.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numericUpDownSelectTX).BeginInit();
@@ -243,6 +242,9 @@
             panel17.SuspendLayout();
             panelHelpChart.SuspendLayout();
             panel31.SuspendLayout();
+            panel16.SuspendLayout();
+            panelSpeechBubble.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
             SuspendLayout();
             // 
             // btnExit
@@ -356,16 +358,6 @@
             comboBoxDayInput.Texts = "Day";
             comboBoxDayInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
             // 
-            // pictureBoxRobot
-            // 
-            pictureBoxRobot.BackColor = Color.Transparent;
-            pictureBoxRobot.Image = Properties.Resources.BitcoinCBCRobot;
-            pictureBoxRobot.Location = new Point(788, 761);
-            pictureBoxRobot.Name = "pictureBoxRobot";
-            pictureBoxRobot.Size = new Size(199, 215);
-            pictureBoxRobot.TabIndex = 11;
-            pictureBoxRobot.TabStop = false;
-            // 
             // textBoxFiatInput
             // 
             textBoxFiatInput.BackColor = Color.FromArgb(255, 224, 192);
@@ -443,18 +435,6 @@
             label8.Size = new Size(90, 18);
             label8.TabIndex = 22;
             label8.Text = "Spent Bitcoin";
-            // 
-            // lblRobotSpeak
-            // 
-            lblRobotSpeak.BackColor = Color.Transparent;
-            lblRobotSpeak.Font = new Font("OCR A Extended", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblRobotSpeak.ForeColor = Color.Orange;
-            lblRobotSpeak.Location = new Point(0, 10);
-            lblRobotSpeak.Name = "lblRobotSpeak";
-            lblRobotSpeak.Size = new Size(165, 93);
-            lblRobotSpeak.TabIndex = 24;
-            lblRobotSpeak.Text = "Robot speak 12345";
-            lblRobotSpeak.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // lblEstimatedPrice
             // 
@@ -616,15 +596,6 @@
             btnSoldBitcoin.TextColor = Color.LightSlateGray;
             btnSoldBitcoin.UseVisualStyleBackColor = false;
             btnSoldBitcoin.Click += BoughtSoldBitcoinToggle_Click;
-            // 
-            // panelSpeechBubble
-            // 
-            panelSpeechBubble.BackColor = Color.FromArgb(255, 234, 202);
-            panelSpeechBubble.Controls.Add(lblRobotSpeak);
-            panelSpeechBubble.Location = new Point(703, 764);
-            panelSpeechBubble.Name = "panelSpeechBubble";
-            panelSpeechBubble.Size = new Size(165, 0);
-            panelSpeechBubble.TabIndex = 38;
             // 
             // ShrinkRobotTimer
             // 
@@ -914,14 +885,6 @@
             lblEstimatedBTC.Size = new Size(131, 17);
             lblEstimatedBTC.TabIndex = 64;
             // 
-            // panelHideSpeechTriangle
-            // 
-            panelHideSpeechTriangle.BackColor = Color.White;
-            panelHideSpeechTriangle.Location = new Point(867, 821);
-            panelHideSpeechTriangle.Name = "panelHideSpeechTriangle";
-            panelHideSpeechTriangle.Size = new Size(18, 23);
-            panelHideSpeechTriangle.TabIndex = 67;
-            // 
             // label18
             // 
             label18.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
@@ -1182,7 +1145,7 @@
             panelHelpAddTransaction.Controls.Add(panel19);
             panelHelpAddTransaction.Location = new Point(0, 0);
             panelHelpAddTransaction.Name = "panelHelpAddTransaction";
-            panelHelpAddTransaction.Size = new Size(675, 241);
+            panelHelpAddTransaction.Size = new Size(673, 241);
             panelHelpAddTransaction.TabIndex = 75;
             // 
             // panel19
@@ -1289,7 +1252,7 @@
             listViewTransactions.Enabled = false;
             listViewTransactions.ForeColor = Color.Gray;
             listViewTransactions.FullRowSelect = true;
-            listViewTransactions.HeaderStyle = ColumnHeaderStyle.Nonclickable;
+            listViewTransactions.HeaderStyle = ColumnHeaderStyle.None;
             listViewTransactions.LabelWrap = false;
             listViewTransactions.Location = new Point(0, 0);
             listViewTransactions.MultiSelect = false;
@@ -1297,7 +1260,7 @@
             listViewTransactions.OwnerDraw = true;
             listViewTransactions.Scrollable = false;
             listViewTransactions.ShowGroups = false;
-            listViewTransactions.Size = new Size(940, 137);
+            listViewTransactions.Size = new Size(940, 113);
             listViewTransactions.TabIndex = 76;
             listViewTransactions.UseCompatibleStateImageBehavior = false;
             listViewTransactions.View = View.Details;
@@ -1364,13 +1327,25 @@
             // panel13
             // 
             panel13.BackColor = Color.FromArgb(255, 224, 192);
-            panel13.Controls.Add(panel11);
             panel13.Controls.Add(panelTransactionsContainer);
+            panel13.Controls.Add(panel11);
             panel13.Controls.Add(panelTXListFooter);
             panel13.Location = new Point(17, 538);
             panel13.Name = "panel13";
             panel13.Size = new Size(960, 170);
             panel13.TabIndex = 81;
+            // 
+            // panelTransactionsContainer
+            // 
+            panelTransactionsContainer.AutoScroll = true;
+            panelTransactionsContainer.BackColor = Color.White;
+            panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions;
+            panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Stretch;
+            panelTransactionsContainer.Controls.Add(listViewTransactions);
+            panelTransactionsContainer.Location = new Point(1, 25);
+            panelTransactionsContainer.Name = "panelTransactionsContainer";
+            panelTransactionsContainer.Size = new Size(958, 113);
+            panelTransactionsContainer.TabIndex = 0;
             // 
             // panel11
             // 
@@ -1394,7 +1369,7 @@
             panel11.ForeColor = Color.Black;
             panel11.Location = new Point(0, 0);
             panel11.Name = "panel11";
-            panel11.Size = new Size(960, 25);
+            panel11.Size = new Size(959, 25);
             panel11.TabIndex = 77;
             // 
             // label51
@@ -1416,7 +1391,7 @@
             label34.BackColor = Color.Transparent;
             label34.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label34.ForeColor = Color.LightSlateGray;
-            label34.Location = new Point(860, 0);
+            label34.Location = new Point(840, 0);
             label34.Name = "label34";
             label34.Padding = new Padding(0, 2, 0, 0);
             label34.Size = new Size(39, 19);
@@ -1429,7 +1404,7 @@
             label33.BackColor = Color.Transparent;
             label33.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label33.ForeColor = Color.LightSlateGray;
-            label33.Location = new Point(765, 0);
+            label33.Location = new Point(745, 0);
             label33.Name = "label33";
             label33.Padding = new Padding(0, 2, 0, 0);
             label33.Size = new Size(68, 19);
@@ -1605,16 +1580,6 @@
             label16.TabIndex = 0;
             label16.Text = "YYYY";
             // 
-            // panelTransactionsContainer
-            // 
-            panelTransactionsContainer.AutoScroll = true;
-            panelTransactionsContainer.BackColor = Color.White;
-            panelTransactionsContainer.Controls.Add(listViewTransactions);
-            panelTransactionsContainer.Location = new Point(1, 1);
-            panelTransactionsContainer.Name = "panelTransactionsContainer";
-            panelTransactionsContainer.Size = new Size(958, 137);
-            panelTransactionsContainer.TabIndex = 0;
-            // 
             // panelTXListFooter
             // 
             panelTXListFooter.BackColor = Color.White;
@@ -1713,7 +1678,7 @@
             lblDisabledDeleteButtonText.Enabled = false;
             lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDisabledDeleteButtonText.ForeColor = Color.Gray;
-            lblDisabledDeleteButtonText.Location = new Point(87, 28);
+            lblDisabledDeleteButtonText.Location = new Point(86, 25);
             lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
             lblDisabledDeleteButtonText.Size = new Size(97, 17);
             lblDisabledDeleteButtonText.TabIndex = 92;
@@ -1805,7 +1770,7 @@
             // 
             lbl3.AutoSize = true;
             lbl3.ForeColor = Color.Gray;
-            lbl3.Location = new Point(764, 25);
+            lbl3.Location = new Point(744, 25);
             lbl3.Name = "lbl3";
             lbl3.Size = new Size(60, 15);
             lbl3.TabIndex = 84;
@@ -2297,7 +2262,7 @@
             btnPriceChartScaleLinear.Text = "Linear";
             btnPriceChartScaleLinear.TextColor = Color.FromArgb(255, 128, 0);
             btnPriceChartScaleLinear.UseVisualStyleBackColor = false;
-            btnPriceChartScaleLinear.Click += btnPriceChartScaleLinear_Click;
+            btnPriceChartScaleLinear.Click += BtnPriceChartScaleLinear_Click;
             // 
             // btnPriceChartScaleLog
             // 
@@ -2318,7 +2283,7 @@
             btnPriceChartScaleLog.Text = "Log";
             btnPriceChartScaleLog.TextColor = Color.FromArgb(255, 128, 0);
             btnPriceChartScaleLog.UseVisualStyleBackColor = false;
-            btnPriceChartScaleLog.Click += btnPriceChartScaleLog_Click;
+            btnPriceChartScaleLog.Click += BtnPriceChartScaleLog_Click;
             // 
             // panel24
             // 
@@ -2717,6 +2682,57 @@
             label69.TabIndex = 0;
             label69.Text = "Price, transactions and cost basis chart (help)";
             // 
+            // panel16
+            // 
+            panel16.Controls.Add(panelSpeechBubble);
+            panel16.Controls.Add(panelHideSpeechTriangle);
+            panel16.Controls.Add(pictureBoxRobot);
+            panel16.Location = new Point(703, 729);
+            panel16.Name = "panel16";
+            panel16.Size = new Size(284, 253);
+            panel16.TabIndex = 102;
+            // 
+            // panelSpeechBubble
+            // 
+            panelSpeechBubble.BackColor = Color.FromArgb(255, 234, 202);
+            panelSpeechBubble.Controls.Add(lblRobotSpeak);
+            panelSpeechBubble.Location = new Point(0, 26);
+            panelSpeechBubble.Name = "panelSpeechBubble";
+            panelSpeechBubble.Size = new Size(165, 0);
+            panelSpeechBubble.TabIndex = 69;
+            // 
+            // lblRobotSpeak
+            // 
+            lblRobotSpeak.BackColor = Color.Transparent;
+            lblRobotSpeak.Font = new Font("OCR A Extended", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblRobotSpeak.ForeColor = Color.Orange;
+            lblRobotSpeak.Location = new Point(0, 0);
+            lblRobotSpeak.Name = "lblRobotSpeak";
+            lblRobotSpeak.Size = new Size(165, 93);
+            lblRobotSpeak.TabIndex = 24;
+            lblRobotSpeak.Text = "Robot speak 12345";
+            lblRobotSpeak.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // panelHideSpeechTriangle
+            // 
+            panelHideSpeechTriangle.BackColor = Color.White;
+            panelHideSpeechTriangle.Location = new Point(157, 77);
+            panelHideSpeechTriangle.Name = "panelHideSpeechTriangle";
+            panelHideSpeechTriangle.Size = new Size(22, 45);
+            panelHideSpeechTriangle.TabIndex = 70;
+            // 
+            // pictureBoxRobot
+            // 
+            pictureBoxRobot.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            pictureBoxRobot.BackColor = Color.Transparent;
+            pictureBoxRobot.Image = Properties.Resources.BitcoinCBCRobot;
+            pictureBoxRobot.Location = new Point(80, 32);
+            pictureBoxRobot.Name = "pictureBoxRobot";
+            pictureBoxRobot.Size = new Size(204, 221);
+            pictureBoxRobot.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxRobot.TabIndex = 68;
+            pictureBoxRobot.TabStop = false;
+            // 
             // BitcoinCBC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2725,21 +2741,19 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1000, 1000);
+            Controls.Add(panel16);
+            Controls.Add(panelScrollbarContainer);
             Controls.Add(panel9);
             Controls.Add(panel14);
-            Controls.Add(panelScrollbarContainer);
             Controls.Add(panel13);
             Controls.Add(lblTransactionCount);
             Controls.Add(btnMoveWindow);
             Controls.Add(lblCurrentPrice);
             Controls.Add(btnPriceRefresh);
-            Controls.Add(panelSpeechBubble);
-            Controls.Add(panelHideSpeechTriangle);
             Controls.Add(btnMinimize);
             Controls.Add(btnExit);
-            Controls.Add(pictureBoxRobot);
-            Controls.Add(panelHelpTransactionList);
             Controls.Add(panelHelpChart);
+            Controls.Add(panelHelpTransactionList);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;
@@ -2749,7 +2763,6 @@
             Text = "BitcoinCBC";
             Load += BitcoinCBC_Load;
             Paint += BitcoinCBC_Paint;
-            ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel3.ResumeLayout(false);
@@ -2759,7 +2772,6 @@
             panel5.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
-            panelSpeechBubble.ResumeLayout(false);
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             panel8.ResumeLayout(false);
@@ -2773,9 +2785,9 @@
             panel20.ResumeLayout(false);
             panel20.PerformLayout();
             panel13.ResumeLayout(false);
+            panelTransactionsContainer.ResumeLayout(false);
             panel11.ResumeLayout(false);
             panel11.PerformLayout();
-            panelTransactionsContainer.ResumeLayout(false);
             panelTXListFooter.ResumeLayout(false);
             panelTXListFooter.PerformLayout();
             panelTXSelectContainer.ResumeLayout(false);
@@ -2802,6 +2814,9 @@
             panelHelpChart.ResumeLayout(false);
             panel31.ResumeLayout(false);
             panel31.PerformLayout();
+            panel16.ResumeLayout(false);
+            panelSpeechBubble.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -2812,7 +2827,6 @@
         private CustomControls.RJControls.RJComboBox comboBoxYearInput;
         private CustomControls.RJControls.RJComboBox comboBoxMonthInput;
         private CustomControls.RJControls.RJComboBox comboBoxDayInput;
-        private PictureBox pictureBoxRobot;
         private TextBox textBoxFiatInput;
         private Label lblFiatAmountSpentRecd;
         private Label lblBitcoinAmountBoughtSold;
@@ -2820,7 +2834,6 @@
         private Label label4;
         private Label label7;
         private Label label8;
-        private Label lblRobotSpeak;
         private Label lblEstimatedPrice;
         private Label label1;
         private TextBox textBoxPriceInput;
@@ -2834,7 +2847,6 @@
         private CustomControls.RJControls.RJButton btnUsePriceEstimateFlag;
         private CustomControls.RJControls.RJButton btnBoughtBitcoin;
         private CustomControls.RJControls.RJButton btnSoldBitcoin;
-        private Panel panelSpeechBubble;
         private System.Windows.Forms.Timer ShrinkRobotTimer;
         private System.Windows.Forms.Timer ExpandRobotTimer;
         private System.Windows.Forms.Timer blinkTimer;
@@ -2862,7 +2874,6 @@
         private CustomControls.RJControls.RJButton btnUseBTCEstimateFlag;
         private Label label19;
         private Label lblEstimatedBTC;
-        private Panel panelHideSpeechTriangle;
         private Label label18;
         private TextBox textBoxLabelInput;
         private Panel panel7;
@@ -2984,5 +2995,10 @@
         private CustomControls.RJControls.RJButton btnCloseHelpChart;
         private Label label69;
         private Label lblHelpChartText;
+        private Panel panel16;
+        private Panel panelSpeechBubble;
+        private Label lblRobotSpeak;
+        private Panel panelHideSpeechTriangle;
+        private PictureBox pictureBoxRobot;
     }
 }
