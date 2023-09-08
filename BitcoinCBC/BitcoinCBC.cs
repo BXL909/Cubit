@@ -6,12 +6,13 @@
   ╚██████╗╚██████╔╝██████╔╝██║╚██████╗
    ╚═════╝ ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝
 
- currently getting the historic prices twice - once to estimate prices and once for chart. Reduce to one
- currency conversion
- option to expand listview or chart to obscure the other?
- help screen for chart and table
- add fiat and btc amount to the coordinate text on chart?
- check cost basis being correctly calculated in all circumstances
+Cubic/Cubit? 
+currently getting the historic prices three times - once to estimate prices and once for each chart. Reduce to just one.
+currency conversion
+option to expand listview or chart to obscure the other?
+help screen text for chart and table
+check cost basis being correctly calculated in all circumstances
+fix resolution - looks crap in any resolution other than 2560x1440!
 */
 
 #region Using
@@ -159,13 +160,15 @@ namespace BitcoinCBC
             panelAddTransaction.Paint += Panel_Paint;
             panel13.Paint += Panel_Paint;
             panel14.Paint += Panel_Paint;
-            panel16.Paint += Panel_Paint;
+            panelChartContainer.Paint += Panel_Paint;
             panel19.Paint += Panel_Paint;
             panel18.Paint += Panel_Paint;
             panel21.Paint += Panel_Paint;
             panel22.Paint += Panel_Paint;
             panel23.Paint += Panel_Paint;
             panel24.Paint += Panel_Paint;
+            panelHelpTransactionList.Paint += Panel_Paint;
+            panelHelpChart.Paint += Panel_Paint;
             //panel12.Paint += Panel_Paint;
             panelTXListFooter.Paint += Panel_Paint;
             panelTXSelectContainer.Paint += Panel_Paint;
@@ -215,7 +218,7 @@ namespace BitcoinCBC
             panelAddTransaction.Invalidate();
             panel13.Invalidate();
             panel14.Invalidate();
-            panel16.Invalidate();
+            panelChartContainer.Invalidate();
             panel19.Invalidate();
             panel18.Invalidate();
             panel21.Invalidate();
@@ -224,7 +227,9 @@ namespace BitcoinCBC
             panel24.Invalidate();
             // panel12.Invalidate();
             panelTXSelectContainer.Invalidate();
+            panelHelpChart.Invalidate();
             panelHelpAddTransaction.Invalidate();
+            panelHelpTransactionList.Invalidate();
             //panelTransactionsContainer.Invalidate();
             panelScrollbarContainer.Invalidate();
             panelTXListFooter.Invalidate();
@@ -971,6 +976,8 @@ namespace BitcoinCBC
             await GetHistoricPrices();
         }
 
+        bool safeToTrackPriceOnChart = false;
+
         private async Task GetHistoricPrices()
         {
             try
@@ -997,6 +1004,7 @@ namespace BitcoinCBC
 
                             priceList.FormattedDate = formattedDate;
                             HistoricPrices.Add(priceList);
+                            safeToTrackPriceOnChart = true;
                         }
                     }
 
@@ -2157,6 +2165,18 @@ namespace BitcoinCBC
             formsPlot1.Refresh();
         }
 
+        private void DrawPriceChart()
+        {
+            if (btnPriceChartScaleLinear.Enabled == false) //Linear chart selected
+            {
+                DrawPriceChartLinear();
+            }
+            else //Log chart selected
+            {
+                DrawPriceChartLog();
+            }
+        }
+
         private async void DrawPriceChartLinear()
         {
             try
@@ -2355,9 +2375,14 @@ namespace BitcoinCBC
                     if (double.TryParse(lbl3.Text, out double costBasis))
                     {
                         var hline = formsPlot1.Plot.AddHorizontalLine(y: costBasis, color: Color.OliveDrab, width: 1, style: LineStyle.Dash);
-                        hline.PositionLabel = true;
-                        hline.PositionLabelBackground = hline.Color;
+                        hline.PositionLabel = false;
                         hline.DragEnabled = false;
+
+                        var CBline = formsPlot1.Plot.AddText(Convert.ToString(costBasis), x: xValues.Min(), y: costBasis, color: Color.OliveDrab);
+                        CBline.Font.Color = Color.White; ;
+                        CBline.BackgroundColor = Color.OliveDrab;
+                        CBline.BackgroundFill = true;
+                        CBline.BorderSize = 0;
                     }
                 }
 
@@ -2409,6 +2434,275 @@ namespace BitcoinCBC
             }
         }
 
+        private async void DrawPriceChartLog()
+        {
+            try
+            {
+                chartFinishedRendering = false;
+                btnPriceChartScaleLinear.Enabled = true;
+                btnPriceChartScaleLog.Enabled = false;
+                chartType = "pricelog";
+
+                // clear any previous graph
+                formsPlot1.Plot.Clear();
+                formsPlot1.Plot.Title("", size: 8, bold: true);
+                formsPlot1.Plot.YAxis.Label("Price (USD)", size: 12, bold: false);
+
+                // get a series of historic price data
+                var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
+                JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
+                List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
+
+                // set the number of points on the graph
+                int pointCount = PriceList.Count;
+
+                // create a new list of the dates, this time in DateTime format
+                List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
+
+                #region price line
+
+                List<double> filteredYValues = new List<double>();
+                List<double> filteredXValues = new List<double>();
+
+                for (int i = 0; i < PriceList.Count; i++)
+                {
+                    double yValue = (double)PriceList[i].Y;
+                    if (yValue > 0)
+                    {
+                        filteredYValues.Add(Math.Log10(yValue));
+                        filteredXValues.Add(xValues[i]);
+                    }
+                }
+
+                double[] yValues = filteredYValues.ToArray();
+                double[] xValuesFiltered = filteredXValues.ToArray();
+
+
+                double minY = yValues.Min();
+                double maxY = yValues.Max() * 1.05;
+                formsPlot1.Plot.SetAxisLimits(xValuesFiltered.Min(), xValuesFiltered.Max(), minY, maxY);
+                scatter = formsPlot1.Plot.AddScatter(xValuesFiltered, yValues, lineWidth: 1, markerSize: 1);
+
+                #endregion
+
+                // Use a custom formatter to control the label for each tick mark
+                static string logTickLabels(double y) => Math.Pow(10, y).ToString("N0");
+                formsPlot1.Plot.YAxis.TickLabelFormat(logTickLabels);
+
+                if (showPriceGridLines)
+                {
+                    // Use log-spaced minor tick marks and grid lines
+                    formsPlot1.Plot.YAxis.MinorLogScale(true);
+                    formsPlot1.Plot.YAxis.MajorGrid(true);
+                    formsPlot1.Plot.YAxis.MinorGrid(true);
+                }
+                else
+                {
+                    formsPlot1.Plot.YAxis.MinorLogScale(true);
+                    formsPlot1.Plot.YAxis.MajorGrid(false);
+                    formsPlot1.Plot.YAxis.MinorGrid(false);
+                }
+
+                if (showDateGridLines)
+                {
+                    formsPlot1.Plot.XAxis.MajorGrid(true);
+                }
+                else
+                {
+                    formsPlot1.Plot.XAxis.MajorGrid(false);
+                }
+                formsPlot1.Plot.XAxis.DateTimeFormat(true);
+                formsPlot1.Plot.XAxis.TickLabelStyle(fontSize: 10);
+                formsPlot1.Plot.XAxis.Ticks(true);
+                formsPlot1.Plot.XAxis.Label("");
+                
+
+                #region cost basis horizontal line
+
+                if (showCostBasis)
+                {
+                    if (double.TryParse(lbl3.Text, out double costBasis))
+                    {
+                        var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.OliveDrab, width: 1, style: LineStyle.Dash, label: "H");
+                        hline.PositionLabel = false;
+                        hline.DragEnabled = false;
+
+                        var CBline = formsPlot1.Plot.AddText(Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.OliveDrab);
+                        CBline.Font.Color = Color.White; ;
+                        CBline.BackgroundColor = Color.OliveDrab;
+                        CBline.BackgroundFill = true;
+                        CBline.BorderSize = 0;
+                    }
+                }
+
+                #endregion
+
+                #region green vertical lines at the time of each buy btc transaction
+
+                if (showBuyDates)
+                {
+                    if (listBuyBTCTransactionDate.Count > 0)
+                    {
+                        double[] xArrayBuyBTCTransactionsDate = listBuyBTCTransactionDate.ToArray(); //date
+                        var vlinesBuyBTC = new VLineVector
+                        {
+                            Xs = xArrayBuyBTCTransactionsDate,
+                            Color = Color.FromArgb(85, Color.ForestGreen),
+                            PositionLabel = false
+                        };
+                        vlinesBuyBTC.PositionLabelBackground = vlinesBuyBTC.Color;
+                        vlinesBuyBTC.LineWidth = 1;
+                        formsPlot1.Plot.Add(vlinesBuyBTC);
+                    }
+                }
+
+                #endregion
+
+                #region red vertical lines at the time of each sell btc transaction. 
+
+                if (showSellDates)
+                {
+                    if (listSellBTCTransactionDate.Count > 0)
+                    {
+                        double[] xArraySellBTCTransactions = listSellBTCTransactionDate.ToArray(); //date
+                        var vlinesSellBTC = new VLineVector
+                        {
+                            Xs = xArraySellBTCTransactions,
+                            Color = Color.FromArgb(85, Color.IndianRed),
+                            PositionLabel = false
+                        };
+                        vlinesSellBTC.PositionLabelBackground = vlinesSellBTC.Color;
+                        vlinesSellBTC.LineWidth = 1;
+                        formsPlot1.Plot.Add(vlinesSellBTC);
+                    }
+                }
+
+                #endregion
+
+                #region transaction (buy) bubbles
+
+                if (showBuyBubbles)
+                {
+                    if (listBuyBTCTransactionDate.Count > 0)
+                    {
+                        //dates
+                        double[] xArrayBuyBTCTransactionsDate = listBuyBTCTransactionDate.ToArray();
+                        //prices
+                        double[] yArrayBuyBTCTransactionsPrice = listBuyBTCTransactionPrice.ToArray();
+                        //fiat amounts
+                        double[] arrayBuyBTCTransactionsFiatAmount = listBuyBTCTransactionFiatAmount.ToArray();
+                        //percentage values of fiat amounts
+                        double totalSum = arrayBuyBTCTransactionsFiatAmount.Sum();
+                        double[] arrayBuyBTCTransactionsFiatAmountPerc = new double[arrayBuyBTCTransactionsFiatAmount.Length];
+                        for (int i = 0; i < arrayBuyBTCTransactionsFiatAmount.Length; i++)
+                        {
+                            arrayBuyBTCTransactionsFiatAmountPerc[i] = (arrayBuyBTCTransactionsFiatAmount[i] / totalSum) * 100.0;
+                        }
+                        //scaled percentages of fiat amounts
+                        double[] scaledPercentages = new double[arrayBuyBTCTransactionsFiatAmountPerc.Length];
+                        double scalingFactor = 0.60; // lower number = more scaling
+
+                        for (int i = 0; i < arrayBuyBTCTransactionsFiatAmountPerc.Length; i++)
+                        {
+                            scaledPercentages[i] = (50.0 + (arrayBuyBTCTransactionsFiatAmountPerc[i] - 50.0) * scalingFactor) / 2;
+                            // Make sure the scaled percentage is within the range [0, 100]
+                            scaledPercentages[i] = Math.Max(0, Math.Min(100, scaledPercentages[i]));
+                        }
+
+                        bubbleplotbuy = formsPlot1.Plot.AddBubblePlot();
+                        for (int i = 0; i < xArrayBuyBTCTransactionsDate.Length; i++)
+                        {
+                            double bubbleSize = Math.Abs(scaledPercentages[i]);
+                            Color bubbleColor = Color.FromArgb(70, Color.OliveDrab);
+
+                            bubbleplotbuy.Add(
+                                x: xArrayBuyBTCTransactionsDate[i],
+                                y: Math.Log10(yArrayBuyBTCTransactionsPrice[i]),
+                                radius: bubbleSize,
+                                fillColor: bubbleColor,
+                                edgeColor: Color.Transparent,
+                                edgeWidth: 1
+                            );
+                        }
+                    }
+                }
+
+                #endregion
+
+                #region transaction (sell) bubbles
+
+                if (showSellBubbles)
+                {
+                    if (listSellBTCTransactionDate.Count > 0)
+                    {
+                        //dates
+                        double[] xArraySellBTCTransactionsDate = listSellBTCTransactionDate.ToArray();
+                        //prices
+                        double[] yArraySellBTCTransactionsPrice = listSellBTCTransactionPrice.ToArray();
+                        //fiat amounts
+                        double[] arraySellBTCTransactionsFiatAmount = listSellBTCTransactionFiatAmount.ToArray();
+                        //percentage values of fiat amounts
+                        double totalSum = arraySellBTCTransactionsFiatAmount.Sum();
+                        double[] arraySellBTCTransactionsFiatAmountPerc = new double[arraySellBTCTransactionsFiatAmount.Length];
+                        for (int i = 0; i < arraySellBTCTransactionsFiatAmount.Length; i++)
+                        {
+                            arraySellBTCTransactionsFiatAmountPerc[i] = (arraySellBTCTransactionsFiatAmount[i] / totalSum) * 100.0;
+                        }
+                        //scaled percentages of fiat amounts
+                        double[] scaledPercentages = new double[arraySellBTCTransactionsFiatAmountPerc.Length];
+                        double scalingFactor = 0.60; // lower number = more scaling
+
+                        for (int i = 0; i < arraySellBTCTransactionsFiatAmountPerc.Length; i++)
+                        {
+                            scaledPercentages[i] = (50.0 + (arraySellBTCTransactionsFiatAmountPerc[i] - 50.0) * scalingFactor) / 2;
+                            // Make sure the scaled percentage is within the range [0, 100]
+                            scaledPercentages[i] = Math.Max(0, Math.Min(100, scaledPercentages[i]));
+                        }
+
+                        bubbleplotsell = formsPlot1.Plot.AddBubblePlot();
+                        for (int i = 0; i < xArraySellBTCTransactionsDate.Length; i++)
+                        {
+                            double bubbleSize = Math.Abs(scaledPercentages[i]);
+                            Color bubbleColor = Color.FromArgb(70, Color.IndianRed);
+
+                            bubbleplotsell.Add(
+                                x: xArraySellBTCTransactionsDate[i],
+                                y: Math.Log10(yArraySellBTCTransactionsPrice[i]),
+                                radius: bubbleSize,
+                                fillColor: bubbleColor,
+                                edgeColor: Color.Transparent,
+                                edgeWidth: 1
+                            );
+                        }
+                    }
+                }
+
+                #endregion
+
+                // prevent navigating beyond the data
+                formsPlot1.Plot.YAxis.SetBoundary(minY, maxY);
+                //formsPlot1.Plot.YAxis.SetBoundary(0, yValues.Max());
+                formsPlot1.Plot.XAxis.SetBoundary(xValues.Min(), xValues.Max());
+
+                // Add a red circle we can move around later as a highlighted point indicator
+                HighlightedPoint = formsPlot1.Plot.AddPoint(0, 0);
+                HighlightedPoint.Color = Color.Red;
+                HighlightedPoint.MarkerSize = 10;
+                HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
+                HighlightedPoint.IsVisible = false;
+                // refresh the graph
+                formsPlot1.Refresh();
+                chartFinishedRendering = true;
+                formsPlot1.Visible = true;
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, "Generating price (log) chart");
+            }
+        }
+
+
         private void FormsPlot1_MouseMove(object sender, MouseEventArgs e)
         {
             try
@@ -2426,15 +2720,24 @@ namespace BitcoinCBC
                         int pointIndex = 0;
                         if (cursorTrackPrice)
                         {
-                            (pointX, pointY, pointIndex) = scatter.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            if (safeToTrackPriceOnChart)
+                            {
+                                (pointX, pointY, pointIndex) = scatter.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            }
                         }
                         if (cursorTrackBuyTX)
                         {
-                            (pointX, pointY, pointIndex) = bubbleplotbuy.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            if (listBuyBTCTransactionDate.Count >= 1)
+                            {
+                                (pointX, pointY, pointIndex) = bubbleplotbuy.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            }
                         }
                         if (cursorTrackSellTX)
                         {
-                            (pointX, pointY, pointIndex) = bubbleplotsell.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            if (listSellBTCTransactionDate.Count >= 1)
+                            {
+                                (pointX, pointY, pointIndex) = bubbleplotsell.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                            }
                         }
 
                         // place the highlight over the point of interest
@@ -2452,31 +2755,30 @@ namespace BitcoinCBC
                             // Format the DateTime object using the desired format string
                             string formattedPointX = pointXDate.ToString("yyyy-MM-dd");
 
-                            if (chartType == "pricelog" || chartType == "addresseslog" || chartType == "utxolog" || chartType == "marketcaplog" || chartType == "hashratelog" || chartType == "difficultylog")
+                            if (chartType == "pricelog")
                             {
-                                /*
+
                                 double originalY = Math.Pow(10, pointY); // Convert back to the original scale
-                                                                            //annotation to obscure the previous one before drawing the new one
+                                                                         //annotation to obscure the previous one before drawing the new one
                                 var blankAnnotation = formsPlot1.Plot.AddAnnotation("████████████████████████████████████", Alignment.UpperLeft);
-                                blankAnnotation.Font.Name = "Consolas";
                                 blankAnnotation.Shadow = false;
                                 blankAnnotation.BorderWidth = 0;
-                                blankAnnotation.BorderColor = chartsBackgroundColor;
+                                blankAnnotation.BorderColor = Color.White;
                                 blankAnnotation.MarginX = 2;
                                 blankAnnotation.MarginY = 2;
-                                blankAnnotation.Font.Color = chartsBackgroundColor;
-                                blankAnnotation.BackgroundColor = chartsBackgroundColor;
+                                blankAnnotation.Font.Color = Color.White;
+                                blankAnnotation.BackgroundColor = Color.White;
 
                                 var actualAnnotation = formsPlot1.Plot.AddAnnotation($"{originalY:N2} ({formattedPointX})", Alignment.UpperLeft);
                                 actualAnnotation.Font.Name = "Consolas";
                                 actualAnnotation.Shadow = false;
                                 actualAnnotation.BorderWidth = 0;
-                                actualAnnotation.BorderColor = chartsBackgroundColor;
+                                actualAnnotation.BorderColor = Color.White;
                                 actualAnnotation.MarginX = 2;
                                 actualAnnotation.MarginY = 2;
-                                actualAnnotation.Font.Color = label148.ForeColor;
-                                actualAnnotation.BackgroundColor = chartsBackgroundColor;
-                                */
+                                actualAnnotation.Font.Color = Color.Gray;
+                                actualAnnotation.BackgroundColor = Color.White;
+
                             }
                             else
                             {
@@ -2790,7 +3092,7 @@ namespace BitcoinCBC
                 });
                 showPriceGridLines = false;
                 InterruptAndStartNewRobotSpeak("Price grid lines hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2800,7 +3102,7 @@ namespace BitcoinCBC
                 });
                 showPriceGridLines = true;
                 InterruptAndStartNewRobotSpeak("Price grid lines displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2814,7 +3116,7 @@ namespace BitcoinCBC
                 });
                 showDateGridLines = false;
                 InterruptAndStartNewRobotSpeak("Date grid lines hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2824,7 +3126,7 @@ namespace BitcoinCBC
                 });
                 showDateGridLines = true;
                 InterruptAndStartNewRobotSpeak("Date grid lines displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2838,7 +3140,7 @@ namespace BitcoinCBC
                 });
                 showCostBasis = false;
                 InterruptAndStartNewRobotSpeak("Cost basis hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2848,7 +3150,7 @@ namespace BitcoinCBC
                 });
                 showCostBasis = true;
                 InterruptAndStartNewRobotSpeak("Cost basis displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2862,7 +3164,7 @@ namespace BitcoinCBC
                 });
                 showBuyDates = false;
                 InterruptAndStartNewRobotSpeak("Buy dates hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2872,7 +3174,7 @@ namespace BitcoinCBC
                 });
                 showBuyDates = true;
                 InterruptAndStartNewRobotSpeak("Buy dates displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2886,7 +3188,7 @@ namespace BitcoinCBC
                 });
                 showSellDates = false;
                 InterruptAndStartNewRobotSpeak("Sell dates hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2896,7 +3198,7 @@ namespace BitcoinCBC
                 });
                 showSellDates = true;
                 InterruptAndStartNewRobotSpeak("Sell dates displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2910,7 +3212,7 @@ namespace BitcoinCBC
                 });
                 showBuyBubbles = false;
                 InterruptAndStartNewRobotSpeak("Buy transactions hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2920,7 +3222,7 @@ namespace BitcoinCBC
                 });
                 showBuyBubbles = true;
                 InterruptAndStartNewRobotSpeak("Buy transactions displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2934,7 +3236,7 @@ namespace BitcoinCBC
                 });
                 showSellBubbles = false;
                 InterruptAndStartNewRobotSpeak("Sell transactions hidden.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
             else
             {
@@ -2944,7 +3246,7 @@ namespace BitcoinCBC
                 });
                 showSellBubbles = true;
                 InterruptAndStartNewRobotSpeak("Sell transactions displayed.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2959,7 +3261,7 @@ namespace BitcoinCBC
                 });
                 cursorTrackPrice = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking the price.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2974,7 +3276,7 @@ namespace BitcoinCBC
                 });
                 cursorTrackBuyTX = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking transactions where you bought or received bitcoin.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -2989,7 +3291,7 @@ namespace BitcoinCBC
                 });
                 cursorTrackSellTX = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking transactions where you sold or spent bitcoin.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -3004,7 +3306,7 @@ namespace BitcoinCBC
                 });
                 cursorTrackNothing = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor no longer tracking any data.");
-                DrawPriceChartLinear();
+                DrawPriceChart();
             }
         }
 
@@ -3034,146 +3336,8 @@ namespace BitcoinCBC
 
         #endregion
 
-        /*
-        private async void BtnChartPriceLog_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                ShowChartLoadingPanel();
-                HideAllChartKeysAndPanels();
-                formsPlot2.Visible = false;
-                formsPlot3.Visible = false;
-                btnPriceChartScaleLinear.Enabled = true;
-                btnPriceChartScaleLog.Enabled = false;
-                chartType = "pricelog";
-
-                if (chartPeriod == "24h" || chartPeriod == "3d" || chartPeriod == "1w" || chartPeriod == "2y")
-                {
-                    chartPeriod = "all";
-                    btnChartPeriodAll.Enabled = false;
-                }
-
-                EnableAllCharts();
-                btnChartPrice.Enabled = false;
-                DisableIrrelevantTimePeriods();
-
-                ToggleLoadingAnimation("enable");
-                DisableEnableChartButtons("disable");
-
-                // clear any previous graph
-                ClearAllChartData();
-                formsPlot1.Plot.Title("Average USD market price across major bitcoin exchanges - " + chartPeriod + " (log scale)", size: 13, bold: true);
-                formsPlot1.Plot.YAxis.Label("Price (USD)", size: 12, bold: false);
-                // get a series of historic price data
-                var HistoricPriceDataJson = await _historicPriceDataService.GetHistoricPriceDataAsync(chartPeriod);
-                JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
-
-                List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
-
-                // convert data to GBP, EUR, XAU if needed
-                decimal selectedCurrency = 0;
-                decimal exchangeRate = 1;
-                if (btnUSD.Enabled) // user has selected a currency other than USD
-                {
-                    // get 
-                    var (priceUSD, priceGBP, priceEUR, priceXAU) = BitcoinExplorerOrgGetPrice();
-                    if (!btnGBP.Enabled) //GBP is selected
-                    {
-                        selectedCurrency = Convert.ToDecimal(priceGBP);
-                        formsPlot1.Plot.Title("Average GBP market price across major bitcoin exchanges - " + chartPeriod, size: 13, bold: true);
-                        formsPlot1.Plot.YAxis.Label("Price (GBP)", size: 12, bold: false);
-                    }
-                    if (!btnEUR.Enabled) //EUR is selected
-                    {
-                        selectedCurrency = Convert.ToDecimal(priceEUR);
-                        formsPlot1.Plot.Title("Average EUR market price across major bitcoin exchanges - " + chartPeriod, size: 13, bold: true);
-                        formsPlot1.Plot.YAxis.Label("Price (EUR)", size: 12, bold: false);
-                    }
-                    if (!btnXAU.Enabled) //XAU is selected
-                    {
-                        selectedCurrency = Convert.ToDecimal(priceXAU);
-                        formsPlot1.Plot.Title("Average XAU market price across major bitcoin exchanges - " + chartPeriod, size: 13, bold: true);
-                        formsPlot1.Plot.YAxis.Label("Price (XAU)", size: 12, bold: false);
-                    }
-                    exchangeRate = selectedCurrency / Convert.ToDecimal(priceUSD);
-
-                    foreach (var item in PriceList)
-                    {
-                        item.Y *= exchangeRate;
-                    }
-                }
-
-                // set the number of points on the graph
-                int pointCount = PriceList.Count;
-
-                // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
-                double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
 
-                List<double> filteredYValues = new List<double>();
-                List<double> filteredXValues = new List<double>();
-
-                for (int i = 0; i < PriceList.Count; i++)
-                {
-                    double yValue = (double)PriceList[i].Y;
-                    if (yValue > 0)
-                    {
-                        filteredYValues.Add(Math.Log10(yValue));
-                        filteredXValues.Add(xValues[i]);
-                    }
-                }
-
-                double[] yValues = filteredYValues.ToArray();
-                double[] xValuesFiltered = filteredXValues.ToArray();
-
-
-                double minY = yValues.Min();
-                double maxY = yValues.Max() * 1.05;
-                formsPlot1.Plot.SetAxisLimits(xValuesFiltered.Min(), xValuesFiltered.Max(), minY, maxY);
-                scatter = formsPlot1.Plot.AddScatter(xValuesFiltered, yValues, lineWidth: 1, markerSize: 1);
-
-                // Use a custom formatter to control the label for each tick mark
-                static string logTickLabels(double y) => Math.Pow(10, y).ToString("N0");
-                formsPlot1.Plot.YAxis.TickLabelFormat(logTickLabels);
-
-                // Use log-spaced minor tick marks and grid lines
-                formsPlot1.Plot.YAxis.MinorLogScale(true);
-                formsPlot1.Plot.YAxis.MajorGrid(true);
-                formsPlot1.Plot.YAxis.MinorGrid(true);
-                formsPlot1.Plot.XAxis.MajorGrid(true);
-
-                formsPlot1.Plot.XAxis.DateTimeFormat(true);
-                formsPlot1.Plot.XAxis.TickLabelStyle(fontSize: 10);
-                formsPlot1.Plot.XAxis.Ticks(true);
-                formsPlot1.Plot.XAxis.Label("");
-
-                // prevent navigating beyond the data
-                formsPlot1.Plot.YAxis.SetBoundary(minY, maxY);
-                //formsPlot1.Plot.YAxis.SetBoundary(0, yValues.Max());
-                formsPlot1.Plot.XAxis.SetBoundary(xValues.Min(), xValues.Max());
-
-                // Add a red circle we can move around later as a highlighted point indicator
-                HighlightedPoint = formsPlot1.Plot.AddPoint(0, 0);
-                HighlightedPoint.Color = Color.Red;
-                HighlightedPoint.MarkerSize = 10;
-                HighlightedPoint.MarkerShape = ScottPlot.MarkerShape.openCircle;
-                HighlightedPoint.IsVisible = false;
-                // refresh the graph
-                formsPlot1.Refresh();
-                formsPlot1.Visible = true;
-                panelPriceScaleButtons.Visible = true;
-
-                ToggleLoadingAnimation("disable");
-                DisableEnableChartButtons("enable");
-                HideChartLoadingPanel();
-            }
-            catch (Exception ex)
-            {
-                HandleException(ex, "Generating price (log) chart");
-            }
-        }
-        */
         #endregion
 
         #region exit, minimise, move
@@ -3232,6 +3396,32 @@ namespace BitcoinCBC
             lblHelpAddTransactionText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
             panelHelpAddTransaction.Visible = true;
             panelHelpAddTransaction.BringToFront();
+        }
+
+        private void btnHelpTransactionList_Click(object sender, EventArgs e)
+        {
+            lblHelpTransactionListText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            panelHelpTransactionList.Visible = true;
+            panelHelpTransactionList.BringToFront();
+        }
+
+        private void btnCloseHelpTransactionList_Click(object sender, EventArgs e)
+        {
+            panelHelpTransactionList.SendToBack();
+            panelHelpTransactionList.Visible = false;
+        }
+
+        private void BtnCloseHelpChart_Click(object sender, EventArgs e)
+        {
+            panelHelpChart.SendToBack();
+            panelHelpChart.Visible = false;
+        }
+
+        private void btnHelpChart_Click(object sender, EventArgs e)
+        {
+            lblHelpChartText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            panelHelpChart.Visible = true;
+            panelHelpChart.BringToFront();
         }
 
         #endregion
@@ -3644,5 +3834,18 @@ namespace BitcoinCBC
 
         #endregion
 
+        private void btnPriceChartScaleLinear_Click(object sender, EventArgs e)
+        {
+            btnPriceChartScaleLinear.Enabled = false;
+            btnPriceChartScaleLog.Enabled = true;
+            DrawPriceChart();
+        }
+
+        private void btnPriceChartScaleLog_Click(object sender, EventArgs e)
+        {
+            btnPriceChartScaleLinear.Enabled = true;
+            btnPriceChartScaleLog.Enabled = false;
+            DrawPriceChart();
+        }
     }
 }
