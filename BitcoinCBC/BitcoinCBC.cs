@@ -10,9 +10,9 @@ Cubic/Cubit?
 currently getting the historic prices three times - once to estimate prices and once for each chart. Reduce to just one.
 currency conversion
 option to expand listview or chart to obscure the other?
-help screen text for table
 check cost basis being correctly calculated in all circumstances
-fix resolution - looks crap in any resolution other than 2560x1440!
+scaling - fine in all resolutions but things break with windows scaling applied
+about screen
 */
 
 #region Using
@@ -245,6 +245,11 @@ namespace BitcoinCBC
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = Convert.ToDecimal(priceUSD).ToString("0.00");
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
             });
             #endregion
 
@@ -255,7 +260,7 @@ namespace BitcoinCBC
             #region set up chart
             InitializeChart();
 
-            DrawPriceChartLinear();
+            DrawPriceChart();
             #endregion
         }
         #endregion
@@ -1182,9 +1187,11 @@ namespace BitcoinCBC
 
         #region refresh current price
 
-        private void BtnPriceRefresh_Click(object sender, EventArgs e)
+        private async void BtnPriceRefresh_Click(object sender, EventArgs e)
         {
             GetPrice();
+            await SetupTransactionsList();
+            DrawPriceChart();
         }
 
         #endregion
@@ -1201,6 +1208,11 @@ namespace BitcoinCBC
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = Convert.ToDecimal(priceUSD).ToString("0.00");
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
             });
         }
 
@@ -1360,7 +1372,6 @@ namespace BitcoinCBC
                 if (!transactionFound) // there are no transactions
                 {
                     InterruptAndStartNewRobotSpeak("You don't have any transactions yet. Let's create your first one.");
-                    lblTransactionCount.Text = "0 transactions";
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
                         listViewTransactions.Items.Clear(); // remove any data that may be there already
@@ -1383,10 +1394,6 @@ namespace BitcoinCBC
                     lbl3.Invoke((MethodInvoker)delegate
                     {
                         lbl3.Visible = false;
-                    });
-                    lblTransactionCount.Invoke((MethodInvoker)delegate
-                    {
-                        lblTransactionCount.Text = "0 transactions";
                     });
                     panelScrollbarContainer.Invoke((MethodInvoker)delegate
                     {
@@ -1411,8 +1418,6 @@ namespace BitcoinCBC
                 {
                     lbl3.Visible = true;
                 });
-
-                lblTransactionCount.Text = Convert.ToString(transactions.Count) + " transactions";
 
                 //LIST VIEW
                 listViewTransactions.Invoke((MethodInvoker)delegate
@@ -3471,7 +3476,7 @@ namespace BitcoinCBC
 
         private void btnHelpTransactionList_Click(object sender, EventArgs e)
         {
-            lblHelpTransactionListText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used" + Environment.NewLine + "P/L - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "P/L % - the percentage difference between the value of the bitcoin at the time of the transaction and today's value" + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings";
             panelHelpTransactionList.Visible = true;
             panelHelpTransactionList.BringToFront();
         }

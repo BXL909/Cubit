@@ -107,7 +107,6 @@
             lblCurrentPrice = new Label();
             btnPriceRefresh = new CustomControls.RJControls.RJButton();
             listViewTransactions = new ListView();
-            lblTransactionCount = new Label();
             btnTransactionsListUp = new CustomControls.RJControls.RJButton();
             btnTransactionsListDown = new CustomControls.RJControls.RJButton();
             panel13 = new Panel();
@@ -208,6 +207,9 @@
             lblRobotSpeak = new Label();
             panelHideSpeechTriangle = new Panel();
             pictureBoxRobot = new PictureBox();
+            pictureBox1 = new PictureBox();
+            pictureBox2 = new PictureBox();
+            pictureBoxBTCLogo = new PictureBox();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -245,6 +247,9 @@
             panel16.SuspendLayout();
             panelSpeechBubble.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
             SuspendLayout();
             // 
             // btnExit
@@ -258,7 +263,7 @@
             btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(967, 8);
+            btnExit.Location = new Point(948, 12);
             btnExit.Name = "btnExit";
             btnExit.Padding = new Padding(3, 1, 0, 0);
             btnExit.Size = new Size(24, 24);
@@ -279,7 +284,7 @@
             btnMinimize.FlatStyle = FlatStyle.Flat;
             btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnMinimize.ForeColor = Color.White;
-            btnMinimize.Location = new Point(937, 8);
+            btnMinimize.Location = new Point(919, 12);
             btnMinimize.Name = "btnMinimize";
             btnMinimize.Padding = new Padding(2, 0, 0, 0);
             btnMinimize.Size = new Size(24, 24);
@@ -1037,7 +1042,7 @@
             panel9.BackColor = Color.FromArgb(255, 224, 192);
             panel9.Controls.Add(panelAddTransaction);
             panel9.Controls.Add(panelHelpAddTransaction);
-            panel9.Location = new Point(17, 733);
+            panel9.Location = new Point(12, 699);
             panel9.Name = "panel9";
             panel9.Size = new Size(675, 241);
             panel9.TabIndex = 73;
@@ -1216,30 +1221,33 @@
             // lblCurrentPrice
             // 
             lblCurrentPrice.AutoSize = true;
+            lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblCurrentPrice.ForeColor = Color.DarkGray;
-            lblCurrentPrice.Location = new Point(39, 14);
+            lblCurrentPrice.Location = new Point(809, 15);
             lblCurrentPrice.Name = "lblCurrentPrice";
-            lblCurrentPrice.Size = new Size(74, 15);
+            lblCurrentPrice.Size = new Size(86, 17);
             lblCurrentPrice.TabIndex = 74;
             lblCurrentPrice.Text = "current price";
             // 
             // btnPriceRefresh
             // 
-            btnPriceRefresh.BackColor = Color.White;
-            btnPriceRefresh.BackgroundColor = Color.White;
+            btnPriceRefresh.BackColor = Color.Transparent;
+            btnPriceRefresh.BackgroundColor = Color.Transparent;
+            btnPriceRefresh.BackgroundImage = Properties.Resources.Refresh;
+            btnPriceRefresh.BackgroundImageLayout = ImageLayout.Stretch;
             btnPriceRefresh.BorderColor = Color.PaleVioletRed;
             btnPriceRefresh.BorderRadius = 5;
             btnPriceRefresh.BorderSize = 0;
             btnPriceRefresh.FlatAppearance.BorderSize = 0;
             btnPriceRefresh.FlatStyle = FlatStyle.Flat;
-            btnPriceRefresh.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            btnPriceRefresh.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnPriceRefresh.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceRefresh.Location = new Point(20, 6);
+            btnPriceRefresh.Location = new Point(889, 12);
             btnPriceRefresh.Name = "btnPriceRefresh";
             btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
-            btnPriceRefresh.Size = new Size(24, 26);
+            btnPriceRefresh.Size = new Size(24, 23);
             btnPriceRefresh.TabIndex = 75;
-            btnPriceRefresh.Text = "↺";
+            btnPriceRefresh.TextAlign = ContentAlignment.TopCenter;
             btnPriceRefresh.TextColor = Color.FromArgb(255, 128, 0);
             btnPriceRefresh.UseVisualStyleBackColor = false;
             btnPriceRefresh.Click += BtnPriceRefresh_Click;
@@ -1266,17 +1274,6 @@
             listViewTransactions.View = View.Details;
             listViewTransactions.DrawColumnHeader += ListViewTransactions_DrawColumnHeader;
             listViewTransactions.DrawSubItem += ListViewTransactions_DrawSubItem;
-            // 
-            // lblTransactionCount
-            // 
-            lblTransactionCount.BackColor = Color.Transparent;
-            lblTransactionCount.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTransactionCount.ForeColor = Color.DarkGray;
-            lblTransactionCount.Location = new Point(119, 12);
-            lblTransactionCount.Name = "lblTransactionCount";
-            lblTransactionCount.Size = new Size(116, 18);
-            lblTransactionCount.TabIndex = 75;
-            lblTransactionCount.Text = "transactions";
             // 
             // btnTransactionsListUp
             // 
@@ -1330,7 +1327,7 @@
             panel13.Controls.Add(panelTransactionsContainer);
             panel13.Controls.Add(panel11);
             panel13.Controls.Add(panelTXListFooter);
-            panel13.Location = new Point(17, 538);
+            panel13.Location = new Point(12, 510);
             panel13.Name = "panel13";
             panel13.Size = new Size(960, 170);
             panel13.TabIndex = 81;
@@ -1792,7 +1789,7 @@
             panelHelpTransactionList.BackColor = Color.White;
             panelHelpTransactionList.Controls.Add(lblHelpTransactionListText);
             panelHelpTransactionList.Controls.Add(panel26);
-            panelHelpTransactionList.Location = new Point(18, 539);
+            panelHelpTransactionList.Location = new Point(13, 511);
             panelHelpTransactionList.Name = "panelHelpTransactionList";
             panelHelpTransactionList.Size = new Size(958, 168);
             panelHelpTransactionList.TabIndex = 77;
@@ -1858,7 +1855,7 @@
             panelScrollbarContainer.Controls.Add(btnTransactionsListDown);
             panelScrollbarContainer.Controls.Add(panel12);
             panelScrollbarContainer.Controls.Add(btnTransactionsListUp);
-            panelScrollbarContainer.Location = new Point(947, 539);
+            panelScrollbarContainer.Location = new Point(942, 511);
             panelScrollbarContainer.Name = "panelScrollbarContainer";
             panelScrollbarContainer.Size = new Size(29, 142);
             panelScrollbarContainer.TabIndex = 77;
@@ -1908,7 +1905,7 @@
             btnMoveWindow.ForeColor = Color.White;
             btnMoveWindow.Location = new Point(121, 4);
             btnMoveWindow.Name = "btnMoveWindow";
-            btnMoveWindow.Size = new Size(810, 30);
+            btnMoveWindow.Size = new Size(792, 30);
             btnMoveWindow.TabIndex = 81;
             btnMoveWindow.TextColor = Color.White;
             btnMoveWindow.UseVisualStyleBackColor = false;
@@ -1925,7 +1922,7 @@
             // 
             panel14.BackColor = Color.FromArgb(255, 224, 192);
             panel14.Controls.Add(panelChartContainer);
-            panel14.Location = new Point(17, 80);
+            panel14.Location = new Point(12, 55);
             panel14.Name = "panel14";
             panel14.Size = new Size(960, 435);
             panel14.TabIndex = 85;
@@ -2623,7 +2620,7 @@
             panelHelpChart.BackColor = Color.White;
             panelHelpChart.Controls.Add(lblHelpChartText);
             panelHelpChart.Controls.Add(panel31);
-            panelHelpChart.Location = new Point(18, 81);
+            panelHelpChart.Location = new Point(13, 56);
             panelHelpChart.Name = "panelHelpChart";
             panelHelpChart.Size = new Size(958, 433);
             panelHelpChart.TabIndex = 101;
@@ -2687,7 +2684,7 @@
             panel16.Controls.Add(panelSpeechBubble);
             panel16.Controls.Add(panelHideSpeechTriangle);
             panel16.Controls.Add(pictureBoxRobot);
-            panel16.Location = new Point(703, 729);
+            panel16.Location = new Point(698, 695);
             panel16.Name = "panel16";
             panel16.Size = new Size(284, 253);
             panel16.TabIndex = 102;
@@ -2733,6 +2730,36 @@
             pictureBoxRobot.TabIndex = 68;
             pictureBoxRobot.TabStop = false;
             // 
+            // pictureBox1
+            // 
+            pictureBox1.Image = Properties.Resources.logo;
+            pictureBox1.Location = new Point(9, 10);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(30, 30);
+            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.TabIndex = 103;
+            pictureBox1.TabStop = false;
+            // 
+            // pictureBox2
+            // 
+            pictureBox2.Image = Properties.Resources.text;
+            pictureBox2.Location = new Point(42, 6);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(82, 30);
+            pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox2.TabIndex = 104;
+            pictureBox2.TabStop = false;
+            // 
+            // pictureBoxBTCLogo
+            // 
+            pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
+            pictureBoxBTCLogo.Location = new Point(778, 12);
+            pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
+            pictureBoxBTCLogo.Size = new Size(23, 23);
+            pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxBTCLogo.TabIndex = 105;
+            pictureBoxBTCLogo.TabStop = false;
+            // 
             // BitcoinCBC
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -2740,16 +2767,18 @@
             BackColor = Color.White;
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
-            ClientSize = new Size(1000, 1000);
+            ClientSize = new Size(987, 956);
+            Controls.Add(pictureBoxBTCLogo);
+            Controls.Add(lblCurrentPrice);
+            Controls.Add(btnPriceRefresh);
+            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox1);
             Controls.Add(panel16);
             Controls.Add(panelScrollbarContainer);
             Controls.Add(panel9);
             Controls.Add(panel14);
             Controls.Add(panel13);
-            Controls.Add(lblTransactionCount);
             Controls.Add(btnMoveWindow);
-            Controls.Add(lblCurrentPrice);
-            Controls.Add(btnPriceRefresh);
             Controls.Add(btnMinimize);
             Controls.Add(btnExit);
             Controls.Add(panelHelpChart);
@@ -2817,6 +2846,9 @@
             panel16.ResumeLayout(false);
             panelSpeechBubble.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -2890,7 +2922,6 @@
         private Label lblCurrentPrice;
         private CustomControls.RJControls.RJButton btnPriceRefresh;
         private ListView listViewTransactions;
-        private Label lblTransactionCount;
         private CustomControls.RJControls.RJButton btnTransactionsListUp;
         private CustomControls.RJControls.RJButton btnTransactionsListDown;
         private Panel panel13;
@@ -3000,5 +3031,8 @@
         private Label lblRobotSpeak;
         private Panel panelHideSpeechTriangle;
         private PictureBox pictureBoxRobot;
+        private PictureBox pictureBox1;
+        private PictureBox pictureBox2;
+        private PictureBox pictureBoxBTCLogo;
     }
 }
