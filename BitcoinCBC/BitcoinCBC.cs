@@ -7,54 +7,24 @@ currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
 scaling - fine in all resolutions but things break with windows scaling applied
-about screen
+about screen - add link urls and auto check for updates
 */
 
 #region Using
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.IO;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Globalization;
-using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using Control = System.Windows.Forms.Control;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 using Panel = System.Windows.Forms.Panel;
 using System.Drawing.Drawing2D;
-using CustomControls.RJControls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Diagnostics;
-using System.Drawing.Text;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
-using System.Xml.Linq;
-using System.Drawing.Printing;
-using System.Reflection.Emit;
 using BitcoinCBC.Properties;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Status;
-using System.Web;
-using System.Diagnostics.Eventing.Reader;
-using System.Collections;
 using ScottPlot;
-using static BitcoinCBC.BitcoinCBC;
 using ScottPlot.Plottable;
-using ScottPlot.Drawing;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
+using System.Windows.Forms;
 #endregion
 
 namespace BitcoinCBC
@@ -569,10 +539,16 @@ namespace BitcoinCBC
                 {
                     btnUsePriceEstimateFlag.Text = "✖️";
                 });
-                textBoxPriceInput.Enabled = true;
+
                 textBoxPriceInput.Invoke((MethodInvoker)delegate
                 {
+                    textBoxPriceInput.Enabled = true;
                     textBoxPriceInput.Text = "";
+                    textBoxPriceInput.BackColor = Color.FromArgb(255, 224, 192);
+                });
+                panel6.Invoke((MethodInvoker)delegate
+                {
+                    panel6.BackColor = Color.FromArgb(255, 224, 192);
                 });
                 lblAddDataRange.Invoke((MethodInvoker)delegate
                 {
@@ -591,14 +567,18 @@ namespace BitcoinCBC
                     btnUsePriceEstimateFlag.Text = "✔️";
                 });
                 textBoxPriceInput.Enabled = false;
-                InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
-                if (lblEstimatedPrice.Text != "")
+                //if (lblEstimatedPrice.Text != "")
+                //{
+                textBoxPriceInput.Invoke((MethodInvoker)delegate
                 {
-                    textBoxPriceInput.Invoke((MethodInvoker)delegate
-                    {
-                        textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
-                    });
-                }
+                    textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
+                    textBoxPriceInput.BackColor = Color.FromArgb(240, 240, 240);
+                });
+                panel6.Invoke((MethodInvoker)delegate
+                {
+                    panel6.BackColor = Color.FromArgb(240, 240, 240);
+                });
+                //}
                 if (priceEstimateType == "DA")
                 {
                     lblAddDataRange.Invoke((MethodInvoker)delegate
@@ -614,6 +594,7 @@ namespace BitcoinCBC
                     });
                 }
                 lblAddDataPriceEstimateType.Text = priceEstimateType;
+                InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
             }
         }
 
@@ -629,6 +610,12 @@ namespace BitcoinCBC
                 textBoxFiatInput.Invoke((MethodInvoker)delegate
                 {
                     textBoxFiatInput.Text = "";
+                    textBoxFiatInput.Enabled = true;
+                    textBoxFiatInput.BackColor = Color.FromArgb(255, 224, 192);
+                });
+                panel5.Invoke((MethodInvoker)delegate
+                {
+                    panel5.BackColor = Color.FromArgb(255, 224, 192);
                 });
                 lblAddDataFiatEstimateFlag.Invoke((MethodInvoker)delegate
                 {
@@ -651,7 +638,16 @@ namespace BitcoinCBC
                 {
                     lblAddDataFiatEstimateFlag.Text = "Y";
                 });
-                textBoxFiatInput.Enabled = false;
+
+                textBoxFiatInput.Invoke((MethodInvoker)delegate
+                {
+                    textBoxFiatInput.Enabled = false;
+                    textBoxFiatInput.BackColor = Color.FromArgb(240, 240, 240);
+                });
+                panel5.Invoke((MethodInvoker)delegate
+                {
+                    panel5.BackColor = Color.FromArgb(240, 240, 240);
+                });
 
                 if (lblEstimatedFiat.Text != "")
                 {
@@ -672,10 +668,16 @@ namespace BitcoinCBC
                 {
                     btnUseBTCEstimateFlag.Text = "✖️";
                 });
-                textBoxBTCInput.Enabled = true;
+
                 textBoxBTCInput.Invoke((MethodInvoker)delegate
                 {
+                    textBoxBTCInput.Enabled = true;
                     textBoxBTCInput.Text = "";
+                    textBoxBTCInput.BackColor = Color.FromArgb(255, 224, 192);
+                });
+                panel4.Invoke((MethodInvoker)delegate
+                {
+                    panel4.BackColor = Color.FromArgb(255, 224, 192);
                 });
                 lblAddDataBTCEstimateFlag.Invoke((MethodInvoker)delegate
                 {
@@ -698,7 +700,15 @@ namespace BitcoinCBC
                 {
                     lblAddDataBTCEstimateFlag.Text = "Y";
                 });
-                textBoxBTCInput.Enabled = false;
+                textBoxBTCInput.Invoke((MethodInvoker)delegate
+                {
+                    textBoxBTCInput.Enabled = false;
+                    textBoxBTCInput.BackColor = Color.FromArgb(240, 240, 240);
+                });
+                panel4.Invoke((MethodInvoker)delegate
+                {
+                    panel4.BackColor = Color.FromArgb(240, 240, 240);
+                });
                 InterruptAndStartNewRobotSpeak("OK, let's use the best estimate I could manage for the amount of bitcoin in this transaction.");
                 if (lblEstimatedBTC.Text != "")
                 {
@@ -2533,8 +2543,8 @@ namespace BitcoinCBC
 
                 #region price line
 
-                List<double> filteredYValues = new List<double>();
-                List<double> filteredXValues = new List<double>();
+                List<double> filteredYValues = new();
+                List<double> filteredXValues = new();
 
                 for (int i = 0; i < PriceList.Count; i++)
                 {
@@ -2831,7 +2841,7 @@ namespace BitcoinCBC
 
                                 double originalY = Math.Pow(10, pointY); // Convert back to the original scale
                                                                          //annotation to obscure the previous one before drawing the new one
-                                var blankAnnotation = formsPlot1.Plot.AddAnnotation("████████████████████████████████████", Alignment.UpperLeft);
+                                var blankAnnotation = formsPlot1.Plot.AddAnnotation("████████████████████", Alignment.UpperLeft);
                                 blankAnnotation.Shadow = false;
                                 blankAnnotation.BorderWidth = 0;
                                 blankAnnotation.BorderColor = Color.White;
@@ -3407,11 +3417,9 @@ namespace BitcoinCBC
 
         #endregion
 
-
-
         #endregion
 
-        #region exit, minimise, move
+        #region exit, minimise, move, about
 
         private void BtnExit_Click(object sender, EventArgs e)
         {
@@ -3421,6 +3429,46 @@ namespace BitcoinCBC
         private void BtnMinimize_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void BtnAbout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // take a screenshot of the form and darken it:
+                Bitmap bmp = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);
+                using (Graphics G = Graphics.FromImage(bmp))
+                {
+                    G.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+                    G.CopyFromScreen(this.PointToScreen(new Point(0, 0)), new Point(0, 0), this.ClientRectangle.Size);
+                    double percent = 0.60;
+                    Color darken = Color.FromArgb((int)(255 * percent), Color.Black);
+                    using Brush brsh = new SolidBrush(darken);
+                    G.FillRectangle(brsh, this.ClientRectangle);
+                }
+                // put the darkened screenshot into a Panel and bring it to the front:
+                using (Panel p = new Panel())
+                {
+                    p.Location = new Point(0, 0);
+                    p.Size = this.ClientRectangle.Size;
+                    p.BackgroundImage = bmp;
+                    this.Controls.Add(p);
+                    p.BringToFront();
+
+                    // display about screen:
+                    Form frm = new About
+                    {
+                        Owner = this, // Set the parent window as the owner of the modal window
+                        StartPosition = FormStartPosition.CenterParent, // Set the start position to center of parent
+                    };
+                    frm.StartPosition = FormStartPosition.CenterParent;
+                    frm.ShowDialog(this);
+                } // panel will be disposed and the form will "lighten" again...
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, "BtnAbout_Click");
+            }
         }
 
         #region move window
@@ -3469,14 +3517,14 @@ namespace BitcoinCBC
             panelHelpAddTransaction.BringToFront();
         }
 
-        private void btnHelpTransactionList_Click(object sender, EventArgs e)
+        private void BtnHelpTransactionList_Click(object sender, EventArgs e)
         {
             lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used" + Environment.NewLine + "P/L - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "P/L % - the percentage difference between the value of the bitcoin at the time of the transaction and today's value" + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings";
             panelHelpTransactionList.Visible = true;
             panelHelpTransactionList.BringToFront();
         }
 
-        private void btnCloseHelpTransactionList_Click(object sender, EventArgs e)
+        private void BtnCloseHelpTransactionList_Click(object sender, EventArgs e)
         {
             panelHelpTransactionList.SendToBack();
             panelHelpTransactionList.Visible = false;
@@ -3488,7 +3536,7 @@ namespace BitcoinCBC
             panelHelpChart.Visible = false;
         }
 
-        private void btnHelpChart_Click(object sender, EventArgs e)
+        private void BtnHelpChart_Click(object sender, EventArgs e)
         {
             lblHelpChartText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
             panelHelpChart.Visible = true;

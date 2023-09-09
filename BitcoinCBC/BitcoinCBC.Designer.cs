@@ -210,6 +210,7 @@
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
             pictureBoxBTCLogo = new PictureBox();
+            btnAbout = new CustomControls.RJControls.RJButton();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -1223,7 +1224,7 @@
             lblCurrentPrice.AutoSize = true;
             lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblCurrentPrice.ForeColor = Color.DarkGray;
-            lblCurrentPrice.Location = new Point(809, 15);
+            lblCurrentPrice.Location = new Point(764, 14);
             lblCurrentPrice.Name = "lblCurrentPrice";
             lblCurrentPrice.Size = new Size(86, 17);
             lblCurrentPrice.TabIndex = 74;
@@ -1242,7 +1243,7 @@
             btnPriceRefresh.FlatStyle = FlatStyle.Flat;
             btnPriceRefresh.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnPriceRefresh.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceRefresh.Location = new Point(889, 12);
+            btnPriceRefresh.Location = new Point(859, 12);
             btnPriceRefresh.Name = "btnPriceRefresh";
             btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
             btnPriceRefresh.Size = new Size(24, 23);
@@ -1469,9 +1470,9 @@
             label28.Location = new Point(420, 0);
             label28.Name = "label28";
             label28.Padding = new Padding(0, 2, 0, 0);
-            label28.Size = new Size(57, 19);
+            label28.Size = new Size(28, 19);
             label28.TabIndex = 8;
-            label28.Text = "BTC amt.";
+            label28.Text = "BTC";
             // 
             // label27
             // 
@@ -1495,9 +1496,9 @@
             label26.Location = new Point(295, 0);
             label26.Name = "label26";
             label26.Padding = new Padding(0, 2, 0, 0);
-            label26.Size = new Size(57, 19);
+            label26.Size = new Size(28, 19);
             label26.TabIndex = 6;
-            label26.Text = "Fiat amt.";
+            label26.Text = "Fiat";
             // 
             // label25
             // 
@@ -1834,7 +1835,7 @@
             btnCloseHelpTransactionList.Text = "✖️";
             btnCloseHelpTransactionList.TextColor = Color.White;
             btnCloseHelpTransactionList.UseVisualStyleBackColor = false;
-            btnCloseHelpTransactionList.Click += btnCloseHelpTransactionList_Click;
+            btnCloseHelpTransactionList.Click += BtnCloseHelpTransactionList_Click;
             // 
             // label52
             // 
@@ -1889,7 +1890,7 @@
             btnHelpTransactionList.Text = "❔";
             btnHelpTransactionList.TextColor = Color.White;
             btnHelpTransactionList.UseVisualStyleBackColor = false;
-            btnHelpTransactionList.Click += btnHelpTransactionList_Click;
+            btnHelpTransactionList.Click += BtnHelpTransactionList_Click;
             // 
             // btnMoveWindow
             // 
@@ -1903,7 +1904,7 @@
             btnMoveWindow.FlatAppearance.MouseOverBackColor = Color.White;
             btnMoveWindow.FlatStyle = FlatStyle.Flat;
             btnMoveWindow.ForeColor = Color.White;
-            btnMoveWindow.Location = new Point(121, 4);
+            btnMoveWindow.Location = new Point(76, 4);
             btnMoveWindow.Name = "btnMoveWindow";
             btnMoveWindow.Size = new Size(792, 30);
             btnMoveWindow.TabIndex = 81;
@@ -2581,7 +2582,7 @@
             btnHelpChart.Text = "❔";
             btnHelpChart.TextColor = Color.White;
             btnHelpChart.UseVisualStyleBackColor = false;
-            btnHelpChart.Click += btnHelpChart_Click;
+            btnHelpChart.Click += BtnHelpChart_Click;
             // 
             // label39
             // 
@@ -2753,12 +2754,33 @@
             // pictureBoxBTCLogo
             // 
             pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
-            pictureBoxBTCLogo.Location = new Point(778, 12);
+            pictureBoxBTCLogo.Location = new Point(735, 12);
             pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
             pictureBoxBTCLogo.Size = new Size(23, 23);
             pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxBTCLogo.TabIndex = 105;
             pictureBoxBTCLogo.TabStop = false;
+            // 
+            // btnAbout
+            // 
+            btnAbout.BackColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BorderColor = Color.PaleVioletRed;
+            btnAbout.BorderRadius = 14;
+            btnAbout.BorderSize = 0;
+            btnAbout.FlatAppearance.BorderSize = 0;
+            btnAbout.FlatStyle = FlatStyle.Flat;
+            btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAbout.ForeColor = Color.White;
+            btnAbout.Location = new Point(889, 12);
+            btnAbout.Name = "btnAbout";
+            btnAbout.Padding = new Padding(3, 0, 0, 0);
+            btnAbout.Size = new Size(24, 24);
+            btnAbout.TabIndex = 106;
+            btnAbout.Text = "\U0001f5a4";
+            btnAbout.TextColor = Color.White;
+            btnAbout.UseVisualStyleBackColor = false;
+            btnAbout.Click += BtnAbout_Click;
             // 
             // BitcoinCBC
             // 
@@ -2768,6 +2790,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(987, 956);
+            Controls.Add(btnAbout);
             Controls.Add(pictureBoxBTCLogo);
             Controls.Add(lblCurrentPrice);
             Controls.Add(btnPriceRefresh);
@@ -3034,5 +3057,6 @@
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
         private PictureBox pictureBoxBTCLogo;
+        private CustomControls.RJControls.RJButton btnAbout;
     }
 }
