@@ -264,10 +264,11 @@
             btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(948, 12);
+            btnExit.Location = new Point(1083, 16);
+            btnExit.Margin = new Padding(3, 4, 3, 4);
             btnExit.Name = "btnExit";
             btnExit.Padding = new Padding(3, 1, 0, 0);
-            btnExit.Size = new Size(24, 24);
+            btnExit.Size = new Size(27, 32);
             btnExit.TabIndex = 1;
             btnExit.Text = "✖️";
             btnExit.TextColor = Color.White;
@@ -285,10 +286,11 @@
             btnMinimize.FlatStyle = FlatStyle.Flat;
             btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnMinimize.ForeColor = Color.White;
-            btnMinimize.Location = new Point(919, 12);
+            btnMinimize.Location = new Point(1050, 16);
+            btnMinimize.Margin = new Padding(3, 4, 3, 4);
             btnMinimize.Name = "btnMinimize";
             btnMinimize.Padding = new Padding(2, 0, 0, 0);
-            btnMinimize.Size = new Size(24, 24);
+            btnMinimize.Size = new Size(27, 32);
             btnMinimize.TabIndex = 2;
             btnMinimize.Text = "➖";
             btnMinimize.TextColor = Color.White;
@@ -310,10 +312,11 @@
             comboBoxYearInput.Items.AddRange(new object[] { "2009" });
             comboBoxYearInput.ListBackColor = Color.FromArgb(255, 224, 192);
             comboBoxYearInput.ListTextColor = Color.DimGray;
-            comboBoxYearInput.Location = new Point(6, 1);
-            comboBoxYearInput.MinimumSize = new Size(40, 18);
+            comboBoxYearInput.Location = new Point(7, 1);
+            comboBoxYearInput.Margin = new Padding(3, 4, 3, 4);
+            comboBoxYearInput.MinimumSize = new Size(46, 24);
             comboBoxYearInput.Name = "comboBoxYearInput";
-            comboBoxYearInput.Size = new Size(84, 18);
+            comboBoxYearInput.Size = new Size(96, 24);
             comboBoxYearInput.TabIndex = 8;
             comboBoxYearInput.Texts = "Year";
             comboBoxYearInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
@@ -333,10 +336,11 @@
             comboBoxMonthInput.Items.AddRange(new object[] { "unknown", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
             comboBoxMonthInput.ListBackColor = Color.FromArgb(255, 224, 192);
             comboBoxMonthInput.ListTextColor = Color.DimGray;
-            comboBoxMonthInput.Location = new Point(6, 1);
-            comboBoxMonthInput.MinimumSize = new Size(40, 18);
+            comboBoxMonthInput.Location = new Point(7, 1);
+            comboBoxMonthInput.Margin = new Padding(3, 4, 3, 4);
+            comboBoxMonthInput.MinimumSize = new Size(46, 24);
             comboBoxMonthInput.Name = "comboBoxMonthInput";
-            comboBoxMonthInput.Size = new Size(84, 18);
+            comboBoxMonthInput.Size = new Size(96, 24);
             comboBoxMonthInput.TabIndex = 9;
             comboBoxMonthInput.Texts = "Month";
             comboBoxMonthInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
@@ -356,10 +360,11 @@
             comboBoxDayInput.Items.AddRange(new object[] { "unknown", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" });
             comboBoxDayInput.ListBackColor = Color.FromArgb(255, 224, 192);
             comboBoxDayInput.ListTextColor = Color.DimGray;
-            comboBoxDayInput.Location = new Point(6, 1);
-            comboBoxDayInput.MinimumSize = new Size(40, 18);
+            comboBoxDayInput.Location = new Point(7, 1);
+            comboBoxDayInput.Margin = new Padding(3, 4, 3, 4);
+            comboBoxDayInput.MinimumSize = new Size(46, 24);
             comboBoxDayInput.Name = "comboBoxDayInput";
-            comboBoxDayInput.Size = new Size(84, 18);
+            comboBoxDayInput.Size = new Size(96, 24);
             comboBoxDayInput.TabIndex = 10;
             comboBoxDayInput.Texts = "Day";
             comboBoxDayInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
@@ -370,9 +375,10 @@
             textBoxFiatInput.BorderStyle = BorderStyle.None;
             textBoxFiatInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxFiatInput.ForeColor = Color.LightSlateGray;
-            textBoxFiatInput.Location = new Point(6, 1);
+            textBoxFiatInput.Location = new Point(7, 1);
+            textBoxFiatInput.Margin = new Padding(3, 4, 3, 4);
             textBoxFiatInput.Name = "textBoxFiatInput";
-            textBoxFiatInput.Size = new Size(100, 18);
+            textBoxFiatInput.Size = new Size(114, 23);
             textBoxFiatInput.TabIndex = 13;
             textBoxFiatInput.TextChanged += TextBoxFiatInput_TextChanged;
             textBoxFiatInput.KeyPress += Numeric2DecimalsTextBoxValidation_KeyPress;
@@ -381,9 +387,9 @@
             // 
             lblFiatAmountSpentRecd.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblFiatAmountSpentRecd.ForeColor = Color.Gray;
-            lblFiatAmountSpentRecd.Location = new Point(9, 114);
+            lblFiatAmountSpentRecd.Location = new Point(10, 152);
             lblFiatAmountSpentRecd.Name = "lblFiatAmountSpentRecd";
-            lblFiatAmountSpentRecd.Size = new Size(103, 18);
+            lblFiatAmountSpentRecd.Size = new Size(118, 24);
             lblFiatAmountSpentRecd.TabIndex = 14;
             lblFiatAmountSpentRecd.Text = "Fiat spent";
             // 
@@ -391,9 +397,9 @@
             // 
             lblBitcoinAmountBoughtSold.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblBitcoinAmountBoughtSold.ForeColor = Color.Gray;
-            lblBitcoinAmountBoughtSold.Location = new Point(9, 138);
+            lblBitcoinAmountBoughtSold.Location = new Point(10, 184);
             lblBitcoinAmountBoughtSold.Name = "lblBitcoinAmountBoughtSold";
-            lblBitcoinAmountBoughtSold.Size = new Size(103, 18);
+            lblBitcoinAmountBoughtSold.Size = new Size(118, 24);
             lblBitcoinAmountBoughtSold.TabIndex = 16;
             lblBitcoinAmountBoughtSold.Text = "Bitcoin received";
             // 
@@ -403,9 +409,10 @@
             textBoxBTCInput.BorderStyle = BorderStyle.None;
             textBoxBTCInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxBTCInput.ForeColor = Color.LightSlateGray;
-            textBoxBTCInput.Location = new Point(6, 1);
+            textBoxBTCInput.Location = new Point(7, 1);
+            textBoxBTCInput.Margin = new Padding(3, 4, 3, 4);
             textBoxBTCInput.Name = "textBoxBTCInput";
-            textBoxBTCInput.Size = new Size(100, 18);
+            textBoxBTCInput.Size = new Size(114, 23);
             textBoxBTCInput.TabIndex = 15;
             textBoxBTCInput.TextChanged += TextBoxBTCInput_TextChanged;
             textBoxBTCInput.KeyPress += Numeric8DecimalsTextBoxValidation_KeyPress;
@@ -414,9 +421,9 @@
             // 
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label4.ForeColor = Color.Gray;
-            label4.Location = new Point(9, 66);
+            label4.Location = new Point(10, 88);
             label4.Name = "label4";
-            label4.Size = new Size(97, 18);
+            label4.Size = new Size(111, 24);
             label4.TabIndex = 18;
             label4.Text = "Date";
             // 
@@ -425,9 +432,9 @@
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label7.ForeColor = Color.Gray;
-            label7.Location = new Point(30, 37);
+            label7.Location = new Point(34, 49);
             label7.Name = "label7";
-            label7.Size = new Size(105, 18);
+            label7.Size = new Size(120, 24);
             label7.TabIndex = 21;
             label7.Text = "Received Bitcoin";
             // 
@@ -436,9 +443,9 @@
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label8.ForeColor = Color.Gray;
-            label8.Location = new Point(162, 37);
+            label8.Location = new Point(185, 49);
             label8.Name = "label8";
-            label8.Size = new Size(90, 18);
+            label8.Size = new Size(103, 24);
             label8.TabIndex = 22;
             label8.Text = "Spent Bitcoin";
             // 
@@ -447,18 +454,18 @@
             lblEstimatedPrice.BackColor = Color.Transparent;
             lblEstimatedPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblEstimatedPrice.ForeColor = Color.Gray;
-            lblEstimatedPrice.Location = new Point(338, 88);
+            lblEstimatedPrice.Location = new Point(386, 117);
             lblEstimatedPrice.Name = "lblEstimatedPrice";
-            lblEstimatedPrice.Size = new Size(170, 17);
+            lblEstimatedPrice.Size = new Size(194, 23);
             lblEstimatedPrice.TabIndex = 25;
             // 
             // label1
             // 
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label1.ForeColor = Color.Gray;
-            label1.Location = new Point(9, 90);
+            label1.Location = new Point(10, 120);
             label1.Name = "label1";
-            label1.Size = new Size(103, 18);
+            label1.Size = new Size(118, 24);
             label1.TabIndex = 27;
             label1.Text = "Price";
             // 
@@ -468,9 +475,10 @@
             textBoxPriceInput.BorderStyle = BorderStyle.None;
             textBoxPriceInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxPriceInput.ForeColor = Color.LightSlateGray;
-            textBoxPriceInput.Location = new Point(6, 1);
+            textBoxPriceInput.Location = new Point(7, 1);
+            textBoxPriceInput.Margin = new Padding(3, 4, 3, 4);
             textBoxPriceInput.Name = "textBoxPriceInput";
-            textBoxPriceInput.Size = new Size(100, 18);
+            textBoxPriceInput.Size = new Size(114, 23);
             textBoxPriceInput.TabIndex = 26;
             textBoxPriceInput.TextChanged += TextBoxPriceInput_TextChanged;
             textBoxPriceInput.KeyPress += Numeric2DecimalsTextBoxValidation_KeyPress;
@@ -480,9 +488,9 @@
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label2.ForeColor = Color.Gray;
-            label2.Location = new Point(259, 90);
+            label2.Location = new Point(296, 120);
             label2.Name = "label2";
-            label2.Size = new Size(83, 18);
+            label2.Size = new Size(95, 24);
             label2.TabIndex = 29;
             label2.Text = "use estimate";
             // 
@@ -490,54 +498,60 @@
             // 
             panel1.BackColor = Color.FromArgb(255, 224, 192);
             panel1.Controls.Add(comboBoxYearInput);
-            panel1.Location = new Point(118, 65);
+            panel1.Location = new Point(135, 87);
+            panel1.Margin = new Padding(3, 4, 3, 4);
             panel1.Name = "panel1";
-            panel1.Size = new Size(96, 19);
+            panel1.Size = new Size(110, 25);
             panel1.TabIndex = 30;
             // 
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(255, 224, 192);
             panel2.Controls.Add(comboBoxMonthInput);
-            panel2.Location = new Point(220, 65);
+            panel2.Location = new Point(251, 87);
+            panel2.Margin = new Padding(3, 4, 3, 4);
             panel2.Name = "panel2";
-            panel2.Size = new Size(96, 19);
+            panel2.Size = new Size(110, 25);
             panel2.TabIndex = 31;
             // 
             // panel3
             // 
             panel3.BackColor = Color.FromArgb(255, 224, 192);
             panel3.Controls.Add(comboBoxDayInput);
-            panel3.Location = new Point(322, 65);
+            panel3.Location = new Point(368, 87);
+            panel3.Margin = new Padding(3, 4, 3, 4);
             panel3.Name = "panel3";
-            panel3.Size = new Size(96, 19);
+            panel3.Size = new Size(110, 25);
             panel3.TabIndex = 32;
             // 
             // panel4
             // 
             panel4.BackColor = Color.FromArgb(255, 224, 192);
             panel4.Controls.Add(textBoxBTCInput);
-            panel4.Location = new Point(118, 138);
+            panel4.Location = new Point(135, 184);
+            panel4.Margin = new Padding(3, 4, 3, 4);
             panel4.Name = "panel4";
-            panel4.Size = new Size(112, 19);
+            panel4.Size = new Size(128, 25);
             panel4.TabIndex = 33;
             // 
             // panel5
             // 
             panel5.BackColor = Color.FromArgb(255, 224, 192);
             panel5.Controls.Add(textBoxFiatInput);
-            panel5.Location = new Point(118, 114);
+            panel5.Location = new Point(135, 152);
+            panel5.Margin = new Padding(3, 4, 3, 4);
             panel5.Name = "panel5";
-            panel5.Size = new Size(112, 19);
+            panel5.Size = new Size(128, 25);
             panel5.TabIndex = 34;
             // 
             // panel6
             // 
             panel6.BackColor = Color.FromArgb(255, 224, 192);
             panel6.Controls.Add(textBoxPriceInput);
-            panel6.Location = new Point(118, 90);
+            panel6.Location = new Point(135, 120);
+            panel6.Margin = new Padding(3, 4, 3, 4);
             panel6.Name = "panel6";
-            panel6.Size = new Size(112, 19);
+            panel6.Size = new Size(128, 25);
             panel6.TabIndex = 34;
             // 
             // btnUsePriceEstimateFlag
@@ -551,10 +565,11 @@
             btnUsePriceEstimateFlag.FlatStyle = FlatStyle.Flat;
             btnUsePriceEstimateFlag.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnUsePriceEstimateFlag.ForeColor = Color.LightSlateGray;
-            btnUsePriceEstimateFlag.Location = new Point(236, 88);
+            btnUsePriceEstimateFlag.Location = new Point(270, 117);
+            btnUsePriceEstimateFlag.Margin = new Padding(3, 4, 3, 4);
             btnUsePriceEstimateFlag.Name = "btnUsePriceEstimateFlag";
             btnUsePriceEstimateFlag.Padding = new Padding(1, 0, 0, 0);
-            btnUsePriceEstimateFlag.Size = new Size(22, 22);
+            btnUsePriceEstimateFlag.Size = new Size(25, 29);
             btnUsePriceEstimateFlag.TabIndex = 35;
             btnUsePriceEstimateFlag.Text = "✖️";
             btnUsePriceEstimateFlag.TextColor = Color.LightSlateGray;
@@ -572,10 +587,11 @@
             btnBoughtBitcoin.FlatStyle = FlatStyle.Flat;
             btnBoughtBitcoin.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnBoughtBitcoin.ForeColor = Color.LightSlateGray;
-            btnBoughtBitcoin.Location = new Point(9, 35);
+            btnBoughtBitcoin.Location = new Point(10, 47);
+            btnBoughtBitcoin.Margin = new Padding(3, 4, 3, 4);
             btnBoughtBitcoin.Name = "btnBoughtBitcoin";
             btnBoughtBitcoin.Padding = new Padding(1, 0, 0, 0);
-            btnBoughtBitcoin.Size = new Size(22, 22);
+            btnBoughtBitcoin.Size = new Size(25, 29);
             btnBoughtBitcoin.TabIndex = 36;
             btnBoughtBitcoin.Text = "✔️";
             btnBoughtBitcoin.TextColor = Color.LightSlateGray;
@@ -593,10 +609,11 @@
             btnSoldBitcoin.FlatStyle = FlatStyle.Flat;
             btnSoldBitcoin.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnSoldBitcoin.ForeColor = Color.LightSlateGray;
-            btnSoldBitcoin.Location = new Point(141, 35);
+            btnSoldBitcoin.Location = new Point(161, 47);
+            btnSoldBitcoin.Margin = new Padding(3, 4, 3, 4);
             btnSoldBitcoin.Name = "btnSoldBitcoin";
             btnSoldBitcoin.Padding = new Padding(1, 0, 0, 0);
-            btnSoldBitcoin.Size = new Size(22, 22);
+            btnSoldBitcoin.Size = new Size(25, 29);
             btnSoldBitcoin.TabIndex = 37;
             btnSoldBitcoin.Text = "✖️";
             btnSoldBitcoin.TextColor = Color.LightSlateGray;
@@ -622,9 +639,9 @@
             // 
             label3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label3.ForeColor = Color.Gray;
-            label3.Location = new Point(8, 0);
+            label3.Location = new Point(9, 0);
             label3.Name = "label3";
-            label3.Size = new Size(42, 18);
+            label3.Size = new Size(48, 24);
             label3.TabIndex = 39;
             label3.Text = "Year*";
             // 
@@ -632,9 +649,9 @@
             // 
             label5.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label5.ForeColor = Color.Gray;
-            label5.Location = new Point(48, 0);
+            label5.Location = new Point(55, 0);
             label5.Name = "label5";
-            label5.Size = new Size(38, 18);
+            label5.Size = new Size(43, 24);
             label5.TabIndex = 40;
             label5.Text = "Mon";
             // 
@@ -642,9 +659,9 @@
             // 
             label6.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label6.ForeColor = Color.Gray;
-            label6.Location = new Point(92, 0);
+            label6.Location = new Point(105, 0);
             label6.Name = "label6";
-            label6.Size = new Size(41, 18);
+            label6.Size = new Size(47, 24);
             label6.TabIndex = 41;
             label6.Text = "Day";
             // 
@@ -652,9 +669,9 @@
             // 
             label9.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label9.ForeColor = Color.Gray;
-            label9.Location = new Point(132, 0);
+            label9.Location = new Point(151, 0);
             label9.Name = "label9";
-            label9.Size = new Size(41, 18);
+            label9.Size = new Size(47, 24);
             label9.TabIndex = 42;
             label9.Text = "Price*";
             // 
@@ -662,9 +679,9 @@
             // 
             label10.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label10.ForeColor = Color.Gray;
-            label10.Location = new Point(268, 0);
+            label10.Location = new Point(306, 0);
             label10.Name = "label10";
-            label10.Size = new Size(35, 18);
+            label10.Size = new Size(40, 24);
             label10.TabIndex = 43;
             label10.Text = "+/-";
             // 
@@ -672,9 +689,9 @@
             // 
             label11.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label11.ForeColor = Color.Gray;
-            label11.Location = new Point(328, 0);
+            label11.Location = new Point(375, 0);
             label11.Name = "label11";
-            label11.Size = new Size(35, 18);
+            label11.Size = new Size(40, 24);
             label11.TabIndex = 44;
             label11.Text = "Fiat*";
             // 
@@ -682,9 +699,9 @@
             // 
             label12.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label12.ForeColor = Color.Gray;
-            label12.Location = new Point(411, 0);
+            label12.Location = new Point(470, 0);
             label12.Name = "label12";
-            label12.Size = new Size(39, 18);
+            label12.Size = new Size(45, 24);
             label12.TabIndex = 45;
             label12.Text = "Est.";
             // 
@@ -692,9 +709,9 @@
             // 
             label13.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label13.ForeColor = Color.Gray;
-            label13.Location = new Point(456, 0);
+            label13.Location = new Point(521, 0);
             label13.Name = "label13";
-            label13.Size = new Size(76, 18);
+            label13.Size = new Size(87, 24);
             label13.TabIndex = 46;
             label13.Text = "BTC*";
             // 
@@ -702,9 +719,9 @@
             // 
             label14.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label14.ForeColor = Color.Gray;
-            label14.Location = new Point(556, 0);
+            label14.Location = new Point(635, 0);
             label14.Name = "label14";
-            label14.Size = new Size(42, 18);
+            label14.Size = new Size(48, 24);
             label14.TabIndex = 47;
             label14.Text = "Est.";
             // 
@@ -712,9 +729,9 @@
             // 
             lblAddDataBTCEstimateFlag.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataBTCEstimateFlag.ForeColor = Color.Gray;
-            lblAddDataBTCEstimateFlag.Location = new Point(556, 18);
+            lblAddDataBTCEstimateFlag.Location = new Point(635, 24);
             lblAddDataBTCEstimateFlag.Name = "lblAddDataBTCEstimateFlag";
-            lblAddDataBTCEstimateFlag.Size = new Size(27, 18);
+            lblAddDataBTCEstimateFlag.Size = new Size(31, 24);
             lblAddDataBTCEstimateFlag.TabIndex = 58;
             lblAddDataBTCEstimateFlag.Text = "N";
             lblAddDataBTCEstimateFlag.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -723,9 +740,9 @@
             // 
             lblAddDataBTC.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataBTC.ForeColor = Color.Gray;
-            lblAddDataBTC.Location = new Point(456, 18);
+            lblAddDataBTC.Location = new Point(521, 24);
             lblAddDataBTC.Name = "lblAddDataBTC";
-            lblAddDataBTC.Size = new Size(100, 18);
+            lblAddDataBTC.Size = new Size(114, 24);
             lblAddDataBTC.TabIndex = 57;
             lblAddDataBTC.Text = "-";
             lblAddDataBTC.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -734,9 +751,9 @@
             // 
             lblAddDataFiatEstimateFlag.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataFiatEstimateFlag.ForeColor = Color.Gray;
-            lblAddDataFiatEstimateFlag.Location = new Point(411, 18);
+            lblAddDataFiatEstimateFlag.Location = new Point(470, 24);
             lblAddDataFiatEstimateFlag.Name = "lblAddDataFiatEstimateFlag";
-            lblAddDataFiatEstimateFlag.Size = new Size(27, 18);
+            lblAddDataFiatEstimateFlag.Size = new Size(31, 24);
             lblAddDataFiatEstimateFlag.TabIndex = 56;
             lblAddDataFiatEstimateFlag.Text = "N";
             lblAddDataFiatEstimateFlag.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -745,9 +762,9 @@
             // 
             lblAddDataFiat.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataFiat.ForeColor = Color.Gray;
-            lblAddDataFiat.Location = new Point(328, 18);
+            lblAddDataFiat.Location = new Point(375, 24);
             lblAddDataFiat.Name = "lblAddDataFiat";
-            lblAddDataFiat.Size = new Size(82, 18);
+            lblAddDataFiat.Size = new Size(94, 24);
             lblAddDataFiat.TabIndex = 55;
             lblAddDataFiat.Text = "-";
             lblAddDataFiat.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -756,9 +773,9 @@
             // 
             lblAddDataRange.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataRange.ForeColor = Color.Gray;
-            lblAddDataRange.Location = new Point(268, 18);
+            lblAddDataRange.Location = new Point(306, 24);
             lblAddDataRange.Name = "lblAddDataRange";
-            lblAddDataRange.Size = new Size(59, 18);
+            lblAddDataRange.Size = new Size(67, 24);
             lblAddDataRange.TabIndex = 54;
             lblAddDataRange.Text = "0%";
             lblAddDataRange.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -767,9 +784,9 @@
             // 
             lblAddDataPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataPrice.ForeColor = Color.Gray;
-            lblAddDataPrice.Location = new Point(132, 18);
+            lblAddDataPrice.Location = new Point(151, 24);
             lblAddDataPrice.Name = "lblAddDataPrice";
-            lblAddDataPrice.Size = new Size(91, 18);
+            lblAddDataPrice.Size = new Size(104, 24);
             lblAddDataPrice.TabIndex = 53;
             lblAddDataPrice.Text = "-";
             lblAddDataPrice.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -778,9 +795,9 @@
             // 
             lblAddDataDay.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataDay.ForeColor = Color.Gray;
-            lblAddDataDay.Location = new Point(92, 18);
+            lblAddDataDay.Location = new Point(105, 24);
             lblAddDataDay.Name = "lblAddDataDay";
-            lblAddDataDay.Size = new Size(41, 18);
+            lblAddDataDay.Size = new Size(47, 24);
             lblAddDataDay.TabIndex = 52;
             lblAddDataDay.Text = "-";
             lblAddDataDay.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -789,9 +806,9 @@
             // 
             lblAddDataMonth.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataMonth.ForeColor = Color.Gray;
-            lblAddDataMonth.Location = new Point(48, 18);
+            lblAddDataMonth.Location = new Point(55, 24);
             lblAddDataMonth.Name = "lblAddDataMonth";
-            lblAddDataMonth.Size = new Size(41, 18);
+            lblAddDataMonth.Size = new Size(47, 24);
             lblAddDataMonth.TabIndex = 51;
             lblAddDataMonth.Text = "-";
             lblAddDataMonth.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -800,9 +817,9 @@
             // 
             lblAddDataYear.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataYear.ForeColor = Color.Gray;
-            lblAddDataYear.Location = new Point(8, 18);
+            lblAddDataYear.Location = new Point(9, 24);
             lblAddDataYear.Name = "lblAddDataYear";
-            lblAddDataYear.Size = new Size(42, 18);
+            lblAddDataYear.Size = new Size(48, 24);
             lblAddDataYear.TabIndex = 50;
             lblAddDataYear.Text = "-";
             lblAddDataYear.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -818,10 +835,11 @@
             btnUseFiatEstimateFlag.FlatStyle = FlatStyle.Flat;
             btnUseFiatEstimateFlag.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnUseFiatEstimateFlag.ForeColor = Color.LightSlateGray;
-            btnUseFiatEstimateFlag.Location = new Point(236, 113);
+            btnUseFiatEstimateFlag.Location = new Point(270, 151);
+            btnUseFiatEstimateFlag.Margin = new Padding(3, 4, 3, 4);
             btnUseFiatEstimateFlag.Name = "btnUseFiatEstimateFlag";
             btnUseFiatEstimateFlag.Padding = new Padding(1, 0, 0, 0);
-            btnUseFiatEstimateFlag.Size = new Size(22, 22);
+            btnUseFiatEstimateFlag.Size = new Size(25, 29);
             btnUseFiatEstimateFlag.TabIndex = 63;
             btnUseFiatEstimateFlag.Text = "✖️";
             btnUseFiatEstimateFlag.TextColor = Color.LightSlateGray;
@@ -833,9 +851,9 @@
             label17.BackColor = Color.Transparent;
             label17.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label17.ForeColor = Color.Gray;
-            label17.Location = new Point(259, 115);
+            label17.Location = new Point(296, 153);
             label17.Name = "label17";
-            label17.Size = new Size(83, 18);
+            label17.Size = new Size(95, 24);
             label17.TabIndex = 62;
             label17.Text = "use estimate";
             // 
@@ -844,9 +862,9 @@
             lblEstimatedFiat.BackColor = Color.Transparent;
             lblEstimatedFiat.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblEstimatedFiat.ForeColor = Color.Gray;
-            lblEstimatedFiat.Location = new Point(338, 113);
+            lblEstimatedFiat.Location = new Point(386, 151);
             lblEstimatedFiat.Name = "lblEstimatedFiat";
-            lblEstimatedFiat.Size = new Size(131, 17);
+            lblEstimatedFiat.Size = new Size(150, 23);
             lblEstimatedFiat.TabIndex = 61;
             // 
             // btnUseBTCEstimateFlag
@@ -860,10 +878,11 @@
             btnUseBTCEstimateFlag.FlatStyle = FlatStyle.Flat;
             btnUseBTCEstimateFlag.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnUseBTCEstimateFlag.ForeColor = Color.LightSlateGray;
-            btnUseBTCEstimateFlag.Location = new Point(236, 137);
+            btnUseBTCEstimateFlag.Location = new Point(270, 183);
+            btnUseBTCEstimateFlag.Margin = new Padding(3, 4, 3, 4);
             btnUseBTCEstimateFlag.Name = "btnUseBTCEstimateFlag";
             btnUseBTCEstimateFlag.Padding = new Padding(1, 0, 0, 0);
-            btnUseBTCEstimateFlag.Size = new Size(22, 22);
+            btnUseBTCEstimateFlag.Size = new Size(25, 29);
             btnUseBTCEstimateFlag.TabIndex = 66;
             btnUseBTCEstimateFlag.Text = "✖️";
             btnUseBTCEstimateFlag.TextColor = Color.LightSlateGray;
@@ -875,9 +894,9 @@
             label19.BackColor = Color.Transparent;
             label19.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label19.ForeColor = Color.Gray;
-            label19.Location = new Point(259, 139);
+            label19.Location = new Point(296, 185);
             label19.Name = "label19";
-            label19.Size = new Size(83, 18);
+            label19.Size = new Size(95, 24);
             label19.TabIndex = 65;
             label19.Text = "use estimate";
             // 
@@ -886,18 +905,18 @@
             lblEstimatedBTC.BackColor = Color.Transparent;
             lblEstimatedBTC.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblEstimatedBTC.ForeColor = Color.Gray;
-            lblEstimatedBTC.Location = new Point(338, 137);
+            lblEstimatedBTC.Location = new Point(386, 183);
             lblEstimatedBTC.Name = "lblEstimatedBTC";
-            lblEstimatedBTC.Size = new Size(131, 17);
+            lblEstimatedBTC.Size = new Size(150, 23);
             lblEstimatedBTC.TabIndex = 64;
             // 
             // label18
             // 
             label18.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label18.ForeColor = Color.Gray;
-            label18.Location = new Point(9, 162);
+            label18.Location = new Point(10, 216);
             label18.Name = "label18";
-            label18.Size = new Size(53, 18);
+            label18.Size = new Size(61, 24);
             label18.TabIndex = 34;
             label18.Text = "Label";
             // 
@@ -907,10 +926,11 @@
             textBoxLabelInput.BorderStyle = BorderStyle.None;
             textBoxLabelInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxLabelInput.ForeColor = Color.LightSlateGray;
-            textBoxLabelInput.Location = new Point(6, 1);
+            textBoxLabelInput.Location = new Point(7, 1);
+            textBoxLabelInput.Margin = new Padding(3, 4, 3, 4);
             textBoxLabelInput.MaxLength = 100;
             textBoxLabelInput.Name = "textBoxLabelInput";
-            textBoxLabelInput.Size = new Size(100, 18);
+            textBoxLabelInput.Size = new Size(114, 23);
             textBoxLabelInput.TabIndex = 15;
             textBoxLabelInput.TextChanged += TextBoxLabelInput_TextChanged;
             // 
@@ -918,9 +938,10 @@
             // 
             panel7.BackColor = Color.FromArgb(255, 224, 192);
             panel7.Controls.Add(textBoxLabelInput);
-            panel7.Location = new Point(118, 162);
+            panel7.Location = new Point(135, 216);
+            panel7.Margin = new Padding(3, 4, 3, 4);
             panel7.Name = "panel7";
-            panel7.Size = new Size(112, 19);
+            panel7.Size = new Size(128, 25);
             panel7.TabIndex = 35;
             // 
             // lblAddDataLabel
@@ -928,9 +949,9 @@
             lblAddDataLabel.AutoEllipsis = true;
             lblAddDataLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataLabel.ForeColor = Color.Gray;
-            lblAddDataLabel.Location = new Point(589, 18);
+            lblAddDataLabel.Location = new Point(673, 24);
             lblAddDataLabel.Name = "lblAddDataLabel";
-            lblAddDataLabel.Size = new Size(67, 18);
+            lblAddDataLabel.Size = new Size(77, 24);
             lblAddDataLabel.TabIndex = 69;
             lblAddDataLabel.Text = "-";
             lblAddDataLabel.TextChanged += CheckConditionsToEnableAddButton_TextChanged;
@@ -939,9 +960,9 @@
             // 
             label21.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label21.ForeColor = Color.Gray;
-            label21.Location = new Point(589, 0);
+            label21.Location = new Point(673, 0);
             label21.Name = "label21";
-            label21.Size = new Size(45, 18);
+            label21.Size = new Size(51, 24);
             label21.TabIndex = 68;
             label21.Text = "Label";
             // 
@@ -970,18 +991,19 @@
             panel8.Controls.Add(lblAddDataBTC);
             panel8.Controls.Add(lblAddDataFiat);
             panel8.Controls.Add(lblAddDataFiatEstimateFlag);
-            panel8.Location = new Point(7, 191);
+            panel8.Location = new Point(8, 255);
+            panel8.Margin = new Padding(3, 4, 3, 4);
             panel8.Name = "panel8";
-            panel8.Size = new Size(659, 41);
+            panel8.Size = new Size(753, 55);
             panel8.TabIndex = 70;
             // 
             // label15
             // 
             label15.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label15.ForeColor = Color.Gray;
-            label15.Location = new Point(223, 0);
+            label15.Location = new Point(255, 0);
             label15.Name = "label15";
-            label15.Size = new Size(39, 18);
+            label15.Size = new Size(45, 24);
             label15.TabIndex = 70;
             label15.Text = "Est.";
             // 
@@ -989,9 +1011,9 @@
             // 
             lblAddDataPriceEstimateType.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblAddDataPriceEstimateType.ForeColor = Color.Gray;
-            lblAddDataPriceEstimateType.Location = new Point(223, 18);
+            lblAddDataPriceEstimateType.Location = new Point(255, 24);
             lblAddDataPriceEstimateType.Name = "lblAddDataPriceEstimateType";
-            lblAddDataPriceEstimateType.Size = new Size(39, 18);
+            lblAddDataPriceEstimateType.Size = new Size(45, 24);
             lblAddDataPriceEstimateType.TabIndex = 71;
             lblAddDataPriceEstimateType.Text = "N";
             // 
@@ -1007,10 +1029,11 @@
             btnAddTransaction.FlatStyle = FlatStyle.Flat;
             btnAddTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnAddTransaction.ForeColor = Color.FromArgb(255, 128, 0);
-            btnAddTransaction.Location = new Point(550, 30);
+            btnAddTransaction.Location = new Point(629, 40);
+            btnAddTransaction.Margin = new Padding(3, 4, 3, 4);
             btnAddTransaction.Name = "btnAddTransaction";
             btnAddTransaction.Padding = new Padding(1, 0, 0, 0);
-            btnAddTransaction.Size = new Size(116, 24);
+            btnAddTransaction.Size = new Size(133, 32);
             btnAddTransaction.TabIndex = 71;
             btnAddTransaction.Text = "Add transaction";
             btnAddTransaction.TextColor = Color.FromArgb(255, 128, 0);
@@ -1028,10 +1051,11 @@
             btnClearInput.FlatStyle = FlatStyle.Flat;
             btnClearInput.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnClearInput.ForeColor = Color.FromArgb(255, 128, 0);
-            btnClearInput.Location = new Point(550, 62);
+            btnClearInput.Location = new Point(629, 83);
+            btnClearInput.Margin = new Padding(3, 4, 3, 4);
             btnClearInput.Name = "btnClearInput";
             btnClearInput.Padding = new Padding(1, 0, 0, 0);
-            btnClearInput.Size = new Size(116, 24);
+            btnClearInput.Size = new Size(133, 32);
             btnClearInput.TabIndex = 72;
             btnClearInput.Text = "Clear";
             btnClearInput.TextColor = Color.FromArgb(255, 128, 0);
@@ -1043,9 +1067,10 @@
             panel9.BackColor = Color.FromArgb(255, 224, 192);
             panel9.Controls.Add(panelAddTransaction);
             panel9.Controls.Add(panelHelpAddTransaction);
-            panel9.Location = new Point(12, 699);
+            panel9.Location = new Point(14, 932);
+            panel9.Margin = new Padding(3, 4, 3, 4);
             panel9.Name = "panel9";
-            panel9.Size = new Size(675, 241);
+            panel9.Size = new Size(771, 321);
             panel9.TabIndex = 73;
             // 
             // panelAddTransaction
@@ -1083,8 +1108,9 @@
             panelAddTransaction.Controls.Add(btnBoughtBitcoin);
             panelAddTransaction.ForeColor = Color.White;
             panelAddTransaction.Location = new Point(1, 1);
+            panelAddTransaction.Margin = new Padding(3, 4, 3, 4);
             panelAddTransaction.Name = "panelAddTransaction";
-            panelAddTransaction.Size = new Size(673, 239);
+            panelAddTransaction.Size = new Size(769, 319);
             panelAddTransaction.TabIndex = 74;
             // 
             // panel15
@@ -1094,8 +1120,9 @@
             panel15.Controls.Add(label53);
             panel15.ForeColor = Color.Black;
             panel15.Location = new Point(0, 0);
+            panel15.Margin = new Padding(3, 4, 3, 4);
             panel15.Name = "panel15";
-            panel15.Size = new Size(674, 25);
+            panel15.Size = new Size(770, 33);
             panel15.TabIndex = 78;
             // 
             // btnHelpAddTransaction
@@ -1109,10 +1136,11 @@
             btnHelpAddTransaction.FlatStyle = FlatStyle.Flat;
             btnHelpAddTransaction.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnHelpAddTransaction.ForeColor = Color.White;
-            btnHelpAddTransaction.Location = new Point(648, 0);
+            btnHelpAddTransaction.Location = new Point(741, 0);
+            btnHelpAddTransaction.Margin = new Padding(3, 4, 3, 4);
             btnHelpAddTransaction.Name = "btnHelpAddTransaction";
             btnHelpAddTransaction.Padding = new Padding(2, 0, 0, 0);
-            btnHelpAddTransaction.Size = new Size(24, 24);
+            btnHelpAddTransaction.Size = new Size(27, 32);
             btnHelpAddTransaction.TabIndex = 88;
             btnHelpAddTransaction.Text = "❔";
             btnHelpAddTransaction.TextColor = Color.White;
@@ -1127,8 +1155,8 @@
             label53.ForeColor = Color.LightSlateGray;
             label53.Location = new Point(2, 0);
             label53.Name = "label53";
-            label53.Padding = new Padding(0, 2, 0, 0);
-            label53.Size = new Size(127, 19);
+            label53.Padding = new Padding(0, 3, 0, 0);
+            label53.Size = new Size(167, 26);
             label53.TabIndex = 0;
             label53.Text = "Add new transaction";
             // 
@@ -1139,9 +1167,9 @@
             lblDisabledAddButtonText.Enabled = false;
             lblDisabledAddButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDisabledAddButtonText.ForeColor = Color.Gray;
-            lblDisabledAddButtonText.Location = new Point(558, 34);
+            lblDisabledAddButtonText.Location = new Point(638, 45);
             lblDisabledAddButtonText.Name = "lblDisabledAddButtonText";
-            lblDisabledAddButtonText.Size = new Size(100, 17);
+            lblDisabledAddButtonText.Size = new Size(131, 23);
             lblDisabledAddButtonText.TabIndex = 74;
             lblDisabledAddButtonText.Text = "Add transaction";
             // 
@@ -1150,8 +1178,9 @@
             panelHelpAddTransaction.BackColor = Color.FromArgb(255, 224, 192);
             panelHelpAddTransaction.Controls.Add(panel19);
             panelHelpAddTransaction.Location = new Point(0, 0);
+            panelHelpAddTransaction.Margin = new Padding(3, 4, 3, 4);
             panelHelpAddTransaction.Name = "panelHelpAddTransaction";
-            panelHelpAddTransaction.Size = new Size(673, 241);
+            panelHelpAddTransaction.Size = new Size(769, 321);
             panelHelpAddTransaction.TabIndex = 75;
             // 
             // panel19
@@ -1161,16 +1190,17 @@
             panel19.Controls.Add(panel20);
             panel19.ForeColor = Color.White;
             panel19.Location = new Point(1, 1);
+            panel19.Margin = new Padding(3, 4, 3, 4);
             panel19.Name = "panel19";
-            panel19.Size = new Size(673, 239);
+            panel19.Size = new Size(769, 319);
             panel19.TabIndex = 74;
             // 
             // lblHelpAddTransactionText
             // 
             lblHelpAddTransactionText.ForeColor = Color.DarkGray;
-            lblHelpAddTransactionText.Location = new Point(6, 30);
+            lblHelpAddTransactionText.Location = new Point(7, 40);
             lblHelpAddTransactionText.Name = "lblHelpAddTransactionText";
-            lblHelpAddTransactionText.Size = new Size(657, 197);
+            lblHelpAddTransactionText.Size = new Size(751, 263);
             lblHelpAddTransactionText.TabIndex = 87;
             lblHelpAddTransactionText.Text = "Line 1\\r\\nLine 2";
             // 
@@ -1181,8 +1211,9 @@
             panel20.Controls.Add(label42);
             panel20.ForeColor = Color.Black;
             panel20.Location = new Point(0, 0);
+            panel20.Margin = new Padding(3, 4, 3, 4);
             panel20.Name = "panel20";
-            panel20.Size = new Size(674, 25);
+            panel20.Size = new Size(770, 33);
             panel20.TabIndex = 78;
             // 
             // btnCloseHelpAddTransaction
@@ -1196,10 +1227,11 @@
             btnCloseHelpAddTransaction.FlatStyle = FlatStyle.Flat;
             btnCloseHelpAddTransaction.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnCloseHelpAddTransaction.ForeColor = Color.White;
-            btnCloseHelpAddTransaction.Location = new Point(648, 0);
+            btnCloseHelpAddTransaction.Location = new Point(741, 0);
+            btnCloseHelpAddTransaction.Margin = new Padding(3, 4, 3, 4);
             btnCloseHelpAddTransaction.Name = "btnCloseHelpAddTransaction";
             btnCloseHelpAddTransaction.Padding = new Padding(2, 0, 0, 0);
-            btnCloseHelpAddTransaction.Size = new Size(24, 24);
+            btnCloseHelpAddTransaction.Size = new Size(27, 32);
             btnCloseHelpAddTransaction.TabIndex = 88;
             btnCloseHelpAddTransaction.Text = "✖️";
             btnCloseHelpAddTransaction.TextColor = Color.White;
@@ -1214,8 +1246,8 @@
             label42.ForeColor = Color.LightSlateGray;
             label42.Location = new Point(2, 0);
             label42.Name = "label42";
-            label42.Padding = new Padding(0, 2, 0, 0);
-            label42.Size = new Size(164, 19);
+            label42.Padding = new Padding(0, 3, 0, 0);
+            label42.Size = new Size(215, 26);
             label42.TabIndex = 0;
             label42.Text = "Add new transaction (help)";
             // 
@@ -1224,9 +1256,9 @@
             lblCurrentPrice.AutoSize = true;
             lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblCurrentPrice.ForeColor = Color.DarkGray;
-            lblCurrentPrice.Location = new Point(764, 14);
+            lblCurrentPrice.Location = new Point(873, 19);
             lblCurrentPrice.Name = "lblCurrentPrice";
-            lblCurrentPrice.Size = new Size(86, 17);
+            lblCurrentPrice.Size = new Size(113, 23);
             lblCurrentPrice.TabIndex = 74;
             lblCurrentPrice.Text = "current price";
             // 
@@ -1243,10 +1275,11 @@
             btnPriceRefresh.FlatStyle = FlatStyle.Flat;
             btnPriceRefresh.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
             btnPriceRefresh.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceRefresh.Location = new Point(859, 12);
+            btnPriceRefresh.Location = new Point(982, 16);
+            btnPriceRefresh.Margin = new Padding(3, 4, 3, 4);
             btnPriceRefresh.Name = "btnPriceRefresh";
             btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
-            btnPriceRefresh.Size = new Size(24, 23);
+            btnPriceRefresh.Size = new Size(27, 31);
             btnPriceRefresh.TabIndex = 75;
             btnPriceRefresh.TextAlign = ContentAlignment.TopCenter;
             btnPriceRefresh.TextColor = Color.FromArgb(255, 128, 0);
@@ -1264,12 +1297,13 @@
             listViewTransactions.HeaderStyle = ColumnHeaderStyle.None;
             listViewTransactions.LabelWrap = false;
             listViewTransactions.Location = new Point(0, 0);
+            listViewTransactions.Margin = new Padding(3, 4, 3, 4);
             listViewTransactions.MultiSelect = false;
             listViewTransactions.Name = "listViewTransactions";
             listViewTransactions.OwnerDraw = true;
             listViewTransactions.Scrollable = false;
             listViewTransactions.ShowGroups = false;
-            listViewTransactions.Size = new Size(940, 113);
+            listViewTransactions.Size = new Size(1074, 151);
             listViewTransactions.TabIndex = 76;
             listViewTransactions.UseCompatibleStateImageBehavior = false;
             listViewTransactions.View = View.Details;
@@ -1287,10 +1321,11 @@
             btnTransactionsListUp.FlatStyle = FlatStyle.Flat;
             btnTransactionsListUp.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnTransactionsListUp.ForeColor = Color.FromArgb(255, 128, 0);
-            btnTransactionsListUp.Location = new Point(2, 24);
+            btnTransactionsListUp.Location = new Point(2, 32);
+            btnTransactionsListUp.Margin = new Padding(3, 4, 3, 4);
             btnTransactionsListUp.Name = "btnTransactionsListUp";
             btnTransactionsListUp.Padding = new Padding(1, 0, 0, 0);
-            btnTransactionsListUp.Size = new Size(24, 24);
+            btnTransactionsListUp.Size = new Size(27, 32);
             btnTransactionsListUp.TabIndex = 75;
             btnTransactionsListUp.Text = "▲";
             btnTransactionsListUp.TextColor = Color.FromArgb(255, 128, 0);
@@ -1310,10 +1345,11 @@
             btnTransactionsListDown.FlatStyle = FlatStyle.Flat;
             btnTransactionsListDown.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnTransactionsListDown.ForeColor = Color.FromArgb(255, 128, 0);
-            btnTransactionsListDown.Location = new Point(2, 112);
+            btnTransactionsListDown.Location = new Point(2, 149);
+            btnTransactionsListDown.Margin = new Padding(3, 4, 3, 4);
             btnTransactionsListDown.Name = "btnTransactionsListDown";
             btnTransactionsListDown.Padding = new Padding(1, 0, 0, 0);
-            btnTransactionsListDown.Size = new Size(24, 24);
+            btnTransactionsListDown.Size = new Size(27, 32);
             btnTransactionsListDown.TabIndex = 78;
             btnTransactionsListDown.Text = "▼";
             btnTransactionsListDown.TextColor = Color.FromArgb(255, 128, 0);
@@ -1328,9 +1364,10 @@
             panel13.Controls.Add(panelTransactionsContainer);
             panel13.Controls.Add(panel11);
             panel13.Controls.Add(panelTXListFooter);
-            panel13.Location = new Point(12, 510);
+            panel13.Location = new Point(14, 680);
+            panel13.Margin = new Padding(3, 4, 3, 4);
             panel13.Name = "panel13";
-            panel13.Size = new Size(960, 170);
+            panel13.Size = new Size(1097, 227);
             panel13.TabIndex = 81;
             // 
             // panelTransactionsContainer
@@ -1340,9 +1377,10 @@
             panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions;
             panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Stretch;
             panelTransactionsContainer.Controls.Add(listViewTransactions);
-            panelTransactionsContainer.Location = new Point(1, 25);
+            panelTransactionsContainer.Location = new Point(1, 33);
+            panelTransactionsContainer.Margin = new Padding(3, 4, 3, 4);
             panelTransactionsContainer.Name = "panelTransactionsContainer";
-            panelTransactionsContainer.Size = new Size(958, 113);
+            panelTransactionsContainer.Size = new Size(1095, 151);
             panelTransactionsContainer.TabIndex = 0;
             // 
             // panel11
@@ -1366,8 +1404,9 @@
             panel11.Controls.Add(label16);
             panel11.ForeColor = Color.Black;
             panel11.Location = new Point(0, 0);
+            panel11.Margin = new Padding(3, 4, 3, 4);
             panel11.Name = "panel11";
-            panel11.Size = new Size(959, 25);
+            panel11.Size = new Size(1096, 33);
             panel11.TabIndex = 77;
             // 
             // label51
@@ -1378,8 +1417,8 @@
             label51.ForeColor = Color.LightSlateGray;
             label51.Location = new Point(2, 0);
             label51.Name = "label51";
-            label51.Padding = new Padding(0, 2, 0, 0);
-            label51.Size = new Size(23, 19);
+            label51.Padding = new Padding(0, 3, 0, 0);
+            label51.Size = new Size(29, 26);
             label51.TabIndex = 15;
             label51.Text = "TX";
             // 
@@ -1389,10 +1428,10 @@
             label34.BackColor = Color.Transparent;
             label34.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label34.ForeColor = Color.LightSlateGray;
-            label34.Location = new Point(840, 0);
+            label34.Location = new Point(960, 0);
             label34.Name = "label34";
-            label34.Padding = new Padding(0, 2, 0, 0);
-            label34.Size = new Size(39, 19);
+            label34.Padding = new Padding(0, 3, 0, 0);
+            label34.Size = new Size(50, 26);
             label34.TabIndex = 14;
             label34.Text = "Label";
             // 
@@ -1402,10 +1441,10 @@
             label33.BackColor = Color.Transparent;
             label33.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label33.ForeColor = Color.LightSlateGray;
-            label33.Location = new Point(745, 0);
+            label33.Location = new Point(851, 0);
             label33.Name = "label33";
-            label33.Padding = new Padding(0, 2, 0, 0);
-            label33.Size = new Size(68, 19);
+            label33.Padding = new Padding(0, 3, 0, 0);
+            label33.Size = new Size(86, 26);
             label33.TabIndex = 13;
             label33.Text = "Cost basis";
             // 
@@ -1415,10 +1454,10 @@
             label32.BackColor = Color.Transparent;
             label32.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label32.ForeColor = Color.LightSlateGray;
-            label32.Location = new Point(670, 0);
+            label32.Location = new Point(766, 0);
             label32.Name = "label32";
-            label32.Padding = new Padding(0, 2, 0, 0);
-            label32.Size = new Size(41, 19);
+            label32.Padding = new Padding(0, 3, 0, 0);
+            label32.Size = new Size(54, 26);
             label32.TabIndex = 12;
             label32.Text = "P/L %";
             // 
@@ -1428,10 +1467,10 @@
             label31.BackColor = Color.Transparent;
             label31.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label31.ForeColor = Color.LightSlateGray;
-            label31.Location = new Point(575, 0);
+            label31.Location = new Point(657, 0);
             label31.Name = "label31";
-            label31.Padding = new Padding(0, 2, 0, 0);
-            label31.Size = new Size(26, 19);
+            label31.Padding = new Padding(0, 3, 0, 0);
+            label31.Size = new Size(35, 26);
             label31.TabIndex = 11;
             label31.Text = "P/L";
             // 
@@ -1441,10 +1480,10 @@
             label30.BackColor = Color.Transparent;
             label30.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label30.ForeColor = Color.LightSlateGray;
-            label30.Location = new Point(545, 0);
+            label30.Location = new Point(623, 0);
             label30.Name = "label30";
-            label30.Padding = new Padding(0, 2, 0, 0);
-            label30.Size = new Size(30, 19);
+            label30.Padding = new Padding(0, 3, 0, 0);
+            label30.Size = new Size(40, 26);
             label30.TabIndex = 10;
             label30.Text = "▲▼";
             // 
@@ -1454,10 +1493,10 @@
             label29.BackColor = Color.Transparent;
             label29.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label29.ForeColor = Color.LightSlateGray;
-            label29.Location = new Point(515, 0);
+            label29.Location = new Point(589, 0);
             label29.Name = "label29";
-            label29.Padding = new Padding(0, 2, 0, 0);
-            label29.Size = new Size(28, 19);
+            label29.Padding = new Padding(0, 3, 0, 0);
+            label29.Size = new Size(36, 26);
             label29.TabIndex = 9;
             label29.Text = "Est.";
             // 
@@ -1467,10 +1506,10 @@
             label28.BackColor = Color.Transparent;
             label28.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label28.ForeColor = Color.LightSlateGray;
-            label28.Location = new Point(420, 0);
+            label28.Location = new Point(480, 0);
             label28.Name = "label28";
-            label28.Padding = new Padding(0, 2, 0, 0);
-            label28.Size = new Size(28, 19);
+            label28.Padding = new Padding(0, 3, 0, 0);
+            label28.Size = new Size(38, 26);
             label28.TabIndex = 8;
             label28.Text = "BTC";
             // 
@@ -1480,10 +1519,10 @@
             label27.BackColor = Color.Transparent;
             label27.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label27.ForeColor = Color.LightSlateGray;
-            label27.Location = new Point(390, 0);
+            label27.Location = new Point(446, 0);
             label27.Name = "label27";
-            label27.Padding = new Padding(0, 2, 0, 0);
-            label27.Size = new Size(28, 19);
+            label27.Padding = new Padding(0, 3, 0, 0);
+            label27.Size = new Size(36, 26);
             label27.TabIndex = 7;
             label27.Text = "Est.";
             // 
@@ -1493,10 +1532,10 @@
             label26.BackColor = Color.Transparent;
             label26.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label26.ForeColor = Color.LightSlateGray;
-            label26.Location = new Point(295, 0);
+            label26.Location = new Point(337, 0);
             label26.Name = "label26";
-            label26.Padding = new Padding(0, 2, 0, 0);
-            label26.Size = new Size(28, 19);
+            label26.Padding = new Padding(0, 3, 0, 0);
+            label26.Size = new Size(37, 26);
             label26.TabIndex = 6;
             label26.Text = "Fiat";
             // 
@@ -1506,10 +1545,10 @@
             label25.BackColor = Color.Transparent;
             label25.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label25.ForeColor = Color.LightSlateGray;
-            label25.Location = new Point(245, 0);
+            label25.Location = new Point(280, 0);
             label25.Name = "label25";
-            label25.Padding = new Padding(0, 2, 0, 0);
-            label25.Size = new Size(45, 19);
+            label25.Padding = new Padding(0, 3, 0, 0);
+            label25.Size = new Size(58, 26);
             label25.TabIndex = 5;
             label25.Text = "Range";
             // 
@@ -1519,10 +1558,10 @@
             label24.BackColor = Color.Transparent;
             label24.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label24.ForeColor = Color.LightSlateGray;
-            label24.Location = new Point(215, 0);
+            label24.Location = new Point(246, 0);
             label24.Name = "label24";
-            label24.Padding = new Padding(0, 2, 0, 0);
-            label24.Size = new Size(28, 19);
+            label24.Padding = new Padding(0, 3, 0, 0);
+            label24.Size = new Size(36, 26);
             label24.TabIndex = 4;
             label24.Text = "Est.";
             // 
@@ -1532,10 +1571,10 @@
             label23.BackColor = Color.Transparent;
             label23.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label23.ForeColor = Color.LightSlateGray;
-            label23.Location = new Point(130, 0);
+            label23.Location = new Point(149, 0);
             label23.Name = "label23";
-            label23.Padding = new Padding(0, 2, 0, 0);
-            label23.Size = new Size(36, 19);
+            label23.Padding = new Padding(0, 3, 0, 0);
+            label23.Size = new Size(47, 26);
             label23.TabIndex = 3;
             label23.Text = "Price";
             // 
@@ -1545,10 +1584,10 @@
             label22.BackColor = Color.Transparent;
             label22.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label22.ForeColor = Color.LightSlateGray;
-            label22.Location = new Point(103, 0);
+            label22.Location = new Point(118, 0);
             label22.Name = "label22";
-            label22.Padding = new Padding(0, 2, 0, 0);
-            label22.Size = new Size(26, 19);
+            label22.Padding = new Padding(0, 3, 0, 0);
+            label22.Size = new Size(34, 26);
             label22.TabIndex = 2;
             label22.Text = "DD";
             // 
@@ -1558,10 +1597,10 @@
             label20.BackColor = Color.Transparent;
             label20.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label20.ForeColor = Color.LightSlateGray;
-            label20.Location = new Point(76, 0);
+            label20.Location = new Point(87, 0);
             label20.Name = "label20";
-            label20.Padding = new Padding(0, 2, 0, 0);
-            label20.Size = new Size(32, 19);
+            label20.Padding = new Padding(0, 3, 0, 0);
+            label20.Size = new Size(40, 26);
             label20.TabIndex = 1;
             label20.Text = "MM";
             // 
@@ -1571,10 +1610,10 @@
             label16.BackColor = Color.Transparent;
             label16.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label16.ForeColor = Color.LightSlateGray;
-            label16.Location = new Point(40, 0);
+            label16.Location = new Point(46, 0);
             label16.Name = "label16";
-            label16.Padding = new Padding(0, 2, 0, 0);
-            label16.Size = new Size(36, 19);
+            label16.Padding = new Padding(0, 3, 0, 0);
+            label16.Size = new Size(46, 26);
             label16.TabIndex = 0;
             label16.Text = "YYYY";
             // 
@@ -1591,17 +1630,19 @@
             panelTXListFooter.Controls.Add(lbl2);
             panelTXListFooter.Controls.Add(lbl3);
             panelTXListFooter.Controls.Add(lbl1);
-            panelTXListFooter.Location = new Point(1, 121);
+            panelTXListFooter.Location = new Point(1, 161);
+            panelTXListFooter.Margin = new Padding(3, 4, 3, 4);
             panelTXListFooter.Name = "panelTXListFooter";
-            panelTXListFooter.Size = new Size(958, 48);
+            panelTXListFooter.Size = new Size(1095, 64);
             panelTXListFooter.TabIndex = 78;
             // 
             // panel10
             // 
             panel10.BackColor = Color.FromArgb(255, 224, 192);
-            panel10.Location = new Point(1, 17);
+            panel10.Location = new Point(1, 23);
+            panel10.Margin = new Padding(3, 4, 3, 4);
             panel10.Name = "panel10";
-            panel10.Size = new Size(956, 1);
+            panel10.Size = new Size(1093, 1);
             panel10.TabIndex = 87;
             // 
             // btnListReverse
@@ -1615,10 +1656,11 @@
             btnListReverse.FlatStyle = FlatStyle.Flat;
             btnListReverse.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnListReverse.ForeColor = Color.FromArgb(255, 128, 0);
-            btnListReverse.Location = new Point(871, 21);
+            btnListReverse.Location = new Point(995, 28);
+            btnListReverse.Margin = new Padding(3, 4, 3, 4);
             btnListReverse.Name = "btnListReverse";
             btnListReverse.Padding = new Padding(1, 0, 0, 0);
-            btnListReverse.Size = new Size(86, 24);
+            btnListReverse.Size = new Size(98, 32);
             btnListReverse.TabIndex = 75;
             btnListReverse.Text = "Oldest first";
             btnListReverse.TextColor = Color.FromArgb(255, 128, 0);
@@ -1636,10 +1678,11 @@
             btnCancelDelete.FlatStyle = FlatStyle.Flat;
             btnCancelDelete.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCancelDelete.ForeColor = Color.FromArgb(255, 128, 0);
-            btnCancelDelete.Location = new Point(139, 21);
+            btnCancelDelete.Location = new Point(159, 28);
+            btnCancelDelete.Margin = new Padding(3, 4, 3, 4);
             btnCancelDelete.Name = "btnCancelDelete";
             btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
-            btnCancelDelete.Size = new Size(55, 24);
+            btnCancelDelete.Size = new Size(63, 32);
             btnCancelDelete.TabIndex = 94;
             btnCancelDelete.Text = "Cancel";
             btnCancelDelete.TextColor = Color.FromArgb(255, 128, 0);
@@ -1658,10 +1701,11 @@
             btnConfirmDelete.FlatStyle = FlatStyle.Flat;
             btnConfirmDelete.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnConfirmDelete.ForeColor = Color.FromArgb(255, 128, 0);
-            btnConfirmDelete.Location = new Point(75, 21);
+            btnConfirmDelete.Location = new Point(86, 28);
+            btnConfirmDelete.Margin = new Padding(3, 4, 3, 4);
             btnConfirmDelete.Name = "btnConfirmDelete";
             btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
-            btnConfirmDelete.Size = new Size(64, 24);
+            btnConfirmDelete.Size = new Size(73, 32);
             btnConfirmDelete.TabIndex = 93;
             btnConfirmDelete.Text = "Confirm";
             btnConfirmDelete.TextColor = Color.FromArgb(255, 128, 0);
@@ -1676,9 +1720,9 @@
             lblDisabledDeleteButtonText.Enabled = false;
             lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDisabledDeleteButtonText.ForeColor = Color.Gray;
-            lblDisabledDeleteButtonText.Location = new Point(86, 25);
+            lblDisabledDeleteButtonText.Location = new Point(98, 33);
             lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
-            lblDisabledDeleteButtonText.Size = new Size(97, 17);
+            lblDisabledDeleteButtonText.Size = new Size(126, 23);
             lblDisabledDeleteButtonText.TabIndex = 92;
             lblDisabledDeleteButtonText.Text = "Delete selected";
             // 
@@ -1693,10 +1737,11 @@
             btnDeleteTransaction.FlatStyle = FlatStyle.Flat;
             btnDeleteTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnDeleteTransaction.ForeColor = Color.FromArgb(255, 128, 0);
-            btnDeleteTransaction.Location = new Point(75, 21);
+            btnDeleteTransaction.Location = new Point(86, 28);
+            btnDeleteTransaction.Margin = new Padding(3, 4, 3, 4);
             btnDeleteTransaction.Name = "btnDeleteTransaction";
             btnDeleteTransaction.Padding = new Padding(1, 0, 0, 0);
-            btnDeleteTransaction.Size = new Size(119, 24);
+            btnDeleteTransaction.Size = new Size(136, 32);
             btnDeleteTransaction.TabIndex = 87;
             btnDeleteTransaction.Text = "Delete selected";
             btnDeleteTransaction.TextColor = Color.FromArgb(255, 128, 0);
@@ -1709,9 +1754,10 @@
             panelTXSelectContainer.Controls.Add(btnTXSelectDown);
             panelTXSelectContainer.Controls.Add(btnTXSelectUp);
             panelTXSelectContainer.Controls.Add(numericUpDownSelectTX);
-            panelTXSelectContainer.Location = new Point(-18, 22);
+            panelTXSelectContainer.Location = new Point(-21, 29);
+            panelTXSelectContainer.Margin = new Padding(3, 4, 3, 4);
             panelTXSelectContainer.Name = "panelTXSelectContainer";
-            panelTXSelectContainer.Size = new Size(90, 22);
+            panelTXSelectContainer.Size = new Size(103, 29);
             panelTXSelectContainer.TabIndex = 36;
             // 
             // btnTXSelectDown
@@ -1720,9 +1766,10 @@
             btnTXSelectDown.FlatAppearance.BorderSize = 0;
             btnTXSelectDown.FlatStyle = FlatStyle.Flat;
             btnTXSelectDown.ForeColor = Color.FromArgb(255, 128, 0);
-            btnTXSelectDown.Location = new Point(67, 0);
+            btnTXSelectDown.Location = new Point(77, 0);
+            btnTXSelectDown.Margin = new Padding(3, 4, 3, 4);
             btnTXSelectDown.Name = "btnTXSelectDown";
-            btnTXSelectDown.Size = new Size(16, 22);
+            btnTXSelectDown.Size = new Size(18, 29);
             btnTXSelectDown.TabIndex = 91;
             btnTXSelectDown.Text = "▼";
             btnTXSelectDown.UseVisualStyleBackColor = false;
@@ -1734,9 +1781,10 @@
             btnTXSelectUp.FlatAppearance.BorderSize = 0;
             btnTXSelectUp.FlatStyle = FlatStyle.Flat;
             btnTXSelectUp.ForeColor = Color.FromArgb(255, 128, 0);
-            btnTXSelectUp.Location = new Point(51, 0);
+            btnTXSelectUp.Location = new Point(58, 0);
+            btnTXSelectUp.Margin = new Padding(3, 4, 3, 4);
             btnTXSelectUp.Name = "btnTXSelectUp";
-            btnTXSelectUp.Size = new Size(16, 22);
+            btnTXSelectUp.Size = new Size(18, 29);
             btnTXSelectUp.TabIndex = 90;
             btnTXSelectUp.Text = "▲";
             btnTXSelectUp.UseVisualStyleBackColor = false;
@@ -1748,9 +1796,10 @@
             numericUpDownSelectTX.BorderStyle = BorderStyle.None;
             numericUpDownSelectTX.Font = new Font("Segoe UI", 9.5F, FontStyle.Regular, GraphicsUnit.Point);
             numericUpDownSelectTX.ForeColor = Color.LightSlateGray;
-            numericUpDownSelectTX.Location = new Point(21, 2);
+            numericUpDownSelectTX.Location = new Point(24, 3);
+            numericUpDownSelectTX.Margin = new Padding(3, 4, 3, 4);
             numericUpDownSelectTX.Name = "numericUpDownSelectTX";
-            numericUpDownSelectTX.Size = new Size(46, 20);
+            numericUpDownSelectTX.Size = new Size(53, 25);
             numericUpDownSelectTX.TabIndex = 89;
             numericUpDownSelectTX.ValueChanged += NumericUpDownSelectTX_ValueChanged;
             // 
@@ -1758,9 +1807,9 @@
             // 
             lbl2.AutoSize = true;
             lbl2.ForeColor = Color.Gray;
-            lbl2.Location = new Point(294, 25);
+            lbl2.Location = new Point(336, 33);
             lbl2.Name = "lbl2";
-            lbl2.Size = new Size(70, 15);
+            lbl2.Size = new Size(89, 20);
             lbl2.TabIndex = 83;
             lbl2.Text = "Fiat balance";
             // 
@@ -1768,9 +1817,9 @@
             // 
             lbl3.AutoSize = true;
             lbl3.ForeColor = Color.Gray;
-            lbl3.Location = new Point(744, 25);
+            lbl3.Location = new Point(850, 33);
             lbl3.Name = "lbl3";
-            lbl3.Size = new Size(60, 15);
+            lbl3.Size = new Size(75, 20);
             lbl3.TabIndex = 84;
             lbl3.Text = "Cost basis";
             // 
@@ -1778,9 +1827,9 @@
             // 
             lbl1.AutoSize = true;
             lbl1.ForeColor = Color.Gray;
-            lbl1.Location = new Point(419, 25);
+            lbl1.Location = new Point(479, 33);
             lbl1.Name = "lbl1";
-            lbl1.Size = new Size(70, 15);
+            lbl1.Size = new Size(89, 20);
             lbl1.TabIndex = 82;
             lbl1.Text = "BTC balance";
             // 
@@ -1790,18 +1839,19 @@
             panelHelpTransactionList.BackColor = Color.White;
             panelHelpTransactionList.Controls.Add(lblHelpTransactionListText);
             panelHelpTransactionList.Controls.Add(panel26);
-            panelHelpTransactionList.Location = new Point(13, 511);
+            panelHelpTransactionList.Location = new Point(15, 681);
+            panelHelpTransactionList.Margin = new Padding(3, 4, 3, 4);
             panelHelpTransactionList.Name = "panelHelpTransactionList";
-            panelHelpTransactionList.Size = new Size(958, 168);
+            panelHelpTransactionList.Size = new Size(1095, 224);
             panelHelpTransactionList.TabIndex = 77;
             panelHelpTransactionList.Visible = false;
             // 
             // lblHelpTransactionListText
             // 
             lblHelpTransactionListText.ForeColor = Color.DarkGray;
-            lblHelpTransactionListText.Location = new Point(3, 28);
+            lblHelpTransactionListText.Location = new Point(3, 37);
             lblHelpTransactionListText.Name = "lblHelpTransactionListText";
-            lblHelpTransactionListText.Size = new Size(952, 137);
+            lblHelpTransactionListText.Size = new Size(1088, 183);
             lblHelpTransactionListText.TabIndex = 90;
             lblHelpTransactionListText.Text = "Line 1\\r\\nLine 2";
             // 
@@ -1812,8 +1862,9 @@
             panel26.Controls.Add(label52);
             panel26.ForeColor = Color.Black;
             panel26.Location = new Point(0, 0);
+            panel26.Margin = new Padding(3, 4, 3, 4);
             panel26.Name = "panel26";
-            panel26.Size = new Size(958, 25);
+            panel26.Size = new Size(1095, 33);
             panel26.TabIndex = 89;
             // 
             // btnCloseHelpTransactionList
@@ -1827,10 +1878,11 @@
             btnCloseHelpTransactionList.FlatStyle = FlatStyle.Flat;
             btnCloseHelpTransactionList.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnCloseHelpTransactionList.ForeColor = Color.White;
-            btnCloseHelpTransactionList.Location = new Point(933, -1);
+            btnCloseHelpTransactionList.Location = new Point(1066, -1);
+            btnCloseHelpTransactionList.Margin = new Padding(3, 4, 3, 4);
             btnCloseHelpTransactionList.Name = "btnCloseHelpTransactionList";
             btnCloseHelpTransactionList.Padding = new Padding(2, 0, 0, 0);
-            btnCloseHelpTransactionList.Size = new Size(24, 24);
+            btnCloseHelpTransactionList.Size = new Size(27, 32);
             btnCloseHelpTransactionList.TabIndex = 88;
             btnCloseHelpTransactionList.Text = "✖️";
             btnCloseHelpTransactionList.TextColor = Color.White;
@@ -1845,8 +1897,8 @@
             label52.ForeColor = Color.LightSlateGray;
             label52.Location = new Point(2, 0);
             label52.Name = "label52";
-            label52.Padding = new Padding(0, 2, 0, 0);
-            label52.Size = new Size(131, 19);
+            label52.Padding = new Padding(0, 3, 0, 0);
+            label52.Size = new Size(171, 26);
             label52.TabIndex = 0;
             label52.Text = "Transaction list (help)";
             // 
@@ -1856,9 +1908,10 @@
             panelScrollbarContainer.Controls.Add(btnTransactionsListDown);
             panelScrollbarContainer.Controls.Add(panel12);
             panelScrollbarContainer.Controls.Add(btnTransactionsListUp);
-            panelScrollbarContainer.Location = new Point(942, 511);
+            panelScrollbarContainer.Location = new Point(1077, 681);
+            panelScrollbarContainer.Margin = new Padding(3, 4, 3, 4);
             panelScrollbarContainer.Name = "panelScrollbarContainer";
-            panelScrollbarContainer.Size = new Size(29, 142);
+            panelScrollbarContainer.Size = new Size(33, 189);
             panelScrollbarContainer.TabIndex = 77;
             // 
             // panel12
@@ -1866,9 +1919,10 @@
             panel12.BackColor = Color.FromArgb(255, 224, 192);
             panel12.Controls.Add(btnHelpTransactionList);
             panel12.ForeColor = Color.Black;
-            panel12.Location = new Point(-13, -1);
+            panel12.Location = new Point(-15, -1);
+            panel12.Margin = new Padding(3, 4, 3, 4);
             panel12.Name = "panel12";
-            panel12.Size = new Size(43, 25);
+            panel12.Size = new Size(49, 33);
             panel12.TabIndex = 78;
             // 
             // btnHelpTransactionList
@@ -1882,10 +1936,11 @@
             btnHelpTransactionList.FlatStyle = FlatStyle.Flat;
             btnHelpTransactionList.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnHelpTransactionList.ForeColor = Color.White;
-            btnHelpTransactionList.Location = new Point(17, 0);
+            btnHelpTransactionList.Location = new Point(19, 0);
+            btnHelpTransactionList.Margin = new Padding(3, 4, 3, 4);
             btnHelpTransactionList.Name = "btnHelpTransactionList";
             btnHelpTransactionList.Padding = new Padding(2, 0, 0, 0);
-            btnHelpTransactionList.Size = new Size(24, 24);
+            btnHelpTransactionList.Size = new Size(27, 32);
             btnHelpTransactionList.TabIndex = 87;
             btnHelpTransactionList.Text = "❔";
             btnHelpTransactionList.TextColor = Color.White;
@@ -1904,9 +1959,10 @@
             btnMoveWindow.FlatAppearance.MouseOverBackColor = Color.White;
             btnMoveWindow.FlatStyle = FlatStyle.Flat;
             btnMoveWindow.ForeColor = Color.White;
-            btnMoveWindow.Location = new Point(76, 4);
+            btnMoveWindow.Location = new Point(87, 5);
+            btnMoveWindow.Margin = new Padding(3, 4, 3, 4);
             btnMoveWindow.Name = "btnMoveWindow";
-            btnMoveWindow.Size = new Size(792, 30);
+            btnMoveWindow.Size = new Size(905, 40);
             btnMoveWindow.TabIndex = 81;
             btnMoveWindow.TextColor = Color.White;
             btnMoveWindow.UseVisualStyleBackColor = false;
@@ -1923,9 +1979,10 @@
             // 
             panel14.BackColor = Color.FromArgb(255, 224, 192);
             panel14.Controls.Add(panelChartContainer);
-            panel14.Location = new Point(12, 55);
+            panel14.Location = new Point(14, 73);
+            panel14.Margin = new Padding(3, 4, 3, 4);
             panel14.Name = "panel14";
-            panel14.Size = new Size(960, 435);
+            panel14.Size = new Size(1097, 580);
             panel14.TabIndex = 85;
             // 
             // panelChartContainer
@@ -1941,8 +1998,9 @@
             panelChartContainer.Controls.Add(panel17);
             panelChartContainer.Controls.Add(formsPlot1);
             panelChartContainer.Location = new Point(1, 1);
+            panelChartContainer.Margin = new Padding(3, 4, 3, 4);
             panelChartContainer.Name = "panelChartContainer";
-            panelChartContainer.Size = new Size(958, 433);
+            panelChartContainer.Size = new Size(1095, 577);
             panelChartContainer.TabIndex = 0;
             // 
             // panel23
@@ -1958,9 +2016,10 @@
             panel23.Controls.Add(label44);
             panel23.Controls.Add(label45);
             panel23.Controls.Add(btnCursorTrackSellTX);
-            panel23.Location = new Point(270, 31);
+            panel23.Location = new Point(309, 41);
+            panel23.Margin = new Padding(3, 4, 3, 4);
             panel23.Name = "panel23";
-            panel23.Size = new Size(121, 22);
+            panel23.Size = new Size(138, 29);
             panel23.TabIndex = 100;
             // 
             // btnExpandTrackingPanel
@@ -1974,10 +2033,11 @@
             btnExpandTrackingPanel.FlatStyle = FlatStyle.Flat;
             btnExpandTrackingPanel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnExpandTrackingPanel.ForeColor = Color.LightSlateGray;
-            btnExpandTrackingPanel.Location = new Point(90, 0);
+            btnExpandTrackingPanel.Location = new Point(103, 0);
+            btnExpandTrackingPanel.Margin = new Padding(3, 4, 3, 4);
             btnExpandTrackingPanel.Name = "btnExpandTrackingPanel";
             btnExpandTrackingPanel.Padding = new Padding(1, 0, 0, 0);
-            btnExpandTrackingPanel.Size = new Size(22, 22);
+            btnExpandTrackingPanel.Size = new Size(25, 29);
             btnExpandTrackingPanel.TabIndex = 99;
             btnExpandTrackingPanel.Text = "▶";
             btnExpandTrackingPanel.TextColor = Color.LightSlateGray;
@@ -1990,9 +2050,9 @@
             label50.BackColor = Color.Transparent;
             label50.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label50.ForeColor = Color.Gray;
-            label50.Location = new Point(3, 2);
+            label50.Location = new Point(3, 3);
             label50.Name = "label50";
-            label50.Size = new Size(88, 17);
+            label50.Size = new Size(113, 23);
             label50.TabIndex = 91;
             label50.Text = "Cursor tracks:";
             // 
@@ -2002,9 +2062,9 @@
             label46.BackColor = Color.Transparent;
             label46.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label46.ForeColor = Color.Gray;
-            label46.Location = new Point(397, 2);
+            label46.Location = new Point(454, 3);
             label46.Name = "label46";
-            label46.Size = new Size(40, 17);
+            label46.Size = new Size(52, 23);
             label46.TabIndex = 97;
             label46.Text = "None";
             // 
@@ -2019,10 +2079,11 @@
             btnCursorTrackPrice.FlatStyle = FlatStyle.Flat;
             btnCursorTrackPrice.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCursorTrackPrice.ForeColor = Color.LightSlateGray;
-            btnCursorTrackPrice.Location = new Point(123, 0);
+            btnCursorTrackPrice.Location = new Point(141, 0);
+            btnCursorTrackPrice.Margin = new Padding(3, 4, 3, 4);
             btnCursorTrackPrice.Name = "btnCursorTrackPrice";
             btnCursorTrackPrice.Padding = new Padding(1, 0, 0, 0);
-            btnCursorTrackPrice.Size = new Size(22, 22);
+            btnCursorTrackPrice.Size = new Size(25, 29);
             btnCursorTrackPrice.TabIndex = 92;
             btnCursorTrackPrice.Text = "✔️";
             btnCursorTrackPrice.TextColor = Color.LightSlateGray;
@@ -2040,10 +2101,11 @@
             btnCursorTrackNothing.FlatStyle = FlatStyle.Flat;
             btnCursorTrackNothing.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCursorTrackNothing.ForeColor = Color.LightSlateGray;
-            btnCursorTrackNothing.Location = new Point(376, 0);
+            btnCursorTrackNothing.Location = new Point(430, 0);
+            btnCursorTrackNothing.Margin = new Padding(3, 4, 3, 4);
             btnCursorTrackNothing.Name = "btnCursorTrackNothing";
             btnCursorTrackNothing.Padding = new Padding(1, 0, 0, 0);
-            btnCursorTrackNothing.Size = new Size(22, 22);
+            btnCursorTrackNothing.Size = new Size(25, 29);
             btnCursorTrackNothing.TabIndex = 98;
             btnCursorTrackNothing.Text = "✖️";
             btnCursorTrackNothing.TextColor = Color.LightSlateGray;
@@ -2056,9 +2118,9 @@
             label43.BackColor = Color.Transparent;
             label43.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label43.ForeColor = Color.Gray;
-            label43.Location = new Point(144, 2);
+            label43.Location = new Point(165, 3);
             label43.Name = "label43";
-            label43.Size = new Size(36, 17);
+            label43.Size = new Size(47, 23);
             label43.TabIndex = 91;
             label43.Text = "Price";
             // 
@@ -2073,10 +2135,11 @@
             btnCursorTrackBuyTX.FlatStyle = FlatStyle.Flat;
             btnCursorTrackBuyTX.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCursorTrackBuyTX.ForeColor = Color.LightSlateGray;
-            btnCursorTrackBuyTX.Location = new Point(183, 0);
+            btnCursorTrackBuyTX.Location = new Point(209, 0);
+            btnCursorTrackBuyTX.Margin = new Padding(3, 4, 3, 4);
             btnCursorTrackBuyTX.Name = "btnCursorTrackBuyTX";
             btnCursorTrackBuyTX.Padding = new Padding(1, 0, 0, 0);
-            btnCursorTrackBuyTX.Size = new Size(22, 22);
+            btnCursorTrackBuyTX.Size = new Size(25, 29);
             btnCursorTrackBuyTX.TabIndex = 94;
             btnCursorTrackBuyTX.Text = "✖️";
             btnCursorTrackBuyTX.TextColor = Color.LightSlateGray;
@@ -2089,9 +2152,9 @@
             label44.BackColor = Color.Transparent;
             label44.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label44.ForeColor = Color.Gray;
-            label44.Location = new Point(204, 2);
+            label44.Location = new Point(233, 3);
             label44.Name = "label44";
-            label44.Size = new Size(76, 17);
+            label44.Size = new Size(100, 23);
             label44.TabIndex = 93;
             label44.Text = "Receive BTC";
             // 
@@ -2101,9 +2164,9 @@
             label45.BackColor = Color.Transparent;
             label45.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label45.ForeColor = Color.Gray;
-            label45.Location = new Point(304, 2);
+            label45.Location = new Point(347, 3);
             label45.Name = "label45";
-            label45.Size = new Size(69, 17);
+            label45.Size = new Size(91, 23);
             label45.TabIndex = 95;
             label45.Text = "Spend BTC";
             // 
@@ -2118,10 +2181,11 @@
             btnCursorTrackSellTX.FlatStyle = FlatStyle.Flat;
             btnCursorTrackSellTX.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCursorTrackSellTX.ForeColor = Color.LightSlateGray;
-            btnCursorTrackSellTX.Location = new Point(283, 0);
+            btnCursorTrackSellTX.Location = new Point(323, 0);
+            btnCursorTrackSellTX.Margin = new Padding(3, 4, 3, 4);
             btnCursorTrackSellTX.Name = "btnCursorTrackSellTX";
             btnCursorTrackSellTX.Padding = new Padding(1, 0, 0, 0);
-            btnCursorTrackSellTX.Size = new Size(22, 22);
+            btnCursorTrackSellTX.Size = new Size(25, 29);
             btnCursorTrackSellTX.TabIndex = 96;
             btnCursorTrackSellTX.Text = "✖️";
             btnCursorTrackSellTX.TextColor = Color.LightSlateGray;
@@ -2137,9 +2201,10 @@
             panel21.Controls.Add(label37);
             panel21.Controls.Add(btnShowSellDates);
             panel21.Controls.Add(label38);
-            panel21.Location = new Point(106, 31);
+            panel21.Location = new Point(121, 41);
+            panel21.Margin = new Padding(3, 4, 3, 4);
             panel21.Name = "panel21";
-            panel21.Size = new Size(84, 22);
+            panel21.Size = new Size(96, 29);
             panel21.TabIndex = 100;
             // 
             // btnExpandDatelinesPanel
@@ -2153,10 +2218,11 @@
             btnExpandDatelinesPanel.FlatStyle = FlatStyle.Flat;
             btnExpandDatelinesPanel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnExpandDatelinesPanel.ForeColor = Color.LightSlateGray;
-            btnExpandDatelinesPanel.Location = new Point(57, 0);
+            btnExpandDatelinesPanel.Location = new Point(65, 0);
+            btnExpandDatelinesPanel.Margin = new Padding(3, 4, 3, 4);
             btnExpandDatelinesPanel.Name = "btnExpandDatelinesPanel";
             btnExpandDatelinesPanel.Padding = new Padding(1, 0, 0, 0);
-            btnExpandDatelinesPanel.Size = new Size(22, 22);
+            btnExpandDatelinesPanel.Size = new Size(25, 29);
             btnExpandDatelinesPanel.TabIndex = 92;
             btnExpandDatelinesPanel.Text = "▶";
             btnExpandDatelinesPanel.TextColor = Color.LightSlateGray;
@@ -2169,9 +2235,9 @@
             label48.BackColor = Color.Transparent;
             label48.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label48.ForeColor = Color.Gray;
-            label48.Location = new Point(3, 2);
+            label48.Location = new Point(3, 3);
             label48.Name = "label48";
-            label48.Size = new Size(56, 17);
+            label48.Size = new Size(72, 23);
             label48.TabIndex = 91;
             label48.Text = "TX lines:";
             // 
@@ -2186,10 +2252,11 @@
             btnShowBuyDates.FlatStyle = FlatStyle.Flat;
             btnShowBuyDates.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowBuyDates.ForeColor = Color.LightSlateGray;
-            btnShowBuyDates.Location = new Point(100, 0);
+            btnShowBuyDates.Location = new Point(114, 0);
+            btnShowBuyDates.Margin = new Padding(3, 4, 3, 4);
             btnShowBuyDates.Name = "btnShowBuyDates";
             btnShowBuyDates.Padding = new Padding(1, 0, 0, 0);
-            btnShowBuyDates.Size = new Size(22, 22);
+            btnShowBuyDates.Size = new Size(25, 29);
             btnShowBuyDates.TabIndex = 82;
             btnShowBuyDates.Text = "✔️";
             btnShowBuyDates.TextColor = Color.LightSlateGray;
@@ -2202,9 +2269,9 @@
             label37.BackColor = Color.Transparent;
             label37.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label37.ForeColor = Color.Gray;
-            label37.Location = new Point(121, 2);
+            label37.Location = new Point(138, 3);
             label37.Name = "label37";
-            label37.Size = new Size(76, 17);
+            label37.Size = new Size(100, 23);
             label37.TabIndex = 81;
             label37.Text = "Receive BTC";
             // 
@@ -2219,10 +2286,11 @@
             btnShowSellDates.FlatStyle = FlatStyle.Flat;
             btnShowSellDates.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowSellDates.ForeColor = Color.LightSlateGray;
-            btnShowSellDates.Location = new Point(197, 0);
+            btnShowSellDates.Location = new Point(225, 0);
+            btnShowSellDates.Margin = new Padding(3, 4, 3, 4);
             btnShowSellDates.Name = "btnShowSellDates";
             btnShowSellDates.Padding = new Padding(1, 0, 0, 0);
-            btnShowSellDates.Size = new Size(22, 22);
+            btnShowSellDates.Size = new Size(25, 29);
             btnShowSellDates.TabIndex = 84;
             btnShowSellDates.Text = "✔️";
             btnShowSellDates.TextColor = Color.LightSlateGray;
@@ -2235,9 +2303,9 @@
             label38.BackColor = Color.Transparent;
             label38.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label38.ForeColor = Color.Gray;
-            label38.Location = new Point(218, 2);
+            label38.Location = new Point(249, 3);
             label38.Name = "label38";
-            label38.Size = new Size(69, 17);
+            label38.Size = new Size(91, 23);
             label38.TabIndex = 83;
             label38.Text = "Spend BTC";
             // 
@@ -2252,10 +2320,11 @@
             btnPriceChartScaleLinear.FlatStyle = FlatStyle.Flat;
             btnPriceChartScaleLinear.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnPriceChartScaleLinear.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceChartScaleLinear.Location = new Point(831, 30);
+            btnPriceChartScaleLinear.Location = new Point(950, 40);
+            btnPriceChartScaleLinear.Margin = new Padding(3, 4, 3, 4);
             btnPriceChartScaleLinear.Name = "btnPriceChartScaleLinear";
             btnPriceChartScaleLinear.Padding = new Padding(1, 0, 0, 0);
-            btnPriceChartScaleLinear.Size = new Size(58, 24);
+            btnPriceChartScaleLinear.Size = new Size(66, 32);
             btnPriceChartScaleLinear.TabIndex = 75;
             btnPriceChartScaleLinear.Text = "Linear";
             btnPriceChartScaleLinear.TextColor = Color.FromArgb(255, 128, 0);
@@ -2273,10 +2342,11 @@
             btnPriceChartScaleLog.FlatStyle = FlatStyle.Flat;
             btnPriceChartScaleLog.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnPriceChartScaleLog.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceChartScaleLog.Location = new Point(892, 30);
+            btnPriceChartScaleLog.Location = new Point(1019, 40);
+            btnPriceChartScaleLog.Margin = new Padding(3, 4, 3, 4);
             btnPriceChartScaleLog.Name = "btnPriceChartScaleLog";
             btnPriceChartScaleLog.Padding = new Padding(1, 0, 0, 0);
-            btnPriceChartScaleLog.Size = new Size(58, 24);
+            btnPriceChartScaleLog.Size = new Size(66, 32);
             btnPriceChartScaleLog.TabIndex = 86;
             btnPriceChartScaleLog.Text = "Log";
             btnPriceChartScaleLog.TextColor = Color.FromArgb(255, 128, 0);
@@ -2288,9 +2358,10 @@
             panel24.BackColor = SystemColors.ButtonFace;
             panel24.Controls.Add(lblShowCostBasis);
             panel24.Controls.Add(btnShowCostBasis);
-            panel24.Location = new Point(399, 31);
+            panel24.Location = new Point(456, 41);
+            panel24.Margin = new Padding(3, 4, 3, 4);
             panel24.Name = "panel24";
-            panel24.Size = new Size(103, 22);
+            panel24.Size = new Size(118, 29);
             panel24.TabIndex = 100;
             // 
             // lblShowCostBasis
@@ -2299,9 +2370,9 @@
             lblShowCostBasis.BackColor = Color.Transparent;
             lblShowCostBasis.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblShowCostBasis.ForeColor = Color.Gray;
-            lblShowCostBasis.Location = new Point(7, 2);
+            lblShowCostBasis.Location = new Point(8, 3);
             lblShowCostBasis.Name = "lblShowCostBasis";
-            lblShowCostBasis.Size = new Size(68, 17);
+            lblShowCostBasis.Size = new Size(86, 23);
             lblShowCostBasis.TabIndex = 79;
             lblShowCostBasis.Text = "Cost basis";
             // 
@@ -2316,10 +2387,11 @@
             btnShowCostBasis.FlatStyle = FlatStyle.Flat;
             btnShowCostBasis.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowCostBasis.ForeColor = Color.LightSlateGray;
-            btnShowCostBasis.Location = new Point(75, 0);
+            btnShowCostBasis.Location = new Point(86, 0);
+            btnShowCostBasis.Margin = new Padding(3, 4, 3, 4);
             btnShowCostBasis.Name = "btnShowCostBasis";
             btnShowCostBasis.Padding = new Padding(1, 0, 0, 0);
-            btnShowCostBasis.Size = new Size(22, 22);
+            btnShowCostBasis.Size = new Size(25, 29);
             btnShowCostBasis.TabIndex = 80;
             btnShowCostBasis.Text = "✔️";
             btnShowCostBasis.TextColor = Color.LightSlateGray;
@@ -2335,9 +2407,10 @@
             panel22.Controls.Add(label40);
             panel22.Controls.Add(label41);
             panel22.Controls.Add(btnShowSellBubbles);
-            panel22.Location = new Point(198, 31);
+            panel22.Location = new Point(226, 41);
+            panel22.Margin = new Padding(3, 4, 3, 4);
             panel22.Name = "panel22";
-            panel22.Size = new Size(64, 22);
+            panel22.Size = new Size(73, 29);
             panel22.TabIndex = 100;
             // 
             // btnExpandTransactionsPanel
@@ -2351,10 +2424,11 @@
             btnExpandTransactionsPanel.FlatStyle = FlatStyle.Flat;
             btnExpandTransactionsPanel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnExpandTransactionsPanel.ForeColor = Color.LightSlateGray;
-            btnExpandTransactionsPanel.Location = new Point(35, 0);
+            btnExpandTransactionsPanel.Location = new Point(40, 0);
+            btnExpandTransactionsPanel.Margin = new Padding(3, 4, 3, 4);
             btnExpandTransactionsPanel.Name = "btnExpandTransactionsPanel";
             btnExpandTransactionsPanel.Padding = new Padding(1, 0, 0, 0);
-            btnExpandTransactionsPanel.Size = new Size(22, 22);
+            btnExpandTransactionsPanel.Size = new Size(25, 29);
             btnExpandTransactionsPanel.TabIndex = 92;
             btnExpandTransactionsPanel.Text = "▶";
             btnExpandTransactionsPanel.TextColor = Color.LightSlateGray;
@@ -2367,9 +2441,9 @@
             label49.BackColor = Color.Transparent;
             label49.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label49.ForeColor = Color.Gray;
-            label49.Location = new Point(3, 2);
+            label49.Location = new Point(3, 3);
             label49.Name = "label49";
-            label49.Size = new Size(35, 17);
+            label49.Size = new Size(44, 23);
             label49.TabIndex = 91;
             label49.Text = "TX's:";
             // 
@@ -2384,10 +2458,11 @@
             btnShowBuyBubbles.FlatStyle = FlatStyle.Flat;
             btnShowBuyBubbles.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowBuyBubbles.ForeColor = Color.LightSlateGray;
-            btnShowBuyBubbles.Location = new Point(66, 0);
+            btnShowBuyBubbles.Location = new Point(75, 0);
+            btnShowBuyBubbles.Margin = new Padding(3, 4, 3, 4);
             btnShowBuyBubbles.Name = "btnShowBuyBubbles";
             btnShowBuyBubbles.Padding = new Padding(1, 0, 0, 0);
-            btnShowBuyBubbles.Size = new Size(22, 22);
+            btnShowBuyBubbles.Size = new Size(25, 29);
             btnShowBuyBubbles.TabIndex = 88;
             btnShowBuyBubbles.Text = "✔️";
             btnShowBuyBubbles.TextColor = Color.LightSlateGray;
@@ -2400,9 +2475,9 @@
             label40.BackColor = Color.Transparent;
             label40.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label40.ForeColor = Color.Gray;
-            label40.Location = new Point(91, 2);
+            label40.Location = new Point(104, 3);
             label40.Name = "label40";
-            label40.Size = new Size(76, 17);
+            label40.Size = new Size(100, 23);
             label40.TabIndex = 87;
             label40.Text = "Receive BTC";
             // 
@@ -2412,9 +2487,9 @@
             label41.BackColor = Color.Transparent;
             label41.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label41.ForeColor = Color.Gray;
-            label41.Location = new Point(191, 2);
+            label41.Location = new Point(218, 3);
             label41.Name = "label41";
-            label41.Size = new Size(69, 17);
+            label41.Size = new Size(91, 23);
             label41.TabIndex = 89;
             label41.Text = "Spend BTC";
             // 
@@ -2429,10 +2504,11 @@
             btnShowSellBubbles.FlatStyle = FlatStyle.Flat;
             btnShowSellBubbles.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowSellBubbles.ForeColor = Color.LightSlateGray;
-            btnShowSellBubbles.Location = new Point(164, 0);
+            btnShowSellBubbles.Location = new Point(187, 0);
+            btnShowSellBubbles.Margin = new Padding(3, 4, 3, 4);
             btnShowSellBubbles.Name = "btnShowSellBubbles";
             btnShowSellBubbles.Padding = new Padding(1, 0, 0, 0);
-            btnShowSellBubbles.Size = new Size(22, 22);
+            btnShowSellBubbles.Size = new Size(25, 29);
             btnShowSellBubbles.TabIndex = 90;
             btnShowSellBubbles.Text = "✔️";
             btnShowSellBubbles.TextColor = Color.LightSlateGray;
@@ -2448,9 +2524,10 @@
             panel18.Controls.Add(label35);
             panel18.Controls.Add(btnShowDateGridlines);
             panel18.Controls.Add(label36);
-            panel18.Location = new Point(6, 31);
+            panel18.Location = new Point(7, 41);
+            panel18.Margin = new Padding(3, 4, 3, 4);
             panel18.Name = "panel18";
-            panel18.Size = new Size(92, 22);
+            panel18.Size = new Size(105, 29);
             panel18.TabIndex = 99;
             // 
             // btnExpandGridlinesPanel
@@ -2464,10 +2541,11 @@
             btnExpandGridlinesPanel.FlatStyle = FlatStyle.Flat;
             btnExpandGridlinesPanel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnExpandGridlinesPanel.ForeColor = Color.LightSlateGray;
-            btnExpandGridlinesPanel.Location = new Point(63, 0);
+            btnExpandGridlinesPanel.Location = new Point(72, 0);
+            btnExpandGridlinesPanel.Margin = new Padding(3, 4, 3, 4);
             btnExpandGridlinesPanel.Name = "btnExpandGridlinesPanel";
             btnExpandGridlinesPanel.Padding = new Padding(1, 0, 0, 0);
-            btnExpandGridlinesPanel.Size = new Size(22, 22);
+            btnExpandGridlinesPanel.Size = new Size(25, 29);
             btnExpandGridlinesPanel.TabIndex = 92;
             btnExpandGridlinesPanel.Text = "▶";
             btnExpandGridlinesPanel.TextColor = Color.LightSlateGray;
@@ -2480,9 +2558,9 @@
             label47.BackColor = Color.Transparent;
             label47.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label47.ForeColor = Color.Gray;
-            label47.Location = new Point(3, 2);
+            label47.Location = new Point(3, 3);
             label47.Name = "label47";
-            label47.Size = new Size(62, 17);
+            label47.Size = new Size(80, 23);
             label47.TabIndex = 91;
             label47.Text = "Gridlines:";
             // 
@@ -2497,10 +2575,11 @@
             btnShowPriceGridlines.FlatStyle = FlatStyle.Flat;
             btnShowPriceGridlines.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowPriceGridlines.ForeColor = Color.LightSlateGray;
-            btnShowPriceGridlines.Location = new Point(94, 0);
+            btnShowPriceGridlines.Location = new Point(107, 0);
+            btnShowPriceGridlines.Margin = new Padding(3, 4, 3, 4);
             btnShowPriceGridlines.Name = "btnShowPriceGridlines";
             btnShowPriceGridlines.Padding = new Padding(1, 0, 0, 0);
-            btnShowPriceGridlines.Size = new Size(18, 22);
+            btnShowPriceGridlines.Size = new Size(21, 29);
             btnShowPriceGridlines.TabIndex = 76;
             btnShowPriceGridlines.Text = "✔️";
             btnShowPriceGridlines.TextColor = Color.LightSlateGray;
@@ -2513,9 +2592,9 @@
             label35.BackColor = Color.Transparent;
             label35.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label35.ForeColor = Color.Gray;
-            label35.Location = new Point(113, 2);
+            label35.Location = new Point(129, 3);
             label35.Name = "label35";
-            label35.Size = new Size(36, 17);
+            label35.Size = new Size(47, 23);
             label35.TabIndex = 75;
             label35.Text = "Price";
             // 
@@ -2530,10 +2609,11 @@
             btnShowDateGridlines.FlatStyle = FlatStyle.Flat;
             btnShowDateGridlines.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnShowDateGridlines.ForeColor = Color.LightSlateGray;
-            btnShowDateGridlines.Location = new Point(150, 0);
+            btnShowDateGridlines.Location = new Point(171, 0);
+            btnShowDateGridlines.Margin = new Padding(3, 4, 3, 4);
             btnShowDateGridlines.Name = "btnShowDateGridlines";
             btnShowDateGridlines.Padding = new Padding(1, 0, 0, 0);
-            btnShowDateGridlines.Size = new Size(18, 22);
+            btnShowDateGridlines.Size = new Size(21, 29);
             btnShowDateGridlines.TabIndex = 78;
             btnShowDateGridlines.Text = "✔️";
             btnShowDateGridlines.TextColor = Color.LightSlateGray;
@@ -2546,9 +2626,9 @@
             label36.BackColor = Color.Transparent;
             label36.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label36.ForeColor = Color.Gray;
-            label36.Location = new Point(167, 2);
+            label36.Location = new Point(191, 3);
             label36.Name = "label36";
-            label36.Size = new Size(35, 17);
+            label36.Size = new Size(46, 23);
             label36.TabIndex = 77;
             label36.Text = "Date";
             // 
@@ -2559,8 +2639,9 @@
             panel17.Controls.Add(label39);
             panel17.ForeColor = Color.Black;
             panel17.Location = new Point(0, 0);
+            panel17.Margin = new Padding(3, 4, 3, 4);
             panel17.Name = "panel17";
-            panel17.Size = new Size(958, 25);
+            panel17.Size = new Size(1095, 33);
             panel17.TabIndex = 79;
             // 
             // btnHelpChart
@@ -2574,10 +2655,11 @@
             btnHelpChart.FlatStyle = FlatStyle.Flat;
             btnHelpChart.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnHelpChart.ForeColor = Color.White;
-            btnHelpChart.Location = new Point(933, 0);
+            btnHelpChart.Location = new Point(1066, 0);
+            btnHelpChart.Margin = new Padding(3, 4, 3, 4);
             btnHelpChart.Name = "btnHelpChart";
             btnHelpChart.Padding = new Padding(2, 0, 0, 0);
-            btnHelpChart.Size = new Size(24, 24);
+            btnHelpChart.Size = new Size(27, 32);
             btnHelpChart.TabIndex = 86;
             btnHelpChart.Text = "❔";
             btnHelpChart.TextColor = Color.White;
@@ -2592,17 +2674,17 @@
             label39.ForeColor = Color.LightSlateGray;
             label39.Location = new Point(2, 0);
             label39.Name = "label39";
-            label39.Padding = new Padding(0, 2, 0, 0);
-            label39.Size = new Size(234, 19);
+            label39.Padding = new Padding(0, 3, 0, 0);
+            label39.Size = new Size(304, 26);
             label39.TabIndex = 0;
             label39.Text = "Price, transactions and cost basis chart";
             // 
             // formsPlot1
             // 
-            formsPlot1.Location = new Point(-1, 49);
-            formsPlot1.Margin = new Padding(4, 3, 4, 3);
+            formsPlot1.Location = new Point(-1, 65);
+            formsPlot1.Margin = new Padding(5, 4, 5, 4);
             formsPlot1.Name = "formsPlot1";
-            formsPlot1.Size = new Size(970, 403);
+            formsPlot1.Size = new Size(1109, 537);
             formsPlot1.TabIndex = 0;
             formsPlot1.MouseMove += FormsPlot1_MouseMove;
             // 
@@ -2621,18 +2703,19 @@
             panelHelpChart.BackColor = Color.White;
             panelHelpChart.Controls.Add(lblHelpChartText);
             panelHelpChart.Controls.Add(panel31);
-            panelHelpChart.Location = new Point(13, 56);
+            panelHelpChart.Location = new Point(15, 75);
+            panelHelpChart.Margin = new Padding(3, 4, 3, 4);
             panelHelpChart.Name = "panelHelpChart";
-            panelHelpChart.Size = new Size(958, 433);
+            panelHelpChart.Size = new Size(1095, 577);
             panelHelpChart.TabIndex = 101;
             panelHelpChart.Visible = false;
             // 
             // lblHelpChartText
             // 
             lblHelpChartText.ForeColor = Color.DarkGray;
-            lblHelpChartText.Location = new Point(3, 33);
+            lblHelpChartText.Location = new Point(3, 44);
             lblHelpChartText.Name = "lblHelpChartText";
-            lblHelpChartText.Size = new Size(952, 389);
+            lblHelpChartText.Size = new Size(1088, 519);
             lblHelpChartText.TabIndex = 91;
             // 
             // panel31
@@ -2642,8 +2725,9 @@
             panel31.Controls.Add(label69);
             panel31.ForeColor = Color.Black;
             panel31.Location = new Point(0, 0);
+            panel31.Margin = new Padding(3, 4, 3, 4);
             panel31.Name = "panel31";
-            panel31.Size = new Size(958, 25);
+            panel31.Size = new Size(1095, 33);
             panel31.TabIndex = 79;
             // 
             // btnCloseHelpChart
@@ -2657,10 +2741,11 @@
             btnCloseHelpChart.FlatStyle = FlatStyle.Flat;
             btnCloseHelpChart.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnCloseHelpChart.ForeColor = Color.White;
-            btnCloseHelpChart.Location = new Point(933, 0);
+            btnCloseHelpChart.Location = new Point(1066, 0);
+            btnCloseHelpChart.Margin = new Padding(3, 4, 3, 4);
             btnCloseHelpChart.Name = "btnCloseHelpChart";
             btnCloseHelpChart.Padding = new Padding(2, 0, 0, 0);
-            btnCloseHelpChart.Size = new Size(24, 24);
+            btnCloseHelpChart.Size = new Size(27, 32);
             btnCloseHelpChart.TabIndex = 86;
             btnCloseHelpChart.Text = "✖️";
             btnCloseHelpChart.TextColor = Color.White;
@@ -2675,8 +2760,8 @@
             label69.ForeColor = Color.LightSlateGray;
             label69.Location = new Point(2, 0);
             label69.Name = "label69";
-            label69.Padding = new Padding(0, 2, 0, 0);
-            label69.Size = new Size(271, 19);
+            label69.Padding = new Padding(0, 3, 0, 0);
+            label69.Size = new Size(352, 26);
             label69.TabIndex = 0;
             label69.Text = "Price, transactions and cost basis chart (help)";
             // 
@@ -2685,18 +2770,20 @@
             panel16.Controls.Add(panelSpeechBubble);
             panel16.Controls.Add(panelHideSpeechTriangle);
             panel16.Controls.Add(pictureBoxRobot);
-            panel16.Location = new Point(698, 695);
+            panel16.Location = new Point(798, 927);
+            panel16.Margin = new Padding(3, 4, 3, 4);
             panel16.Name = "panel16";
-            panel16.Size = new Size(284, 253);
+            panel16.Size = new Size(325, 337);
             panel16.TabIndex = 102;
             // 
             // panelSpeechBubble
             // 
             panelSpeechBubble.BackColor = Color.FromArgb(255, 234, 202);
             panelSpeechBubble.Controls.Add(lblRobotSpeak);
-            panelSpeechBubble.Location = new Point(0, 26);
+            panelSpeechBubble.Location = new Point(0, 35);
+            panelSpeechBubble.Margin = new Padding(3, 4, 3, 4);
             panelSpeechBubble.Name = "panelSpeechBubble";
-            panelSpeechBubble.Size = new Size(165, 0);
+            panelSpeechBubble.Size = new Size(189, 0);
             panelSpeechBubble.TabIndex = 69;
             // 
             // lblRobotSpeak
@@ -2706,7 +2793,7 @@
             lblRobotSpeak.ForeColor = Color.Orange;
             lblRobotSpeak.Location = new Point(0, 0);
             lblRobotSpeak.Name = "lblRobotSpeak";
-            lblRobotSpeak.Size = new Size(165, 93);
+            lblRobotSpeak.Size = new Size(189, 124);
             lblRobotSpeak.TabIndex = 24;
             lblRobotSpeak.Text = "Robot speak 12345";
             lblRobotSpeak.TextAlign = ContentAlignment.MiddleCenter;
@@ -2714,9 +2801,10 @@
             // panelHideSpeechTriangle
             // 
             panelHideSpeechTriangle.BackColor = Color.White;
-            panelHideSpeechTriangle.Location = new Point(157, 77);
+            panelHideSpeechTriangle.Location = new Point(179, 103);
+            panelHideSpeechTriangle.Margin = new Padding(3, 4, 3, 4);
             panelHideSpeechTriangle.Name = "panelHideSpeechTriangle";
-            panelHideSpeechTriangle.Size = new Size(22, 45);
+            panelHideSpeechTriangle.Size = new Size(25, 60);
             panelHideSpeechTriangle.TabIndex = 70;
             // 
             // pictureBoxRobot
@@ -2724,9 +2812,10 @@
             pictureBoxRobot.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             pictureBoxRobot.BackColor = Color.Transparent;
             pictureBoxRobot.Image = Properties.Resources.BitcoinCBCRobot;
-            pictureBoxRobot.Location = new Point(80, 32);
+            pictureBoxRobot.Location = new Point(91, 43);
+            pictureBoxRobot.Margin = new Padding(3, 4, 3, 4);
             pictureBoxRobot.Name = "pictureBoxRobot";
-            pictureBoxRobot.Size = new Size(204, 221);
+            pictureBoxRobot.Size = new Size(233, 295);
             pictureBoxRobot.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxRobot.TabIndex = 68;
             pictureBoxRobot.TabStop = false;
@@ -2734,9 +2823,10 @@
             // pictureBox1
             // 
             pictureBox1.Image = Properties.Resources.logo;
-            pictureBox1.Location = new Point(9, 10);
+            pictureBox1.Location = new Point(10, 13);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(30, 30);
+            pictureBox1.Size = new Size(34, 40);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 103;
             pictureBox1.TabStop = false;
@@ -2744,9 +2834,10 @@
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.text;
-            pictureBox2.Location = new Point(42, 6);
+            pictureBox2.Location = new Point(48, 8);
+            pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(82, 30);
+            pictureBox2.Size = new Size(94, 40);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 104;
             pictureBox2.TabStop = false;
@@ -2754,9 +2845,10 @@
             // pictureBoxBTCLogo
             // 
             pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
-            pictureBoxBTCLogo.Location = new Point(735, 12);
+            pictureBoxBTCLogo.Location = new Point(840, 16);
+            pictureBoxBTCLogo.Margin = new Padding(3, 4, 3, 4);
             pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
-            pictureBoxBTCLogo.Size = new Size(23, 23);
+            pictureBoxBTCLogo.Size = new Size(26, 31);
             pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxBTCLogo.TabIndex = 105;
             pictureBoxBTCLogo.TabStop = false;
@@ -2772,10 +2864,11 @@
             btnAbout.FlatStyle = FlatStyle.Flat;
             btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnAbout.ForeColor = Color.White;
-            btnAbout.Location = new Point(889, 12);
+            btnAbout.Location = new Point(1016, 16);
+            btnAbout.Margin = new Padding(3, 4, 3, 4);
             btnAbout.Name = "btnAbout";
             btnAbout.Padding = new Padding(3, 0, 0, 0);
-            btnAbout.Size = new Size(24, 24);
+            btnAbout.Size = new Size(27, 32);
             btnAbout.TabIndex = 106;
             btnAbout.Text = "\U0001f5a4";
             btnAbout.TextColor = Color.White;
@@ -2784,12 +2877,12 @@
             // 
             // BitcoinCBC
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
-            ClientSize = new Size(987, 956);
+            ClientSize = new Size(1128, 1275);
             Controls.Add(btnAbout);
             Controls.Add(pictureBoxBTCLogo);
             Controls.Add(lblCurrentPrice);
@@ -2810,6 +2903,7 @@
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "BitcoinCBC";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "BitcoinCBC";

@@ -35,6 +35,7 @@
             pictureBox3 = new PictureBox();
             linkLabel1 = new LinkLabel();
             linkLabel2 = new LinkLabel();
+            linkLabel3 = new LinkLabel();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
@@ -51,10 +52,11 @@
             btnExit.FlatStyle = FlatStyle.Flat;
             btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
             btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(402, 3);
+            btnExit.Location = new Point(456, 7);
+            btnExit.Margin = new Padding(3, 4, 3, 4);
             btnExit.Name = "btnExit";
             btnExit.Padding = new Padding(3, 1, 0, 0);
-            btnExit.Size = new Size(24, 24);
+            btnExit.Size = new Size(27, 32);
             btnExit.TabIndex = 2;
             btnExit.Text = "✖️";
             btnExit.TextColor = Color.White;
@@ -65,18 +67,21 @@
             // 
             pictureBox1.Image = Properties.Resources.PnVlfRPD_400x400;
             pictureBox1.Location = new Point(0, 0);
+            pictureBox1.Margin = new Padding(3, 4, 3, 4);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(200, 200);
+            pictureBox1.Size = new Size(229, 267);
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 3;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
             // 
             // pictureBox2
             // 
             pictureBox2.Image = Properties.Resources.logo;
-            pictureBox2.Location = new Point(209, 39);
+            pictureBox2.Location = new Point(239, 52);
+            pictureBox2.Margin = new Padding(3, 4, 3, 4);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(70, 70);
+            pictureBox2.Size = new Size(80, 93);
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 4;
             pictureBox2.TabStop = false;
@@ -84,9 +89,10 @@
             // pictureBox3
             // 
             pictureBox3.Image = Properties.Resources.text;
-            pictureBox3.Location = new Point(285, 39);
+            pictureBox3.Location = new Point(326, 52);
+            pictureBox3.Margin = new Padding(3, 4, 3, 4);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(131, 50);
+            pictureBox3.Size = new Size(150, 67);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 5;
             pictureBox3.TabStop = false;
@@ -95,32 +101,45 @@
             // 
             linkLabel1.AutoSize = true;
             linkLabel1.LinkColor = Color.FromArgb(255, 128, 0);
-            linkLabel1.Location = new Point(266, 130);
+            linkLabel1.Location = new Point(326, 228);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(103, 15);
+            linkLabel1.Size = new Size(58, 20);
             linkLabel1.TabIndex = 6;
             linkLabel1.TabStop = true;
-            linkLabel1.Text = "Check for updates";
+            linkLabel1.Text = "BXL909";
+            linkLabel1.LinkClicked += linkLabel1_LinkClicked;
             // 
             // linkLabel2
             // 
             linkLabel2.AutoSize = true;
             linkLabel2.LinkColor = Color.FromArgb(255, 128, 0);
-            linkLabel2.Location = new Point(266, 155);
+            linkLabel2.Location = new Point(294, 195);
             linkLabel2.Name = "linkLabel2";
-            linkLabel2.Size = new Size(109, 15);
+            linkLabel2.Size = new Size(138, 20);
             linkLabel2.TabIndex = 7;
             linkLabel2.TabStop = true;
             linkLabel2.Text = "Support the project";
             // 
+            // linkLabel3
+            // 
+            linkLabel3.AutoSize = true;
+            linkLabel3.LinkColor = Color.FromArgb(255, 128, 0);
+            linkLabel3.Location = new Point(294, 164);
+            linkLabel3.Name = "linkLabel3";
+            linkLabel3.Size = new Size(128, 20);
+            linkLabel3.TabIndex = 8;
+            linkLabel3.TabStop = true;
+            linkLabel3.Text = "Check for updates";
+            // 
             // About
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             CancelButton = btnExit;
-            ClientSize = new Size(429, 200);
+            ClientSize = new Size(490, 267);
             ControlBox = false;
+            Controls.Add(linkLabel3);
             Controls.Add(linkLabel2);
             Controls.Add(linkLabel1);
             Controls.Add(pictureBox3);
@@ -130,8 +149,10 @@
             DoubleBuffered = true;
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(3, 4, 3, 4);
             Name = "About";
             Text = "About";
+            Paint += About_Paint;
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
@@ -147,5 +168,6 @@
         private PictureBox pictureBox3;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel2;
+        private LinkLabel linkLabel3;
     }
 }

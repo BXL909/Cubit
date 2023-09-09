@@ -5,7 +5,6 @@
 currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
-scaling - fine in all resolutions but things break with windows scaling applied
 about screen - add link urls and auto check for updates
 */
 
@@ -137,11 +136,9 @@ namespace BitcoinCBC
             panel24.Paint += Panel_Paint;
             panelHelpTransactionList.Paint += Panel_Paint;
             panelHelpChart.Paint += Panel_Paint;
-            //panel12.Paint += Panel_Paint;
             panelTXListFooter.Paint += Panel_Paint;
             panelTXSelectContainer.Paint += Panel_Paint;
             panelHelpAddTransaction.Paint += Panel_Paint;
-            //panelTransactionsContainer.Paint += Panel_Paint;
             panelScrollbarContainer.Paint += Panel_Paint;
             panelSpeechBubble.Paint += Panel_Paint;
             #endregion
@@ -161,7 +158,6 @@ namespace BitcoinCBC
             // Add a 1-pixel border around the form
             Padding = new Padding(1);
             #endregion
-
         }
 
         #region form load
@@ -169,7 +165,6 @@ namespace BitcoinCBC
         {
             #region get historic price list
             await GetHistoricPricesAsyncWrapper();
-            //GetHistoricPricesAsync(); // these will be used to work out median prices when only a partial date has been provided
             #endregion
 
             #region start any required timers
@@ -196,12 +191,10 @@ namespace BitcoinCBC
             panel22.Invalidate();
             panel23.Invalidate();
             panel24.Invalidate();
-            // panel12.Invalidate();
             panelTXSelectContainer.Invalidate();
             panelHelpChart.Invalidate();
             panelHelpAddTransaction.Invalidate();
             panelHelpTransactionList.Invalidate();
-            //panelTransactionsContainer.Invalidate();
             panelScrollbarContainer.Invalidate();
             panelTXListFooter.Invalidate();
             panelSpeechBubble.Invalidate();
@@ -3457,34 +3450,13 @@ namespace BitcoinCBC
         {
             try
             {
-                // take a screenshot of the form and darken it:
-                Bitmap bmp = new(this.ClientRectangle.Width, this.ClientRectangle.Height);
-                using (Graphics G = Graphics.FromImage(bmp))
-                {
-                    G.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                    G.CopyFromScreen(this.PointToScreen(new Point(0, 0)), new Point(0, 0), this.ClientRectangle.Size);
-                    double percent = 0.60;
-                    Color darken = Color.FromArgb((int)(255 * percent), Color.Black);
-                    using Brush brsh = new SolidBrush(darken);
-                    G.FillRectangle(brsh, this.ClientRectangle);
-                }
-                // put the darkened screenshot into a Panel and bring it to the front:
-                using Panel p = new();
-                p.Location = new Point(0, 0);
-                p.Size = this.ClientRectangle.Size;
-                p.BackgroundImage = bmp;
-                this.Controls.Add(p);
-                p.BringToFront();
-
                 // display about screen:
                 Form frm = new About
                 {
                     Owner = this, // Set the parent window as the owner of the modal window
                     StartPosition = FormStartPosition.CenterParent, // Set the start position to center of parent
                 };
-                frm.StartPosition = FormStartPosition.CenterParent;
                 frm.ShowDialog(this);
-                // panel will be disposed and the form will "lighten" again...
             }
             catch (Exception ex)
             {
