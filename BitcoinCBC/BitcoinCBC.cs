@@ -1,12 +1,7 @@
-﻿/*
-   ██████╗ost      ██████╗asis  ██████╗alculator
-  ██╔════╝         ██╔══██╗   ██╔════╝                       
-  ██║     ██╗   ██╗██████╔╝██╗██║ |_) o _|_  _  _  o ._  
-  ██║     ██║   ██║██╔══██╗██║██║ |_) |  |_ (_ (_) | | | 
-  ╚██████╗╚██████╔╝██████╔╝██║╚██████╗
-   ╚═════╝ ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝
-
-Cubic/Cubit? 
+﻿/*  
+╔═╗╦ ╦╔╗ ╦╔╦╗
+║  ║ ║╠╩╗║ ║ 
+╚═╝╚═╝╚═╝╩ ╩
 currently getting the historic prices three times - once to estimate prices and once for each chart. Reduce to just one.
 currency conversion
 option to expand listview or chart to obscure the other?
