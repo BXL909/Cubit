@@ -2,7 +2,6 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-currently getting the historic prices three times - once to estimate prices and once for each chart. Reduce to just one.
 currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
@@ -25,6 +24,7 @@ using BitcoinCBC.Properties;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 #endregion
 
 namespace BitcoinCBC
@@ -32,7 +32,7 @@ namespace BitcoinCBC
     public partial class BitcoinCBC : Form
     {
         #region variable declaration
-        List<PriceList> HistoricPrices;
+        List<PriceCoordsAndFormattedDateList> HistoricPrices;
 
         readonly string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
         readonly string[] monthsNumeric = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
@@ -43,6 +43,7 @@ namespace BitcoinCBC
         int selectedDayNumeric = 0;
         decimal selectedRangePercentage = 0;
         decimal selectedMedianPrice = 0;
+        bool GotHistoricPrices = false;
         string TXDataToDelete = ""; // holds the dateAdded value of the transaction selected for deletion
         private bool isRobotSpeaking = false; // Robot
         private CancellationTokenSource? robotSpeakCancellationTokenSource; // Robot - cancel speaking
@@ -56,6 +57,7 @@ namespace BitcoinCBC
         bool transactionsUpButtonPressed = false; // Listview - is scroll up pressed?
         bool transactionsDownButtonPressed = false; // Listview - is scroll down pressed?
         #region chart variables
+        bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
         private ScottPlot.Plottable.ScatterPlot scatter; // chart data gets plotted onto this
         private ScottPlot.Plottable.BubblePlot bubbleplotbuy; // chart data gets plotted onto this
@@ -110,6 +112,7 @@ namespace BitcoinCBC
         public BitcoinCBC()
         {
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
+
             InitializeComponent();
 
             #region rounded panels
@@ -158,14 +161,17 @@ namespace BitcoinCBC
             // Add a 1-pixel border around the form
             Padding = new Padding(1);
             #endregion
-            #region get historic price list
-            GetHistoricPricesAsync(); // these will be used to work out median prices when only a partial date has been provided
-            #endregion
+
         }
 
         #region form load
         private async void BitcoinCBC_Load(object sender, EventArgs e)
         {
+            #region get historic price list
+            await GetHistoricPricesAsyncWrapper();
+            //GetHistoricPricesAsync(); // these will be used to work out median prices when only a partial date has been provided
+            #endregion
+
             #region start any required timers
             blinkTimer.Start(); // used only to make robot blink
             #endregion
@@ -981,14 +987,8 @@ namespace BitcoinCBC
         #region get / estimate prices
 
         #region get a list of sample historic prices (used to estimate prices from partial dates)
-        private async void GetHistoricPricesAsync()
-        {
-            await GetHistoricPrices();
-        }
 
-        bool safeToTrackPriceOnChart = false;
-
-        private async Task GetHistoricPrices()
+        private async Task GetHistoricPricesAsync()
         {
             try
             {
@@ -1000,11 +1000,11 @@ namespace BitcoinCBC
                 var valuesToken = jsonObj["values"];
                 if (valuesToken != null && valuesToken.Type == JTokenType.Array)
                 {
-                    HistoricPrices = new List<PriceList>();
+                    HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
 
                     foreach (var priceToken in valuesToken)
                     {
-                        var priceList = priceToken.ToObject<PriceList>();
+                        var priceList = priceToken.ToObject<PriceCoordsAndFormattedDateList>();
 
                         if (priceList != null)
                         {
@@ -1017,7 +1017,7 @@ namespace BitcoinCBC
                             safeToTrackPriceOnChart = true;
                         }
                     }
-
+                    GotHistoricPrices = true;
                 }
             }
             catch (Exception ex)
@@ -1025,6 +1025,12 @@ namespace BitcoinCBC
                 HandleException(ex, "GetHistoricPrices");
             }
         }
+
+        public async Task GetHistoricPricesAsyncWrapper()
+        {
+            await GetHistoricPricesAsync();
+        }
+
         #endregion
 
         #region estimate price based on date provided
@@ -1042,7 +1048,7 @@ namespace BitcoinCBC
             {
                 selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
 
-                List<PriceList> PricesForSelectedYear = HistoricPrices
+                List<PriceCoordsAndFormattedDateList> PricesForSelectedYear = HistoricPrices
                     .Where(pricelist => pricelist.FormattedDate?.Length >= 4 && Convert.ToInt16(pricelist.FormattedDate[..4]) == selectedYear)
                     .ToList();
 
@@ -1085,7 +1091,7 @@ namespace BitcoinCBC
                     selectedMonthNumeric = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
                     selectedMonth = months[comboBoxMonthInput.SelectedIndex - 1];
 
-                    List<PriceList> PricesForSelectedYearMonth = HistoricPrices
+                    List<PriceCoordsAndFormattedDateList> PricesForSelectedYearMonth = HistoricPrices
                     .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?[..4]) == selectedYear)
                     .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?.Substring(4, 2)) == selectedMonthNumeric)
                     .ToList();
@@ -2287,18 +2293,27 @@ namespace BitcoinCBC
                 #region price line
 
                 // get a series of historic price data
-                var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
-                JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
-                List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
+                //var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
+                //JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
+                //List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
 
                 // set the number of points on the graph
-                int pointCount = PriceList.Count;
+                //int pointCount = PriceList.Count;
+
+                int pointCount;
+                if (GotHistoricPrices == true)
+                {
+                    pointCount = HistoricPrices.Count;
+                }
+
 
                 // create arrays of doubles of the prices and the dates
-                double[] yValues = PriceList.Select(h => (double)(h.Y)).ToArray();
+                //double[] yValues = PriceList.Select(h => (double)(h.Y)).ToArray();
+                double[] yValues = HistoricPrices.Select(h => (double)(h.Y)).ToArray();
 
                 // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                //List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
                 double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
                 formsPlot1.Plot.SetAxisLimits(xValues.Min(), xValues.Max(), 0, yValues.Max() * 1.05);
@@ -2530,15 +2545,20 @@ namespace BitcoinCBC
                 formsPlot1.Plot.YAxis.Label("Price (USD)", size: 12, bold: false);
 
                 // get a series of historic price data
-                var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
-                JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
-                List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
+                //var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
+                //JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
+                //List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
 
                 // set the number of points on the graph
-                int pointCount = PriceList.Count;
-
+                //int pointCount = PriceList.Count;
+                int pointCount;
+                if (GotHistoricPrices == true)
+                {
+                    pointCount = HistoricPrices.Count;
+                }
                 // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                //List<DateTime> dateTimes = PriceList.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
                 double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
                 #region price line
@@ -2546,9 +2566,11 @@ namespace BitcoinCBC
                 List<double> filteredYValues = new();
                 List<double> filteredXValues = new();
 
-                for (int i = 0; i < PriceList.Count; i++)
+                //for (int i = 0; i < PriceList.Count; i++)
+                for (int i = 0; i < HistoricPrices.Count; i++)
                 {
-                    double yValue = (double)PriceList[i].Y;
+                    //double yValue = (double)PriceList[i].Y;
+                    double yValue = (double)HistoricPrices[i].Y;
                     if (yValue > 0)
                     {
                         filteredYValues.Add(Math.Log10(yValue));
@@ -3436,7 +3458,7 @@ namespace BitcoinCBC
             try
             {
                 // take a screenshot of the form and darken it:
-                Bitmap bmp = new Bitmap(this.ClientRectangle.Width, this.ClientRectangle.Height);
+                Bitmap bmp = new(this.ClientRectangle.Width, this.ClientRectangle.Height);
                 using (Graphics G = Graphics.FromImage(bmp))
                 {
                     G.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
@@ -3447,23 +3469,22 @@ namespace BitcoinCBC
                     G.FillRectangle(brsh, this.ClientRectangle);
                 }
                 // put the darkened screenshot into a Panel and bring it to the front:
-                using (Panel p = new Panel())
-                {
-                    p.Location = new Point(0, 0);
-                    p.Size = this.ClientRectangle.Size;
-                    p.BackgroundImage = bmp;
-                    this.Controls.Add(p);
-                    p.BringToFront();
+                using Panel p = new();
+                p.Location = new Point(0, 0);
+                p.Size = this.ClientRectangle.Size;
+                p.BackgroundImage = bmp;
+                this.Controls.Add(p);
+                p.BringToFront();
 
-                    // display about screen:
-                    Form frm = new About
-                    {
-                        Owner = this, // Set the parent window as the owner of the modal window
-                        StartPosition = FormStartPosition.CenterParent, // Set the start position to center of parent
-                    };
-                    frm.StartPosition = FormStartPosition.CenterParent;
-                    frm.ShowDialog(this);
-                } // panel will be disposed and the form will "lighten" again...
+                // display about screen:
+                Form frm = new About
+                {
+                    Owner = this, // Set the parent window as the owner of the modal window
+                    StartPosition = FormStartPosition.CenterParent, // Set the start position to center of parent
+                };
+                frm.StartPosition = FormStartPosition.CenterParent;
+                frm.ShowDialog(this);
+                // panel will be disposed and the form will "lighten" again...
             }
             catch (Exception ex)
             {
@@ -3920,7 +3941,7 @@ namespace BitcoinCBC
             }
         }
 
-        public class PriceList
+        public class PriceCoordsAndFormattedDateList
         {
             public string? X { get; set; } //unix date
             public decimal Y { get; set; } // USD price
