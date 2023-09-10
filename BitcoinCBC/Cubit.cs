@@ -5,8 +5,7 @@
 currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
-about screen - add link urls and auto check for updates
-make fiat/btc input field enabled if the other is disabled
+about screen - auto check for updates
 */
 
 #region Using
