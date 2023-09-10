@@ -1,4 +1,4 @@
-﻿namespace BitcoinCBC
+﻿namespace Cubit
 {
     partial class About
     {

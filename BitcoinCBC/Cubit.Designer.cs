@@ -1,6 +1,6 @@
-﻿namespace BitcoinCBC
+﻿namespace Cubit
 {
-    partial class BitcoinCBC
+    partial class Cubit
     {
         /// <summary>
         ///  Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BitcoinCBC));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Cubit));
             btnExit = new CustomControls.RJControls.RJButton();
             btnMinimize = new CustomControls.RJControls.RJButton();
             comboBoxYearInput = new CustomControls.RJControls.RJComboBox();

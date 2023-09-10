@@ -1,7 +1,7 @@
 ﻿using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
-namespace BitcoinCBC
+namespace Cubit
 {
     public partial class About : Form
     {

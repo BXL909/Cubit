@@ -6,6 +6,7 @@ currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
 about screen - add link urls and auto check for updates
+make fiat/btc input field enabled if the other is disabled
 */
 
 #region Using
@@ -19,16 +20,16 @@ using Control = System.Windows.Forms.Control;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 using Panel = System.Windows.Forms.Panel;
 using System.Drawing.Drawing2D;
-using BitcoinCBC.Properties;
+using Cubit.Properties;
 using ScottPlot;
 using ScottPlot.Plottable;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 #endregion
 
-namespace BitcoinCBC
+namespace Cubit
 {
-    public partial class BitcoinCBC : Form
+    public partial class Cubit : Form
     {
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices;
@@ -108,7 +109,7 @@ namespace BitcoinCBC
          );
         #endregion
 
-        public BitcoinCBC()
+        public Cubit()
         {
             this.SetStyle(ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint, true);
 
