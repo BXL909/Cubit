@@ -208,6 +208,7 @@
             labelWelcomeText = new Label();
             pictureBox3 = new PictureBox();
             pictureBox4 = new PictureBox();
+            panelRobotSpeakOuter = new Panel();
             lblRobotSpeak = new Label();
             panelHideSpeechTriangle = new Panel();
             pictureBoxRobot = new PictureBox();
@@ -263,6 +264,7 @@
             panelWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
+            panelRobotSpeakOuter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -2712,7 +2714,7 @@
             // 
             panelSpeechBubble.BackColor = Color.FromArgb(255, 234, 202);
             panelSpeechBubble.Controls.Add(panelWelcome);
-            panelSpeechBubble.Controls.Add(lblRobotSpeak);
+            panelSpeechBubble.Controls.Add(panelRobotSpeakOuter);
             panelSpeechBubble.Location = new Point(0, 26);
             panelSpeechBubble.Name = "panelSpeechBubble";
             panelSpeechBubble.Size = new Size(165, 0);
@@ -2726,7 +2728,7 @@
             panelWelcome.Controls.Add(pictureBox4);
             panelWelcome.Location = new Point(2, 2);
             panelWelcome.Name = "panelWelcome";
-            panelWelcome.Size = new Size(161, 93);
+            panelWelcome.Size = new Size(161, 92);
             panelWelcome.TabIndex = 25;
             // 
             // labelWelcomeText
@@ -2759,6 +2761,15 @@
             pictureBox4.TabIndex = 105;
             pictureBox4.TabStop = false;
             // 
+            // panelRobotSpeakOuter
+            // 
+            panelRobotSpeakOuter.BackColor = Color.FromArgb(255, 247, 225);
+            panelRobotSpeakOuter.Controls.Add(lblRobotSpeak);
+            panelRobotSpeakOuter.Location = new Point(2, 2);
+            panelRobotSpeakOuter.Name = "panelRobotSpeakOuter";
+            panelRobotSpeakOuter.Size = new Size(161, 92);
+            panelRobotSpeakOuter.TabIndex = 108;
+            // 
             // lblRobotSpeak
             // 
             lblRobotSpeak.BackColor = Color.Transparent;
@@ -2766,7 +2777,7 @@
             lblRobotSpeak.ForeColor = Color.Orange;
             lblRobotSpeak.Location = new Point(0, 0);
             lblRobotSpeak.Name = "lblRobotSpeak";
-            lblRobotSpeak.Size = new Size(165, 93);
+            lblRobotSpeak.Size = new Size(165, 92);
             lblRobotSpeak.TabIndex = 24;
             lblRobotSpeak.Text = "Robot speak 12345";
             lblRobotSpeak.TextAlign = ContentAlignment.MiddleCenter;
@@ -3071,6 +3082,7 @@
             panelWelcome.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
+            panelRobotSpeakOuter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
@@ -3276,5 +3288,6 @@
         private PictureBox pictureBox3;
         private PictureBox pictureBox4;
         private Label labelWelcomeText;
+        private Panel panelRobotSpeakOuter;
     }
 }
