@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="BitcoinCBC.Designer.csOLD" />
     <None Remove="Resources\BitcoinCBCRobotActive5.png" />
     <None Remove="Resources\SpeechBubble.png" />
   </ItemGroup>

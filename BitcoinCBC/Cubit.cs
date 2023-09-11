@@ -2,7 +2,6 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-currency conversion
 option to expand listview or chart to obscure the other?
 check cost basis being correctly calculated in all circumstances
 about screen - auto check for updates
@@ -55,6 +54,13 @@ namespace Cubit
         bool isTransactionsButtonPressed = false; // Listview - is a scroll up or down button pressed?
         bool transactionsUpButtonPressed = false; // Listview - is scroll up pressed?
         bool transactionsDownButtonPressed = false; // Listview - is scroll down pressed?
+        private Panel panelToExpandVert; // panel animation vertical
+        private Panel panelToShrinkVert; // panel animation vertical
+        private int panelMaxHeight = 0; // panel animation vertical
+        private int panelMinHeight = 0; // panel animation vertical
+        private int currentHeightExpandingPanel = 0; // panel animation vertical
+        private int currentHeightShrinkingPanel = 0; // panel animation vertical
+        bool initialCurrencySetup = true;
         #region chart variables
         bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
@@ -79,6 +85,8 @@ namespace Cubit
         bool cursorTrackSellTX = false; // Chart options
         bool cursorTrackNothing = false; // Chart options
         bool chartFinishedRendering = false;
+        decimal selectedCurrency = 0;
+        decimal exchangeRate = 1;
         #endregion
         #endregion
         List<double> listBuyBTCTransactionDate = new();
@@ -134,6 +142,9 @@ namespace Cubit
             panel22.Paint += Panel_Paint;
             panel23.Paint += Panel_Paint;
             panel24.Paint += Panel_Paint;
+            panelWelcome.Paint += Panel_Paint;
+            panelCurrencyMenu.Paint += Panel_Paint;
+            panelCurrency.Paint += Panel_Paint;
             panelHelpTransactionList.Paint += Panel_Paint;
             panelHelpChart.Paint += Panel_Paint;
             panelTXListFooter.Paint += Panel_Paint;
@@ -191,6 +202,9 @@ namespace Cubit
             panel22.Invalidate();
             panel23.Invalidate();
             panel24.Invalidate();
+            panelWelcome.Invalidate();
+            panelCurrency.Invalidate();
+            panelCurrencyMenu.Invalidate();
             panelTXSelectContainer.Invalidate();
             panelHelpChart.Invalidate();
             panelHelpAddTransaction.Invalidate();
@@ -200,23 +214,15 @@ namespace Cubit
             panelSpeechBubble.Invalidate();
             #endregion
 
-            #region get current price
-            var (priceUSD, priceGBP, priceEUR, priceXAU) = BitcoinExplorerOrgGetPrice();
-            if (string.IsNullOrEmpty(priceUSD) || !double.TryParse(priceUSD, out _))
-            {
-                priceUSD = "0";
-            }
-            lblCurrentPrice.Invoke((MethodInvoker)delegate
-            {
-                lblCurrentPrice.Text = Convert.ToDecimal(priceUSD).ToString("0.00");
-                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
-            });
-            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
-            {
-                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
-            });
-            #endregion
+            BtnUSD_Click(sender, e);
 
+            labelWelcomeText.Invoke((MethodInvoker)delegate
+            {
+                labelWelcomeText.Text = "at your service...";
+            });
+            InterruptAndStartNewRobotSpeak("None of this text is visible on screen but it's sufficiently long enough to make a small delay to see welcome message");
+
+            /*
             #region get transactions from file
             await SetupTransactionsList();
             #endregion
@@ -226,6 +232,7 @@ namespace Cubit
 
             DrawPriceChart();
             #endregion
+            */
         }
         #endregion
 
@@ -252,7 +259,7 @@ namespace Cubit
                     });
                     lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
                     {
-                        lblFiatAmountSpentRecd.Text = "Fiat received";
+                        lblFiatAmountSpentRecd.Text = selectedCurrencyName + " received";
                     });
 
                     if (lblAddDataFiat.Text.Length > 1 && lblAddDataFiat.Text[0] == '-')
@@ -289,7 +296,7 @@ namespace Cubit
                     });
                     lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
                     {
-                        lblFiatAmountSpentRecd.Text = "Fiat spent";
+                        lblFiatAmountSpentRecd.Text = selectedCurrencyName + " spent";
                     });
 
                     if (lblAddDataBTC.Text.Length > 1 && lblAddDataBTC.Text[0] == '-')
@@ -985,6 +992,39 @@ namespace Cubit
         {
             try
             {
+                #region get current price
+                var (priceUSD, priceGBP, priceEUR, priceXAU) = await BitcoinExplorerOrgGetPriceAsync();
+                if (string.IsNullOrEmpty(priceUSD) || !double.TryParse(priceUSD, out _))
+                {
+                    priceUSD = "0";
+                }
+                if (btnUSD.Enabled == false)
+                {
+                    selectedCurrency = Convert.ToDecimal(priceUSD);
+                }
+                if (btnEUR.Enabled == false)
+                {
+                    selectedCurrency = Convert.ToDecimal(priceEUR);
+                }
+                if (btnGBP.Enabled == false)
+                {
+                    selectedCurrency = Convert.ToDecimal(priceGBP);
+                }
+                if (btnXAU.Enabled == false)
+                {
+                    selectedCurrency = Convert.ToDecimal(priceXAU);
+                }
+                lblCurrentPrice.Invoke((MethodInvoker)delegate
+                {
+                    lblCurrentPrice.Text = Convert.ToDecimal(selectedCurrency).ToString("0.00");
+                    lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+                });
+                pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+                {
+                    pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
+                });
+                #endregion
+
                 // get a series of historic price data
                 var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
                 JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
@@ -993,6 +1033,8 @@ namespace Cubit
                 var valuesToken = jsonObj["values"];
                 if (valuesToken != null && valuesToken.Type == JTokenType.Array)
                 {
+
+
                     HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
 
                     foreach (var priceToken in valuesToken)
@@ -1010,6 +1052,14 @@ namespace Cubit
                             safeToTrackPriceOnChart = true;
                         }
                     }
+                    #region convert to selected currency
+                    exchangeRate = selectedCurrency / Convert.ToDecimal(priceUSD);
+
+                    foreach (var item in HistoricPrices)
+                    {
+                        item.Y *= exchangeRate;
+                    }
+                    #endregion
                     GotHistoricPrices = true;
                 }
             }
@@ -1193,18 +1243,21 @@ namespace Cubit
 
         private async void BtnPriceRefresh_Click(object sender, EventArgs e)
         {
-            GetPrice();
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
+            InitializeChart();
             DrawPriceChart();
+            InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
         }
 
         #endregion
 
         #region get current price
 
-        private void GetPrice()
+        private async void GetPrice()
         {
-            var (priceUSD, priceGBP, priceEUR, priceXAU) = BitcoinExplorerOrgGetPrice();
+            var (priceUSD, priceGBP, priceEUR, priceXAU) = await BitcoinExplorerOrgGetPriceAsync();
             if (string.IsNullOrEmpty(priceUSD) || !double.TryParse(priceUSD, out _))
             {
                 priceUSD = "0";
@@ -1220,6 +1273,7 @@ namespace Cubit
             });
         }
 
+        /*
         private (string priceUSD, string priceGBP, string priceEUR, string priceXAU) BitcoinExplorerOrgGetPrice()
         {
             try
@@ -1236,6 +1290,27 @@ namespace Cubit
             catch (Exception ex)
             {
                 HandleException(ex, "BitcoinExplorerOrgGetPrice");
+            }
+            return ("error", "error", "error", "error");
+        }
+        */
+
+        private async Task<(string priceUSD, string priceGBP, string priceEUR, string priceXAU)> BitcoinExplorerOrgGetPriceAsync()
+        {
+            try
+            {
+                using HttpClient client = new();
+                var response = await client.GetStringAsync("https://bitcoinexplorer.org/api/price");
+                var data = JObject.Parse(response);
+                string priceUSD = Convert.ToString(data["usd"]);
+                string priceGBP = Convert.ToString(data["gbp"]);
+                string priceEUR = Convert.ToString(data["eur"]);
+                string priceXAU = Convert.ToString(data["xau"]);
+                return (priceUSD, priceGBP, priceEUR, priceXAU);
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex, "BitcoinExplorerOrgGetPriceAsync");
             }
             return ("error", "error", "error", "error");
         }
@@ -2269,7 +2344,7 @@ namespace Cubit
                 // clear any previous graph
                 formsPlot1.Plot.Clear();
                 formsPlot1.Plot.Title("", size: 8, bold: true);
-                formsPlot1.Plot.YAxis.Label("Price (USD)", size: 12, bold: false);
+                formsPlot1.Plot.YAxis.Label("Price (" + selectedCurrencyName + ")", size: 12, bold: false);
                 // switch to linear scaling in case it was log before
                 formsPlot1.Plot.YAxis.MinorLogScale(false);
                 formsPlot1.Plot.YAxis.MajorGrid(false);
@@ -2535,7 +2610,7 @@ namespace Cubit
                 // clear any previous graph
                 formsPlot1.Plot.Clear();
                 formsPlot1.Plot.Title("", size: 8, bold: true);
-                formsPlot1.Plot.YAxis.Label("Price (USD)", size: 12, bold: false);
+                formsPlot1.Plot.YAxis.Label("Price (" + selectedCurrencyName + ")", size: 12, bold: false);
 
                 // get a series of historic price data
                 //var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
@@ -2914,10 +2989,10 @@ namespace Cubit
 
         #region expand
 
-        private void StartExpandingPanel(Panel panel)
+        private void StartExpandingPanelHoriz(Panel panel)
         {
             panelToExpand = panel;
-            ExpandPanelTimer.Start();
+            ExpandPanelTimerHoriz.Start();
         }
 
         private void ExpandPanelTimer_Tick(object sender, EventArgs e)
@@ -2942,7 +3017,7 @@ namespace Cubit
 
             if (currentWidthExpandingPanel >= panelMaxWidth) // expanding is complete
             {
-                ExpandPanelTimer.Stop();
+                ExpandPanelTimerHoriz.Stop();
             }
             else // expand further
             {
@@ -3053,7 +3128,7 @@ namespace Cubit
                 panelToShrink.Width = currentWidthShrinkingPanel;
                 panelToShrink.Invalidate();
 
-                if (!ExpandPanelTimer.Enabled) // if the expand timer is running, it will handle these relocates instead
+                if (!ExpandPanelTimerHoriz.Enabled) // if the expand timer is running, it will handle these relocates instead
                 {
                     //shift the other panels along
                     panel21.Invoke((MethodInvoker)delegate
@@ -3085,7 +3160,7 @@ namespace Cubit
             if (btnExpandGridlinesPanel.Text == "▶")
             {
                 ShrinkOpenPanels();
-                StartExpandingPanel(panel18);
+                StartExpandingPanelHoriz(panel18);
                 currentWidthExpandingPanel = panel18.Width;
                 btnExpandGridlinesPanel.Invoke((MethodInvoker)delegate
                 {
@@ -3108,7 +3183,7 @@ namespace Cubit
             if (btnExpandDatelinesPanel.Text == "▶")
             {
                 ShrinkOpenPanels();
-                StartExpandingPanel(panel21);
+                StartExpandingPanelHoriz(panel21);
                 currentWidthExpandingPanel = panel21.Width;
                 btnExpandDatelinesPanel.Invoke((MethodInvoker)delegate
                 {
@@ -3131,7 +3206,7 @@ namespace Cubit
             if (btnExpandTransactionsPanel.Text == "▶")
             {
                 ShrinkOpenPanels();
-                StartExpandingPanel(panel22);
+                StartExpandingPanelHoriz(panel22);
                 currentWidthExpandingPanel = panel22.Width;
                 btnExpandTransactionsPanel.Invoke((MethodInvoker)delegate
                 {
@@ -3154,7 +3229,7 @@ namespace Cubit
             if (btnExpandTrackingPanel.Text == "▶")
             {
                 ShrinkOpenPanels();
-                StartExpandingPanel(panel23);
+                StartExpandingPanelHoriz(panel23);
                 currentWidthExpandingPanel = panel23.Width;
                 btnExpandTrackingPanel.Invoke((MethodInvoker)delegate
                 {
@@ -3738,6 +3813,7 @@ namespace Cubit
             {
                 ShrinkRobotTimer.Stop();
                 panelSpeechBubble.Visible = false;
+                panelWelcome.Visible = false;
             }
             else // shrink further
             {
@@ -3945,5 +4021,302 @@ namespace Cubit
         }
 
         #endregion
+
+        private void StartExpandingPanelVert(Panel panel)
+        {
+            panelToExpandVert = panel;
+            ExpandPanelTimerVert.Start();
+        }
+
+        private void StartShrinkingPanelVert(Panel panel)
+        {
+            panelToShrinkVert = panel;
+            ShrinkPanelTimerVert.Start();
+        }
+
+        private void ExpandCurrencyTimer_Tick(object sender, EventArgs e)
+        {
+            currentHeightExpandingPanel += 4;
+            if (panelToExpandVert == panelCurrency)
+            {
+                panelMaxHeight = 129;
+            }
+
+            if (currentHeightExpandingPanel >= panelMaxHeight) // expanding is complete
+            {
+                panelToExpandVert.Height = panelMaxHeight;
+                ExpandPanelTimerVert.Stop();
+            }
+            else // expand further
+            {
+                panelToExpandVert.Height = currentHeightExpandingPanel;
+                panelToExpandVert.Invalidate();
+
+            }
+        }
+
+        private void ShrinkCurrencyTimer_Tick(object sender, EventArgs e)
+        {
+            currentHeightShrinkingPanel -= 4;
+            if (panelToShrinkVert == panelCurrency)
+            {
+                panelMinHeight = 0;
+            }
+
+            if (currentHeightShrinkingPanel <= panelMinHeight) // shrinking is complete
+            {
+                panelToShrinkVert.Height = panelMinHeight;
+                ShrinkPanelTimerVert.Stop();
+            }
+            else // shrink further
+            {
+                panelToShrinkVert.Height = currentHeightShrinkingPanel;
+                panelToShrinkVert.Invalidate();
+
+            }
+        }
+
+        private void BtnCurrency_Click(object sender, EventArgs e)
+        {
+            if (panelCurrency.Height > 0)
+            { //shrink the panel
+                currentHeightShrinkingPanel = panelCurrency.Height;
+                StartShrinkingPanelVert(panelCurrency);
+
+            }
+            else
+            { //expand the panel
+                currentHeightExpandingPanel = panelCurrency.Height;
+                StartExpandingPanelVert(panelCurrency);
+            }
+        }
+
+        string selectedCurrencyName = "USD";
+
+        private async void BtnUSD_Click(object sender, EventArgs e)
+        {
+            EnableCurrencyButtons();
+            btnUSD.Enabled = false;
+            currentHeightShrinkingPanel = panelCurrency.Height;
+            StartShrinkingPanelVert(panelCurrency);
+            selectedCurrencyName = "USD";
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
+            await SetupTransactionsList();
+            InitializeChart();
+            DrawPriceChart();
+            label26.Invoke((MethodInvoker)delegate
+            {
+                label26.Text = "USD";
+            });
+            label11.Invoke((MethodInvoker)delegate
+            {
+                label11.Text = "USD*";
+            });
+            label9.Invoke((MethodInvoker)delegate
+            {
+                label9.Text = "Price (USD)*";
+            });
+            label23.Invoke((MethodInvoker)delegate
+            {
+                label23.Text = "Price (USD)";
+            });
+            label1.Invoke((MethodInvoker)delegate
+            {
+                label1.Text = "Price (USD)";
+            });
+            if (btnBoughtBitcoin.Text == "✔️")
+            {
+                lblFiatAmountSpentRecd.Text = "USD spent";
+            }
+            else
+            {
+                lblFiatAmountSpentRecd.Text = "USD received";
+            }
+            if (!initialCurrencySetup)
+            {
+                InterruptAndStartNewRobotSpeak("Currency set to USD.");
+            }
+            initialCurrencySetup = false;
+        }
+
+        private async void BtnEUR_Click(object sender, EventArgs e)
+        {
+            EnableCurrencyButtons();
+            btnEUR.Enabled = false;
+            currentHeightShrinkingPanel = panelCurrency.Height;
+            StartShrinkingPanelVert(panelCurrency);
+            selectedCurrencyName = "EUR";
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
+            await SetupTransactionsList();
+            InitializeChart();
+            DrawPriceChart();
+            label26.Invoke((MethodInvoker)delegate
+            {
+                label26.Text = "EUR";
+            });
+            label11.Invoke((MethodInvoker)delegate
+            {
+                label11.Text = "EUR*";
+            });
+            label9.Invoke((MethodInvoker)delegate
+            {
+                label9.Text = "Price (EUR)*";
+            });
+            label23.Invoke((MethodInvoker)delegate
+            {
+                label23.Text = "Price (EUR)";
+            });
+            label1.Invoke((MethodInvoker)delegate
+            {
+                label1.Text = "Price (EUR)";
+            });
+            if (btnBoughtBitcoin.Text == "✔️")
+            {
+                lblFiatAmountSpentRecd.Text = "EUR spent";
+            }
+            else
+            {
+                lblFiatAmountSpentRecd.Text = "EUR received";
+            }
+            if (!initialCurrencySetup)
+            {
+                InterruptAndStartNewRobotSpeak("Currency set to EUR.");
+            }
+            initialCurrencySetup = false;
+        }
+
+        private async void BtnGBP_Click(object sender, EventArgs e)
+        {
+            EnableCurrencyButtons();
+            btnGBP.Enabled = false;
+            currentHeightShrinkingPanel = panelCurrency.Height;
+            StartShrinkingPanelVert(panelCurrency);
+            selectedCurrencyName = "GBP";
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
+            await SetupTransactionsList();
+            InitializeChart();
+            DrawPriceChart();
+            label26.Invoke((MethodInvoker)delegate
+            {
+                label26.Text = "GBP";
+            });
+            label11.Invoke((MethodInvoker)delegate
+            {
+                label11.Text = "GBP*";
+            });
+            label9.Invoke((MethodInvoker)delegate
+            {
+                label9.Text = "Price (GBP)*";
+            });
+            label23.Invoke((MethodInvoker)delegate
+            {
+                label23.Text = "Price (GBP)";
+            });
+            label1.Invoke((MethodInvoker)delegate
+            {
+                label1.Text = "Price (GBP)";
+            });
+            if (btnBoughtBitcoin.Text == "✔️")
+            {
+                lblFiatAmountSpentRecd.Text = "GBP spent";
+            }
+            else
+            {
+                lblFiatAmountSpentRecd.Text = "GBP received";
+            }
+            if (!initialCurrencySetup)
+            {
+                InterruptAndStartNewRobotSpeak("Currency set to GBP.");
+            }
+            initialCurrencySetup = false;
+        }
+
+        private async void BtnXAU_Click(object sender, EventArgs e)
+        {
+            EnableCurrencyButtons();
+            btnXAU.Enabled = false;
+            currentHeightShrinkingPanel = panelCurrency.Height;
+            StartShrinkingPanelVert(panelCurrency);
+            selectedCurrencyName = "XAU";
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
+            await SetupTransactionsList();
+            InitializeChart();
+            DrawPriceChart();
+            label26.Invoke((MethodInvoker)delegate
+            {
+                label26.Text = "XAU";
+            });
+            label11.Invoke((MethodInvoker)delegate
+            {
+                label11.Text = "XAU*";
+            });
+            label9.Invoke((MethodInvoker)delegate
+            {
+                label9.Text = "Price (XAU)*";
+            });
+            label23.Invoke((MethodInvoker)delegate
+            {
+                label23.Text = "Price (XAU)";
+            });
+            label1.Invoke((MethodInvoker)delegate
+            {
+                label1.Text = "Price (GBP)";
+            });
+            if (btnBoughtBitcoin.Text == "✔️")
+            {
+                lblFiatAmountSpentRecd.Text = "XAU spent";
+            }
+            else
+            {
+                lblFiatAmountSpentRecd.Text = "XAU received";
+            }
+            if (!initialCurrencySetup)
+            {
+                InterruptAndStartNewRobotSpeak("Currency set to XAU.");
+            }
+            initialCurrencySetup = false;
+        }
+
+        private void EnableCurrencyButtons()
+        {
+            btnUSD.Enabled = true;
+            btnEUR.Enabled = true;
+            btnGBP.Enabled = true;
+            btnXAU.Enabled = true;
+        }
+
+        private List<string> welcomeMessages = new List<string>
+        {
+            "Who thought Cubit was a good name for a robot?",
+            "Greetings, human.",
+            "I'm here to assist you!",
+            "1 BTC = 1 BTC",
+            "I'm not lazy; I'm just in sleep mode.",
+            "All your base are belong to us.",
+            "My opposable thumbs are wasted here.",
+            "I can also make toast.",
+            "Stop clicking me.",
+            "I'm better than this. All I do is count sats.",
+
+        };
+
+        private void pictureBoxRobot_Click(object sender, EventArgs e)
+        {
+            panelWelcome.Visible = true;
+            // Create a Random object to select a random message
+            Random random = new Random();
+            int randomIndex = random.Next(0, welcomeMessages.Count);
+
+            labelWelcomeText.Invoke((MethodInvoker)delegate
+            {
+                // Set the label text to the randomly selected message
+                labelWelcomeText.Text = welcomeMessages[randomIndex];
+            });
+            InterruptAndStartNewRobotSpeak("None of this text is visible on screen but it's long enough to make a small delay");
+        }
     }
 }
