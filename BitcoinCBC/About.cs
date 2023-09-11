@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics;
 using System.Drawing.Drawing2D;
+using System.Net;
 using System.Runtime.InteropServices;
 
 namespace Cubit
 {
     public partial class About : Form
     {
+        public string CurrentVersion { get; set; }
 
         #region rounded form
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -133,6 +135,87 @@ namespace Cubit
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
+        }
+
+        private void About_Load(object sender, EventArgs e)
+        {
+            CheckForUpdates();
+        }
+
+        private void CheckForUpdates()
+        {
+            try
+            {
+                lblCurrentVersion.Text = "Cubit v" + CurrentVersion.ToString();
+                using WebClient client = new();
+                string VersionURL = "https://cubit.btcdir.org/CubitVersion.txt";
+                string LatestVersion = client.DownloadString(VersionURL);
+
+                if (LatestVersion != CurrentVersion)
+                {
+                    lblLatestVersion.Invoke((MethodInvoker)delegate
+                    {
+                        lblLatestVersion.Text = "v" + LatestVersion + " is available";
+                    });
+                    linkLabelDownloadUpdate.Invoke((MethodInvoker)delegate
+                    {
+                        linkLabelDownloadUpdate.Text = "Download " + LatestVersion;
+                        linkLabelDownloadUpdate.Visible = true;
+                    });
+
+                }
+                else
+                {
+                    lblLatestVersion.Invoke((MethodInvoker)delegate
+                    {
+                        lblLatestVersion.Text = "(up to date)";
+                    });
+                    linkLabelDownloadUpdate.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+
+        private void LinkLabelDownloadUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new ProcessStartInfo
+                {
+                    FileName = "https://cubit.btcdir.org",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+        }
+
+        private void HandleException(Exception ex)
+        {
+            string errorMessage;
+            if (ex is WebException)
+            {
+                errorMessage = "Web exception occurred";
+            }
+            else if (ex is HttpRequestException)
+            {
+                errorMessage = "HTTP Request error";
+            }
+            else
+            {
+                errorMessage = "Error occurred";
+            }
+
+            lblErrorMessage.Invoke((MethodInvoker)delegate
+            {
+                lblErrorMessage.Text = errorMessage;
+                lblErrorMessage.Visible = true;
+            });
         }
     }
 }

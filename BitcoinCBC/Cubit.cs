@@ -29,6 +29,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
+        readonly string CurrentVersion = "1.0";
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
         
@@ -81,6 +82,12 @@ namespace Cubit
             "I'm better than this. All I do is count sats.",
 
         };
+        List<double> listBuyBTCTransactionDate = new();
+        List<double> listBuyBTCTransactionFiatAmount = new();
+        List<double> listBuyBTCTransactionPrice = new();
+        List<double> listSellBTCTransactionDate = new();
+        List<double> listSellBTCTransactionFiatAmount = new();
+        List<double> listSellBTCTransactionPrice = new();
         #region chart variables
         bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
@@ -108,12 +115,7 @@ namespace Cubit
 
         #endregion
         #endregion
-        List<double> listBuyBTCTransactionDate = new();
-        List<double> listBuyBTCTransactionFiatAmount = new();
-        List<double> listBuyBTCTransactionPrice = new();
-        List<double> listSellBTCTransactionDate = new();
-        List<double> listSellBTCTransactionFiatAmount = new();
-        List<double> listSellBTCTransactionPrice = new();
+
         #region custom move form button
         [DllImport("user32.dll", EntryPoint = "ReleaseCapture")]  // needed for the code that moves the form as not using a standard control
         private extern static void ReleaseCapture();
@@ -3871,6 +3873,7 @@ namespace Cubit
                 {
                     Owner = this, // Set the parent window as the owner of the modal window
                     StartPosition = FormStartPosition.CenterParent, // Set the start position to center of parent
+                    CurrentVersion = CurrentVersion
                 };
                 frm.ShowDialog(this);
             }
@@ -3921,7 +3924,7 @@ namespace Cubit
 
         private void BtnHelpAddTransaction_Click(object sender, EventArgs e)
         {
-            lblHelpAddTransactionText.Text = "Input all your transactions here. The more accurate you can be the better, but CuBiC will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            lblHelpAddTransactionText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
             panelHelpAddTransaction.Visible = true;
             panelHelpAddTransaction.BringToFront();
         }
