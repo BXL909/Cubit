@@ -32,10 +32,10 @@ namespace Cubit
         readonly string CurrentVersion = "1.0";
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
-        
+
         readonly string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
         readonly string[] monthsNumeric = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
-        int selectedYear = 0; 
+        int selectedYear = 0;
         string selectedMonth = "";
         int selectedMonthNumeric = 0;
         string selectedDay = "";
@@ -214,7 +214,7 @@ namespace Cubit
             {
                 HandleException(ex, "RestoreSavedSettings");
             }
-            
+
             if (currencyAlreadySavedInFile)
             {
                 selectedCurrencyName = currencyInFile;
@@ -1817,7 +1817,8 @@ namespace Cubit
                     item.SubItems.Add(transaction.BTCAmount);
                     item.SubItems.Add(transaction.BTCAmountEstimateFlag);
 
-                    currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(lblCurrentPrice.Text), 2);
+                    string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                    currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
                         profitOrLoss = Math.Round(currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2);
@@ -2101,7 +2102,8 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        if (Convert.ToDecimal(maxText) > Convert.ToDecimal(lblCurrentPrice.Text))
+                        string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                        if (Convert.ToDecimal(maxText) > Convert.ToDecimal(priceText))
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
                         }
@@ -2251,7 +2253,8 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        if (Convert.ToDecimal(text) > Convert.ToDecimal(lblCurrentPrice.Text))
+                        string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                        if (Convert.ToDecimal(text) > Convert.ToDecimal(priceText))
 
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
@@ -3636,6 +3639,15 @@ namespace Cubit
             DrawPriceChart();
             btnCurrency.Invoke((MethodInvoker)delegate
             {
+                lblCurrentPrice.Text = "$" + lblCurrentPrice.Text;
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
+            });
+            btnCurrency.Invoke((MethodInvoker)delegate
+            {
                 btnCurrency.Text = "$ USD";
             });
             label26.Invoke((MethodInvoker)delegate
@@ -3689,6 +3701,15 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
+            btnCurrency.Invoke((MethodInvoker)delegate
+            {
+                lblCurrentPrice.Text = "€" + lblCurrentPrice.Text;
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
+            });
             btnCurrency.Invoke((MethodInvoker)delegate
             {
                 btnCurrency.Text = "€ EUR";
@@ -3746,6 +3767,15 @@ namespace Cubit
             DrawPriceChart();
             btnCurrency.Invoke((MethodInvoker)delegate
             {
+                lblCurrentPrice.Text = "£" + lblCurrentPrice.Text;
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
+            });
+            btnCurrency.Invoke((MethodInvoker)delegate
+            {
                 btnCurrency.Text = "£ GBP";
             });
             label26.Invoke((MethodInvoker)delegate
@@ -3799,6 +3829,15 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
+            btnCurrency.Invoke((MethodInvoker)delegate
+            {
+                lblCurrentPrice.Text = "Ꜷ" + lblCurrentPrice.Text;
+                lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
+            });
+            pictureBoxBTCLogo.Invoke((MethodInvoker)delegate
+            {
+                pictureBoxBTCLogo.Location = new Point(lblCurrentPrice.Location.X - pictureBoxBTCLogo.Width, pictureBoxBTCLogo.Location.Y);
+            });
             btnCurrency.Invoke((MethodInvoker)delegate
             {
                 btnCurrency.Text = "Ꜷ XAU";
@@ -3931,7 +3970,7 @@ namespace Cubit
 
         private void BtnHelpTransactionList_Click(object sender, EventArgs e)
         {
-            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used" + Environment.NewLine + "P/L - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "P/L % - the percentage difference between the value of the bitcoin at the time of the transaction and today's value" + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings";
+            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used" + Environment.NewLine + "Value change - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "VC % - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings";
             panelHelpTransactionList.Visible = true;
             panelHelpTransactionList.BringToFront();
         }

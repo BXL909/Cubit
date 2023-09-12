@@ -225,6 +225,7 @@
             ExpandPanelTimerVert = new System.Windows.Forms.Timer(components);
             ShrinkPanelTimerVert = new System.Windows.Forms.Timer(components);
             panelCurrency = new Panel();
+            toolTip1 = new ToolTip(components);
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -289,6 +290,7 @@
             btnExit.Padding = new Padding(3, 1, 0, 0);
             btnExit.Size = new Size(24, 24);
             btnExit.TabIndex = 1;
+            btnExit.TabStop = false;
             btnExit.Text = "✖️";
             btnExit.TextColor = Color.White;
             btnExit.UseVisualStyleBackColor = false;
@@ -310,6 +312,7 @@
             btnMinimize.Padding = new Padding(2, 0, 0, 0);
             btnMinimize.Size = new Size(24, 24);
             btnMinimize.TabIndex = 2;
+            btnMinimize.TabStop = false;
             btnMinimize.Text = "➖";
             btnMinimize.TextColor = Color.White;
             btnMinimize.UseVisualStyleBackColor = false;
@@ -334,7 +337,7 @@
             comboBoxYearInput.MinimumSize = new Size(40, 18);
             comboBoxYearInput.Name = "comboBoxYearInput";
             comboBoxYearInput.Size = new Size(84, 18);
-            comboBoxYearInput.TabIndex = 8;
+            comboBoxYearInput.TabIndex = 1;
             comboBoxYearInput.Texts = "Year";
             comboBoxYearInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
             // 
@@ -357,7 +360,7 @@
             comboBoxMonthInput.MinimumSize = new Size(40, 18);
             comboBoxMonthInput.Name = "comboBoxMonthInput";
             comboBoxMonthInput.Size = new Size(84, 18);
-            comboBoxMonthInput.TabIndex = 9;
+            comboBoxMonthInput.TabIndex = 2;
             comboBoxMonthInput.Texts = "Month";
             comboBoxMonthInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
             // 
@@ -380,7 +383,7 @@
             comboBoxDayInput.MinimumSize = new Size(40, 18);
             comboBoxDayInput.Name = "comboBoxDayInput";
             comboBoxDayInput.Size = new Size(84, 18);
-            comboBoxDayInput.TabIndex = 10;
+            comboBoxDayInput.TabIndex = 3;
             comboBoxDayInput.Texts = "Day";
             comboBoxDayInput.OnSelectedIndexChanged += DateFields_OnSelectedIndexChanged;
             // 
@@ -393,7 +396,8 @@
             textBoxFiatInput.Location = new Point(6, 1);
             textBoxFiatInput.Name = "textBoxFiatInput";
             textBoxFiatInput.Size = new Size(100, 18);
-            textBoxFiatInput.TabIndex = 13;
+            textBoxFiatInput.TabIndex = 5;
+            toolTip1.SetToolTip(textBoxFiatInput, "The fiat amount or value of goods/services in the transaction");
             textBoxFiatInput.TextChanged += TextBoxFiatInput_TextChanged;
             textBoxFiatInput.KeyPress += Numeric2DecimalsTextBoxValidation_KeyPress;
             // 
@@ -406,6 +410,7 @@
             lblFiatAmountSpentRecd.Size = new Size(103, 18);
             lblFiatAmountSpentRecd.TabIndex = 14;
             lblFiatAmountSpentRecd.Text = "USD spent";
+            toolTip1.SetToolTip(lblFiatAmountSpentRecd, "The fiat amount or value of goods/services in the transaction");
             // 
             // lblBitcoinAmountBoughtSold
             // 
@@ -416,6 +421,7 @@
             lblBitcoinAmountBoughtSold.Size = new Size(103, 18);
             lblBitcoinAmountBoughtSold.TabIndex = 16;
             lblBitcoinAmountBoughtSold.Text = "Bitcoin received";
+            toolTip1.SetToolTip(lblBitcoinAmountBoughtSold, "The amount of bitcoin received/spent in the transaction");
             // 
             // textBoxBTCInput
             // 
@@ -426,7 +432,8 @@
             textBoxBTCInput.Location = new Point(6, 1);
             textBoxBTCInput.Name = "textBoxBTCInput";
             textBoxBTCInput.Size = new Size(100, 18);
-            textBoxBTCInput.TabIndex = 15;
+            textBoxBTCInput.TabIndex = 6;
+            toolTip1.SetToolTip(textBoxBTCInput, "The amount of bitcoin received/spent in the transaction");
             textBoxBTCInput.TextChanged += TextBoxBTCInput_TextChanged;
             textBoxBTCInput.KeyPress += Numeric8DecimalsTextBoxValidation_KeyPress;
             // 
@@ -450,6 +457,7 @@
             label7.Size = new Size(105, 18);
             label7.TabIndex = 21;
             label7.Text = "Received Bitcoin";
+            toolTip1.SetToolTip(label7, "Select if this transaction involved you buying, receiving or being paid with bitcoin.");
             // 
             // label8
             // 
@@ -461,6 +469,7 @@
             label8.Size = new Size(90, 18);
             label8.TabIndex = 22;
             label8.Text = "Spent Bitcoin";
+            toolTip1.SetToolTip(label8, "Select if this transaction involved you selling, giving or paying for something with bitcoin.");
             // 
             // lblEstimatedPrice
             // 
@@ -481,6 +490,7 @@
             label1.Size = new Size(103, 18);
             label1.TabIndex = 27;
             label1.Text = "Price (USD)";
+            toolTip1.SetToolTip(label1, "The price you paid/received for the bitcoin.");
             // 
             // textBoxPriceInput
             // 
@@ -491,7 +501,8 @@
             textBoxPriceInput.Location = new Point(6, 1);
             textBoxPriceInput.Name = "textBoxPriceInput";
             textBoxPriceInput.Size = new Size(100, 18);
-            textBoxPriceInput.TabIndex = 26;
+            textBoxPriceInput.TabIndex = 4;
+            toolTip1.SetToolTip(textBoxPriceInput, "The price you paid/received for the bitcoin.");
             textBoxPriceInput.TextChanged += TextBoxPriceInput_TextChanged;
             textBoxPriceInput.KeyPress += Numeric2DecimalsTextBoxValidation_KeyPress;
             // 
@@ -505,6 +516,7 @@
             label2.Size = new Size(83, 18);
             label2.TabIndex = 29;
             label2.Text = "use estimate";
+            toolTip1.SetToolTip(label2, "Estimate the price based on the date provided.");
             // 
             // panel1
             // 
@@ -578,6 +590,7 @@
             btnUsePriceEstimateFlag.TabIndex = 35;
             btnUsePriceEstimateFlag.Text = "✖️";
             btnUsePriceEstimateFlag.TextColor = Color.LightSlateGray;
+            toolTip1.SetToolTip(btnUsePriceEstimateFlag, "Estimate the price based on the date provided.");
             btnUsePriceEstimateFlag.UseVisualStyleBackColor = false;
             btnUsePriceEstimateFlag.Click += BtnUsePriceEstimateFlag_Click;
             // 
@@ -599,6 +612,7 @@
             btnBoughtBitcoin.TabIndex = 36;
             btnBoughtBitcoin.Text = "✔️";
             btnBoughtBitcoin.TextColor = Color.LightSlateGray;
+            toolTip1.SetToolTip(btnBoughtBitcoin, "Select if this transaction involved you buying, receiving or being paid with bitcoin.");
             btnBoughtBitcoin.UseVisualStyleBackColor = false;
             btnBoughtBitcoin.Click += BoughtSoldBitcoinToggle_Click;
             // 
@@ -620,6 +634,7 @@
             btnSoldBitcoin.TabIndex = 37;
             btnSoldBitcoin.Text = "✖️";
             btnSoldBitcoin.TextColor = Color.LightSlateGray;
+            toolTip1.SetToolTip(btnSoldBitcoin, "Select if this transaction involved you selling, giving or paying for something with bitcoin.");
             btnSoldBitcoin.UseVisualStyleBackColor = false;
             btnSoldBitcoin.Click += BoughtSoldBitcoinToggle_Click;
             // 
@@ -845,6 +860,7 @@
             btnUseFiatEstimateFlag.TabIndex = 63;
             btnUseFiatEstimateFlag.Text = "✖️";
             btnUseFiatEstimateFlag.TextColor = Color.LightSlateGray;
+            toolTip1.SetToolTip(btnUseFiatEstimateFlag, "Estimate the fiat amount based on the price and amount of bitcoin");
             btnUseFiatEstimateFlag.UseVisualStyleBackColor = false;
             btnUseFiatEstimateFlag.Click += BtnUseFiatEstimateFlag_Click_1;
             // 
@@ -858,6 +874,7 @@
             label17.Size = new Size(83, 18);
             label17.TabIndex = 62;
             label17.Text = "use estimate";
+            toolTip1.SetToolTip(label17, "Estimate the fiat amount based on the price and amount of bitcoin");
             // 
             // lblEstimatedFiat
             // 
@@ -887,6 +904,7 @@
             btnUseBTCEstimateFlag.TabIndex = 66;
             btnUseBTCEstimateFlag.Text = "✖️";
             btnUseBTCEstimateFlag.TextColor = Color.LightSlateGray;
+            toolTip1.SetToolTip(btnUseBTCEstimateFlag, "Estimate the bitcoin amount based on the price and fiat amount.");
             btnUseBTCEstimateFlag.UseVisualStyleBackColor = false;
             btnUseBTCEstimateFlag.Click += BtnUseBTCEstimateFlag_Click;
             // 
@@ -900,6 +918,7 @@
             label19.Size = new Size(83, 18);
             label19.TabIndex = 65;
             label19.Text = "use estimate";
+            toolTip1.SetToolTip(label19, "Estimate the bitcoin amount based on the price and fiat amount.");
             // 
             // lblEstimatedBTC
             // 
@@ -920,6 +939,7 @@
             label18.Size = new Size(53, 18);
             label18.TabIndex = 34;
             label18.Text = "Label";
+            toolTip1.SetToolTip(label18, "Optional label");
             // 
             // textBoxLabelInput
             // 
@@ -931,7 +951,8 @@
             textBoxLabelInput.MaxLength = 100;
             textBoxLabelInput.Name = "textBoxLabelInput";
             textBoxLabelInput.Size = new Size(100, 18);
-            textBoxLabelInput.TabIndex = 15;
+            textBoxLabelInput.TabIndex = 7;
+            toolTip1.SetToolTip(textBoxLabelInput, "Optional label");
             textBoxLabelInput.TextChanged += TextBoxLabelInput_TextChanged;
             // 
             // panel7
@@ -1134,6 +1155,7 @@
             btnHelpAddTransaction.Padding = new Padding(2, 0, 0, 0);
             btnHelpAddTransaction.Size = new Size(24, 24);
             btnHelpAddTransaction.TabIndex = 88;
+            btnHelpAddTransaction.TabStop = false;
             btnHelpAddTransaction.Text = "❔";
             btnHelpAddTransaction.TextColor = Color.White;
             btnHelpAddTransaction.UseVisualStyleBackColor = false;
@@ -1162,7 +1184,7 @@
             lblDisabledAddButtonText.Location = new Point(558, 34);
             lblDisabledAddButtonText.Name = "lblDisabledAddButtonText";
             lblDisabledAddButtonText.Size = new Size(100, 17);
-            lblDisabledAddButtonText.TabIndex = 74;
+            lblDisabledAddButtonText.TabIndex = 8;
             lblDisabledAddButtonText.Text = "Add transaction";
             // 
             // panelHelpAddTransaction
@@ -1268,8 +1290,10 @@
             btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
             btnPriceRefresh.Size = new Size(23, 22);
             btnPriceRefresh.TabIndex = 75;
+            btnPriceRefresh.TabStop = false;
             btnPriceRefresh.TextAlign = ContentAlignment.TopCenter;
             btnPriceRefresh.TextColor = Color.FromArgb(255, 128, 0);
+            toolTip1.SetToolTip(btnPriceRefresh, "Refresh the current price");
             btnPriceRefresh.UseVisualStyleBackColor = false;
             btnPriceRefresh.Click += BtnPriceRefresh_Click;
             // 
@@ -1291,6 +1315,7 @@
             listViewTransactions.ShowGroups = false;
             listViewTransactions.Size = new Size(940, 113);
             listViewTransactions.TabIndex = 76;
+            listViewTransactions.TabStop = false;
             listViewTransactions.UseCompatibleStateImageBehavior = false;
             listViewTransactions.View = View.Details;
             listViewTransactions.DrawColumnHeader += ListViewTransactions_DrawColumnHeader;
@@ -1312,6 +1337,7 @@
             btnTransactionsListUp.Padding = new Padding(1, 0, 0, 0);
             btnTransactionsListUp.Size = new Size(24, 24);
             btnTransactionsListUp.TabIndex = 75;
+            btnTransactionsListUp.TabStop = false;
             btnTransactionsListUp.Text = "▲";
             btnTransactionsListUp.TextColor = Color.FromArgb(255, 128, 0);
             btnTransactionsListUp.UseVisualStyleBackColor = false;
@@ -1335,6 +1361,7 @@
             btnTransactionsListDown.Padding = new Padding(1, 0, 0, 0);
             btnTransactionsListDown.Size = new Size(24, 24);
             btnTransactionsListDown.TabIndex = 78;
+            btnTransactionsListDown.TabStop = false;
             btnTransactionsListDown.Text = "▼";
             btnTransactionsListDown.TextColor = Color.FromArgb(255, 128, 0);
             btnTransactionsListDown.UseVisualStyleBackColor = false;
@@ -1402,6 +1429,7 @@
             label51.Size = new Size(23, 19);
             label51.TabIndex = 15;
             label51.Text = "TX";
+            toolTip1.SetToolTip(label51, "A sequentially assigned transaction number. Enter this number below to delete a transaction.");
             // 
             // label34
             // 
@@ -1415,6 +1443,7 @@
             label34.Size = new Size(39, 19);
             label34.TabIndex = 14;
             label34.Text = "Label";
+            toolTip1.SetToolTip(label34, "Optional note");
             // 
             // label33
             // 
@@ -1428,6 +1457,7 @@
             label33.Size = new Size(68, 19);
             label33.TabIndex = 13;
             label33.Text = "Cost basis";
+            toolTip1.SetToolTip(label33, "Rolling cost basis of your bitcoin up to and including this transaction");
             // 
             // label32
             // 
@@ -1438,9 +1468,10 @@
             label32.Location = new Point(670, 0);
             label32.Name = "label32";
             label32.Padding = new Padding(0, 2, 0, 0);
-            label32.Size = new Size(41, 19);
+            label32.Size = new Size(39, 19);
             label32.TabIndex = 12;
-            label32.Text = "P/L %";
+            label32.Text = "VC %";
+            toolTip1.SetToolTip(label32, "The fiat value change of the BTC amount now compared to at the time of transaction, expressed as a percentage");
             // 
             // label31
             // 
@@ -1451,9 +1482,10 @@
             label31.Location = new Point(575, 0);
             label31.Name = "label31";
             label31.Padding = new Padding(0, 2, 0, 0);
-            label31.Size = new Size(26, 19);
+            label31.Size = new Size(85, 19);
             label31.TabIndex = 11;
-            label31.Text = "P/L";
+            label31.Text = "Value change";
+            toolTip1.SetToolTip(label31, "The fiat value change of the BTC amount now compared to at the time of transaction");
             // 
             // label30
             // 
@@ -1467,6 +1499,7 @@
             label30.Size = new Size(30, 19);
             label30.TabIndex = 10;
             label30.Text = "▲▼";
+            toolTip1.SetToolTip(label30, "Direction of change in value of the BTC amount now compared to at the time of transaction");
             // 
             // label29
             // 
@@ -1480,6 +1513,7 @@
             label29.Size = new Size(28, 19);
             label29.TabIndex = 9;
             label29.Text = "Est.";
+            toolTip1.SetToolTip(label29, "Y - Estimate used. N - Not an estimate");
             // 
             // label28
             // 
@@ -1493,6 +1527,7 @@
             label28.Size = new Size(28, 19);
             label28.TabIndex = 8;
             label28.Text = "BTC";
+            toolTip1.SetToolTip(label28, "BTC part of transaction");
             // 
             // label27
             // 
@@ -1506,6 +1541,7 @@
             label27.Size = new Size(28, 19);
             label27.TabIndex = 7;
             label27.Text = "Est.";
+            toolTip1.SetToolTip(label27, "Y - Estimate used, N - Not an estimate");
             // 
             // label26
             // 
@@ -1519,6 +1555,7 @@
             label26.Size = new Size(33, 19);
             label26.TabIndex = 6;
             label26.Text = "USD";
+            toolTip1.SetToolTip(label26, "Fiat value of transaction");
             // 
             // label25
             // 
@@ -1532,6 +1569,7 @@
             label25.Size = new Size(45, 19);
             label25.TabIndex = 5;
             label25.Text = "Range";
+            toolTip1.SetToolTip(label25, "Margin of error in estimate");
             // 
             // label24
             // 
@@ -1545,6 +1583,7 @@
             label24.Size = new Size(28, 19);
             label24.TabIndex = 4;
             label24.Text = "Est.";
+            toolTip1.SetToolTip(label24, "Estimate type: AM - Annual Median, MM - Monthly Median, - DA - Daily average, N - not an estimate");
             // 
             // label23
             // 
@@ -1558,6 +1597,7 @@
             label23.Size = new Size(73, 19);
             label23.TabIndex = 3;
             label23.Text = "Price (USD)";
+            toolTip1.SetToolTip(label23, "Price at time of transaction (in selected currency)");
             // 
             // label22
             // 
@@ -1571,6 +1611,7 @@
             label22.Size = new Size(26, 19);
             label22.TabIndex = 2;
             label22.Text = "DD";
+            toolTip1.SetToolTip(label22, "Day of transaction");
             // 
             // label20
             // 
@@ -1584,6 +1625,7 @@
             label20.Size = new Size(32, 19);
             label20.TabIndex = 1;
             label20.Text = "MM";
+            toolTip1.SetToolTip(label20, "Month of transaction");
             // 
             // label16
             // 
@@ -1597,6 +1639,7 @@
             label16.Size = new Size(36, 19);
             label16.TabIndex = 0;
             label16.Text = "YYYY";
+            toolTip1.SetToolTip(label16, "Year of transaction");
             // 
             // panelTXListFooter
             // 
@@ -1640,6 +1683,7 @@
             btnListReverse.Padding = new Padding(1, 0, 0, 0);
             btnListReverse.Size = new Size(86, 24);
             btnListReverse.TabIndex = 75;
+            btnListReverse.TabStop = false;
             btnListReverse.Text = "Oldest first";
             btnListReverse.TextColor = Color.FromArgb(255, 128, 0);
             btnListReverse.UseVisualStyleBackColor = false;
@@ -1661,6 +1705,7 @@
             btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
             btnCancelDelete.Size = new Size(55, 24);
             btnCancelDelete.TabIndex = 94;
+            btnCancelDelete.TabStop = false;
             btnCancelDelete.Text = "Cancel";
             btnCancelDelete.TextColor = Color.FromArgb(255, 128, 0);
             btnCancelDelete.UseVisualStyleBackColor = false;
@@ -1683,6 +1728,7 @@
             btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
             btnConfirmDelete.Size = new Size(64, 24);
             btnConfirmDelete.TabIndex = 93;
+            btnConfirmDelete.TabStop = false;
             btnConfirmDelete.Text = "Confirm";
             btnConfirmDelete.TextColor = Color.FromArgb(255, 128, 0);
             btnConfirmDelete.UseVisualStyleBackColor = false;
@@ -1744,6 +1790,7 @@
             btnTXSelectDown.Name = "btnTXSelectDown";
             btnTXSelectDown.Size = new Size(16, 22);
             btnTXSelectDown.TabIndex = 91;
+            btnTXSelectDown.TabStop = false;
             btnTXSelectDown.Text = "▼";
             btnTXSelectDown.UseVisualStyleBackColor = false;
             btnTXSelectDown.Click += BtnTXSelectDown_Click;
@@ -1758,6 +1805,7 @@
             btnTXSelectUp.Name = "btnTXSelectUp";
             btnTXSelectUp.Size = new Size(16, 22);
             btnTXSelectUp.TabIndex = 90;
+            btnTXSelectUp.TabStop = false;
             btnTXSelectUp.Text = "▲";
             btnTXSelectUp.UseVisualStyleBackColor = false;
             btnTXSelectUp.Click += BtnTXSelectUp_Click;
@@ -1772,6 +1820,7 @@
             numericUpDownSelectTX.Name = "numericUpDownSelectTX";
             numericUpDownSelectTX.Size = new Size(46, 20);
             numericUpDownSelectTX.TabIndex = 89;
+            numericUpDownSelectTX.TabStop = false;
             numericUpDownSelectTX.ValueChanged += NumericUpDownSelectTX_ValueChanged;
             // 
             // lbl2
@@ -1780,9 +1829,10 @@
             lbl2.ForeColor = Color.Gray;
             lbl2.Location = new Point(294, 25);
             lbl2.Name = "lbl2";
-            lbl2.Size = new Size(70, 15);
+            lbl2.Size = new Size(53, 15);
             lbl2.TabIndex = 83;
-            lbl2.Text = "Fiat balance";
+            lbl2.Text = "Fiat total";
+            toolTip1.SetToolTip(lbl2, "Fiat total");
             // 
             // lbl3
             // 
@@ -1790,9 +1840,10 @@
             lbl3.ForeColor = Color.Gray;
             lbl3.Location = new Point(744, 25);
             lbl3.Name = "lbl3";
-            lbl3.Size = new Size(60, 15);
+            lbl3.Size = new Size(98, 15);
             lbl3.TabIndex = 84;
-            lbl3.Text = "Cost basis";
+            lbl3.Text = "Overall cost basis";
+            toolTip1.SetToolTip(lbl3, "Overall cost basis");
             // 
             // lbl1
             // 
@@ -1800,9 +1851,10 @@
             lbl1.ForeColor = Color.Gray;
             lbl1.Location = new Point(419, 25);
             lbl1.Name = "lbl1";
-            lbl1.Size = new Size(70, 15);
+            lbl1.Size = new Size(53, 15);
             lbl1.TabIndex = 82;
-            lbl1.Text = "BTC balance";
+            lbl1.Text = "BTC total";
+            toolTip1.SetToolTip(lbl1, "BTC total");
             // 
             // panelHelpTransactionList
             // 
@@ -1907,6 +1959,7 @@
             btnHelpTransactionList.Padding = new Padding(2, 0, 0, 0);
             btnHelpTransactionList.Size = new Size(24, 24);
             btnHelpTransactionList.TabIndex = 87;
+            btnHelpTransactionList.TabStop = false;
             btnHelpTransactionList.Text = "❔";
             btnHelpTransactionList.TextColor = Color.White;
             btnHelpTransactionList.UseVisualStyleBackColor = false;
@@ -1928,6 +1981,7 @@
             btnMoveWindow.Name = "btnMoveWindow";
             btnMoveWindow.Size = new Size(533, 46);
             btnMoveWindow.TabIndex = 81;
+            btnMoveWindow.TabStop = false;
             btnMoveWindow.TextColor = Color.White;
             btnMoveWindow.UseVisualStyleBackColor = false;
             btnMoveWindow.Click += BtnMoveWindow_Click;
@@ -1999,6 +2053,7 @@
             btnExpandTrackingPanel.Padding = new Padding(1, 0, 0, 0);
             btnExpandTrackingPanel.Size = new Size(22, 22);
             btnExpandTrackingPanel.TabIndex = 99;
+            btnExpandTrackingPanel.TabStop = false;
             btnExpandTrackingPanel.Text = "▶";
             btnExpandTrackingPanel.TextColor = Color.LightSlateGray;
             btnExpandTrackingPanel.UseVisualStyleBackColor = false;
@@ -2044,6 +2099,7 @@
             btnCursorTrackPrice.Padding = new Padding(1, 0, 0, 0);
             btnCursorTrackPrice.Size = new Size(22, 22);
             btnCursorTrackPrice.TabIndex = 92;
+            btnCursorTrackPrice.TabStop = false;
             btnCursorTrackPrice.Text = "✔️";
             btnCursorTrackPrice.TextColor = Color.LightSlateGray;
             btnCursorTrackPrice.UseVisualStyleBackColor = false;
@@ -2065,6 +2121,7 @@
             btnCursorTrackNothing.Padding = new Padding(1, 0, 0, 0);
             btnCursorTrackNothing.Size = new Size(22, 22);
             btnCursorTrackNothing.TabIndex = 98;
+            btnCursorTrackNothing.TabStop = false;
             btnCursorTrackNothing.Text = "✖️";
             btnCursorTrackNothing.TextColor = Color.LightSlateGray;
             btnCursorTrackNothing.UseVisualStyleBackColor = false;
@@ -2098,6 +2155,7 @@
             btnCursorTrackBuyTX.Padding = new Padding(1, 0, 0, 0);
             btnCursorTrackBuyTX.Size = new Size(22, 22);
             btnCursorTrackBuyTX.TabIndex = 94;
+            btnCursorTrackBuyTX.TabStop = false;
             btnCursorTrackBuyTX.Text = "✖️";
             btnCursorTrackBuyTX.TextColor = Color.LightSlateGray;
             btnCursorTrackBuyTX.UseVisualStyleBackColor = false;
@@ -2143,6 +2201,7 @@
             btnCursorTrackSellTX.Padding = new Padding(1, 0, 0, 0);
             btnCursorTrackSellTX.Size = new Size(22, 22);
             btnCursorTrackSellTX.TabIndex = 96;
+            btnCursorTrackSellTX.TabStop = false;
             btnCursorTrackSellTX.Text = "✖️";
             btnCursorTrackSellTX.TextColor = Color.LightSlateGray;
             btnCursorTrackSellTX.UseVisualStyleBackColor = false;
@@ -2178,6 +2237,7 @@
             btnExpandDatelinesPanel.Padding = new Padding(1, 0, 0, 0);
             btnExpandDatelinesPanel.Size = new Size(22, 22);
             btnExpandDatelinesPanel.TabIndex = 92;
+            btnExpandDatelinesPanel.TabStop = false;
             btnExpandDatelinesPanel.Text = "▶";
             btnExpandDatelinesPanel.TextColor = Color.LightSlateGray;
             btnExpandDatelinesPanel.UseVisualStyleBackColor = false;
@@ -2211,6 +2271,7 @@
             btnShowBuyDates.Padding = new Padding(1, 0, 0, 0);
             btnShowBuyDates.Size = new Size(22, 22);
             btnShowBuyDates.TabIndex = 82;
+            btnShowBuyDates.TabStop = false;
             btnShowBuyDates.Text = "✔️";
             btnShowBuyDates.TextColor = Color.LightSlateGray;
             btnShowBuyDates.UseVisualStyleBackColor = false;
@@ -2244,6 +2305,7 @@
             btnShowSellDates.Padding = new Padding(1, 0, 0, 0);
             btnShowSellDates.Size = new Size(22, 22);
             btnShowSellDates.TabIndex = 84;
+            btnShowSellDates.TabStop = false;
             btnShowSellDates.Text = "✔️";
             btnShowSellDates.TextColor = Color.LightSlateGray;
             btnShowSellDates.UseVisualStyleBackColor = false;
@@ -2277,6 +2339,7 @@
             btnPriceChartScaleLinear.Padding = new Padding(1, 0, 0, 0);
             btnPriceChartScaleLinear.Size = new Size(58, 24);
             btnPriceChartScaleLinear.TabIndex = 75;
+            btnPriceChartScaleLinear.TabStop = false;
             btnPriceChartScaleLinear.Text = "Linear";
             btnPriceChartScaleLinear.TextColor = Color.FromArgb(255, 128, 0);
             btnPriceChartScaleLinear.UseVisualStyleBackColor = false;
@@ -2298,6 +2361,7 @@
             btnPriceChartScaleLog.Padding = new Padding(1, 0, 0, 0);
             btnPriceChartScaleLog.Size = new Size(58, 24);
             btnPriceChartScaleLog.TabIndex = 86;
+            btnPriceChartScaleLog.TabStop = false;
             btnPriceChartScaleLog.Text = "Log";
             btnPriceChartScaleLog.TextColor = Color.FromArgb(255, 128, 0);
             btnPriceChartScaleLog.UseVisualStyleBackColor = false;
@@ -2341,6 +2405,7 @@
             btnShowCostBasis.Padding = new Padding(1, 0, 0, 0);
             btnShowCostBasis.Size = new Size(22, 22);
             btnShowCostBasis.TabIndex = 80;
+            btnShowCostBasis.TabStop = false;
             btnShowCostBasis.Text = "✔️";
             btnShowCostBasis.TextColor = Color.LightSlateGray;
             btnShowCostBasis.UseVisualStyleBackColor = false;
@@ -2376,6 +2441,7 @@
             btnExpandTransactionsPanel.Padding = new Padding(1, 0, 0, 0);
             btnExpandTransactionsPanel.Size = new Size(22, 22);
             btnExpandTransactionsPanel.TabIndex = 92;
+            btnExpandTransactionsPanel.TabStop = false;
             btnExpandTransactionsPanel.Text = "▶";
             btnExpandTransactionsPanel.TextColor = Color.LightSlateGray;
             btnExpandTransactionsPanel.UseVisualStyleBackColor = false;
@@ -2409,6 +2475,7 @@
             btnShowBuyBubbles.Padding = new Padding(1, 0, 0, 0);
             btnShowBuyBubbles.Size = new Size(22, 22);
             btnShowBuyBubbles.TabIndex = 88;
+            btnShowBuyBubbles.TabStop = false;
             btnShowBuyBubbles.Text = "✔️";
             btnShowBuyBubbles.TextColor = Color.LightSlateGray;
             btnShowBuyBubbles.UseVisualStyleBackColor = false;
@@ -2454,6 +2521,7 @@
             btnShowSellBubbles.Padding = new Padding(1, 0, 0, 0);
             btnShowSellBubbles.Size = new Size(22, 22);
             btnShowSellBubbles.TabIndex = 90;
+            btnShowSellBubbles.TabStop = false;
             btnShowSellBubbles.Text = "✔️";
             btnShowSellBubbles.TextColor = Color.LightSlateGray;
             btnShowSellBubbles.UseVisualStyleBackColor = false;
@@ -2489,6 +2557,7 @@
             btnExpandGridlinesPanel.Padding = new Padding(1, 0, 0, 0);
             btnExpandGridlinesPanel.Size = new Size(22, 22);
             btnExpandGridlinesPanel.TabIndex = 92;
+            btnExpandGridlinesPanel.TabStop = false;
             btnExpandGridlinesPanel.Text = "▶";
             btnExpandGridlinesPanel.TextColor = Color.LightSlateGray;
             btnExpandGridlinesPanel.UseVisualStyleBackColor = false;
@@ -2599,6 +2668,7 @@
             btnHelpChart.Padding = new Padding(2, 0, 0, 0);
             btnHelpChart.Size = new Size(24, 24);
             btnHelpChart.TabIndex = 86;
+            btnHelpChart.TabStop = false;
             btnHelpChart.Text = "❔";
             btnHelpChart.TextColor = Color.White;
             btnHelpChart.UseVisualStyleBackColor = false;
@@ -2624,6 +2694,7 @@
             formsPlot1.Name = "formsPlot1";
             formsPlot1.Size = new Size(970, 403);
             formsPlot1.TabIndex = 0;
+            formsPlot1.TabStop = false;
             formsPlot1.MouseMove += FormsPlot1_MouseMove;
             // 
             // ExpandPanelTimerHoriz
@@ -2682,6 +2753,7 @@
             btnCloseHelpChart.Padding = new Padding(2, 0, 0, 0);
             btnCloseHelpChart.Size = new Size(24, 24);
             btnCloseHelpChart.TabIndex = 86;
+            btnCloseHelpChart.TabStop = false;
             btnCloseHelpChart.Text = "✖️";
             btnCloseHelpChart.TextColor = Color.White;
             btnCloseHelpChart.UseVisualStyleBackColor = false;
@@ -2801,6 +2873,7 @@
             pictureBoxRobot.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBoxRobot.TabIndex = 68;
             pictureBoxRobot.TabStop = false;
+            toolTip1.SetToolTip(pictureBoxRobot, "Don't click the robot.");
             pictureBoxRobot.Click += pictureBoxRobot_Click;
             // 
             // pictureBox1
@@ -2849,6 +2922,7 @@
             btnAbout.Padding = new Padding(3, 0, 0, 0);
             btnAbout.Size = new Size(24, 24);
             btnAbout.TabIndex = 106;
+            btnAbout.TabStop = false;
             btnAbout.Text = "\U0001f5a4";
             btnAbout.TextColor = Color.White;
             btnAbout.UseVisualStyleBackColor = false;
@@ -2870,6 +2944,7 @@
             btnCurrency.Padding = new Padding(3, 0, 0, 0);
             btnCurrency.Size = new Size(63, 24);
             btnCurrency.TabIndex = 107;
+            btnCurrency.TabStop = false;
             btnCurrency.Text = "$ USD";
             btnCurrency.TextColor = Color.White;
             btnCurrency.UseVisualStyleBackColor = false;
@@ -3289,5 +3364,6 @@
         private PictureBox pictureBox4;
         private Label labelWelcomeText;
         private Panel panelRobotSpeakOuter;
+        private ToolTip toolTip1;
     }
 }
