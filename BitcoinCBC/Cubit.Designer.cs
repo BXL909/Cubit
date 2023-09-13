@@ -1384,7 +1384,7 @@
             // 
             panelTransactionsContainer.AutoScroll = true;
             panelTransactionsContainer.BackColor = Color.White;
-            panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions;
+            panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions1;
             panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Stretch;
             panelTransactionsContainer.Controls.Add(listViewTransactions);
             panelTransactionsContainer.Location = new Point(1, 25);
@@ -1468,9 +1468,9 @@
             label32.Location = new Point(670, 0);
             label32.Name = "label32";
             label32.Padding = new Padding(0, 2, 0, 0);
-            label32.Size = new Size(39, 19);
+            label32.Size = new Size(67, 19);
             label32.TabIndex = 12;
-            label32.Text = "VC %";
+            label32.Text = "Change %";
             toolTip1.SetToolTip(label32, "The fiat value change of the BTC amount now compared to at the time of transaction, expressed as a percentage");
             // 
             // label31
@@ -1482,9 +1482,9 @@
             label31.Location = new Point(575, 0);
             label31.Name = "label31";
             label31.Padding = new Padding(0, 2, 0, 0);
-            label31.Size = new Size(85, 19);
+            label31.Size = new Size(52, 19);
             label31.TabIndex = 11;
-            label31.Text = "Value change";
+            label31.Text = "Change";
             toolTip1.SetToolTip(label31, "The fiat value change of the BTC amount now compared to at the time of transaction");
             // 
             // label30
@@ -2874,7 +2874,7 @@
             pictureBoxRobot.TabIndex = 68;
             pictureBoxRobot.TabStop = false;
             toolTip1.SetToolTip(pictureBoxRobot, "Don't click the robot.");
-            pictureBoxRobot.Click += pictureBoxRobot_Click;
+            pictureBoxRobot.Click += PictureBoxRobot_Click;
             // 
             // pictureBox1
             // 

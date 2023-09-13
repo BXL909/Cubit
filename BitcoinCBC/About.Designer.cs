@@ -128,10 +128,10 @@
             linkLabel3.LinkColor = Color.FromArgb(255, 128, 0);
             linkLabel3.Location = new Point(342, 146);
             linkLabel3.Name = "linkLabel3";
-            linkLabel3.Size = new Size(81, 15);
+            linkLabel3.Size = new Size(79, 15);
             linkLabel3.TabIndex = 8;
             linkLabel3.TabStop = true;
-            linkLabel3.Text = "Cubic website";
+            linkLabel3.Text = "Cubit website";
             linkLabel3.LinkClicked += LinkLabel3_LinkClicked;
             // 
             // linkLabel4

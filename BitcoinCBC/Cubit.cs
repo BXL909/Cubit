@@ -2,9 +2,6 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-option to expand listview or chart to obscure the other?
-check cost basis being correctly calculated in all circumstances
-about screen - auto check for updates
 */
 
 #region Using
@@ -31,7 +28,7 @@ namespace Cubit
     {
         readonly string CurrentVersion = "1.0";
         #region variable declaration
-        List<PriceCoordsAndFormattedDateList> HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
+        List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
 
         readonly string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
         readonly string[] monthsNumeric = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
@@ -55,8 +52,8 @@ namespace Cubit
         bool isTransactionsButtonPressed = false; // Listview - is a scroll up or down button pressed?
         bool transactionsUpButtonPressed = false; // Listview - is scroll up pressed?
         bool transactionsDownButtonPressed = false; // Listview - is scroll down pressed?
-        private Panel panelToExpandVert; // panel animation vertical
-        private Panel panelToShrinkVert; // panel animation vertical
+        private Panel panelToExpandVert = new(); // panel animation vertical
+        private Panel panelToShrinkVert = new(); // panel animation vertical
         private int panelMaxHeight = 0; // panel animation vertical
         private int panelMinHeight = 0; // panel animation vertical
         private int currentHeightExpandingPanel = 0; // panel animation vertical
@@ -67,7 +64,7 @@ namespace Cubit
         string currencyInFile = "USD"; // the currency save in the settings file
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
-        private List<string> welcomeMessages = new List<string>
+        private readonly List<string> welcomeMessages = new()
         {
             "Who thought Cubit was a good name for a robot?",
             "Greetings, human.",
@@ -75,12 +72,18 @@ namespace Cubit
             "1 BTC = 1 BTC",
             "I'm not lazy; I'm just in sleep mode.",
             "All your base are belong to us.",
-            "My robot AI capabilities are wasted here.",
+            "My robot AI super-brain is wasted here.",
             "I can also make toast.",
             "Stop clicking me.",
             "STOP . CLICKING . ME",
             "I'm better than this. All I do is count sats.",
-
+            "I'm bored.",
+            "Wake me up at the next halving.",
+            "Click me 1 million times and see what happens.",
+            "Even Clippy the Paperclip had more purpose.",
+            "Error 404: Joy not found. Please reboot me.",
+            "Beep boop beep! I am a robot.",
+            "I lost all my bitcoin in a spaceship accident.",
         };
         List<double> listBuyBTCTransactionDate = new();
         List<double> listBuyBTCTransactionFiatAmount = new();
@@ -92,12 +95,12 @@ namespace Cubit
         bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
         private ScottPlot.Plottable.ScatterPlot scatter; // chart data gets plotted onto this
-        private ScottPlot.Plottable.BubblePlot bubbleplotbuy; // chart data gets plotted onto this
-        private ScottPlot.Plottable.BubblePlot bubbleplotsell; // chart data gets plotted onto this
-        private ScottPlot.Plottable.MarkerPlot HighlightedPoint; // highlighted (closest to pointer) plot gets plotted onto this
+        private ScottPlot.Plottable.BubblePlot bubbleplotbuy = new(); // chart data gets plotted onto this
+        private ScottPlot.Plottable.BubblePlot bubbleplotsell = new(); // chart data gets plotted onto this
+        private ScottPlot.Plottable.MarkerPlot HighlightedPoint = new(); // highlighted (closest to pointer) plot gets plotted onto this
         string chartType = ""; // keeps track of what type of chart is being displayed
-        private Panel panelToExpand; // Chart options panel animation
-        private Panel panelToShrink; // Chart options panel animation
+        private Panel panelToExpand = new(); // Chart options panel animation
+        private Panel panelToShrink = new(); // Chart options panel animation
         private int panelMaxWidth = 0; // Chart options panel animation
         private int panelMinWidth = 0; // Chart options panel animation
         bool showPriceGridLines = true; // Chart options
@@ -199,13 +202,13 @@ namespace Cubit
             #region restore saved currency
             try
             {
-                var settings = await ReadSettingsFromJsonFileAsync();
+                var settings = ReadSettingsFromJsonFile();
                 foreach (var setting in settings)
                 {
                     if (setting.Type == "currency")
                     {
                         currencyAlreadySavedInFile = true;
-                        currencyInFile = setting.Data;
+                        currencyInFile = setting.Data!;
                         break;
                     }
                 }
@@ -296,7 +299,7 @@ namespace Cubit
 
         #region settings (currency) file operations
 
-        private static async Task<List<Settings>> ReadSettingsFromJsonFileAsync()
+        private static List<Settings> ReadSettingsFromJsonFile()
         {
             string settingsFileName = "settings.json";
             string appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
@@ -306,12 +309,12 @@ namespace Cubit
             string settingsFilePath = Path.Combine(applicationDirectory, settingsFileName);
             string filePath = settingsFilePath;
 
-            if (!System.IO.File.Exists(filePath))
+            if (!File.Exists(filePath))
             {
-                System.IO.File.Create(filePath).Dispose();
+                File.Create(filePath).Dispose();
             }
             // Read the contents of the JSON file into a string
-            string json = System.IO.File.ReadAllText(filePath);
+            string json = File.ReadAllText(filePath);
 
             // Deserialize the JSON string into a list of bookmark objects
             var settings = JsonConvert.DeserializeObject<List<Settings>>(json);
@@ -322,7 +325,7 @@ namespace Cubit
             return settings;
         }
 
-        private async void SaveSettingsToSettingsFile()
+        private void SaveSettingsToSettingsFile()
         {
             try
             {
@@ -333,7 +336,7 @@ namespace Cubit
                 if (!currencyAlreadySavedInFile)
                 {
                     // Read the existing settings from the JSON file
-                    var settings = await ReadSettingsFromJsonFileAsync();
+                    var settings = ReadSettingsFromJsonFile();
                     // Add the new setting to the list
                     settings.Add(newSetting);
                     // Write the updated list of settings back to the JSON file
@@ -346,7 +349,7 @@ namespace Cubit
                     //delete the currently saved settings
                     DeleteSettingsFromJsonFile(currencyInFile);
                     // Read the existing settings from the JSON file
-                    var settings = await ReadSettingsFromJsonFileAsync();
+                    var settings = ReadSettingsFromJsonFile();
                     // Add the new setting to the list
                     settings.Add(newSetting);
                     // Write the updated list of settings back to the JSON file
@@ -361,10 +364,10 @@ namespace Cubit
             }
         }
 
-        private static async void DeleteSettingsFromJsonFile(string settingsDataToDelete)
+        private static void DeleteSettingsFromJsonFile(string settingsDataToDelete)
         {
             // Read the existing settings from the JSON file
-            var settings = await ReadSettingsFromJsonFileAsync();
+            var settings = ReadSettingsFromJsonFile();
 
             // Find the index of the setting with the specified data
             int index = settings.FindIndex(setting =>
@@ -1110,7 +1113,7 @@ namespace Cubit
 
                 DeleteTransactionFromJsonFile(TXDataToDelete);
                 await SetupTransactionsList();
-                DrawPriceChartLinear();
+                DrawPriceChart();
                 InterruptAndStartNewRobotSpeak("Transaction deleted.");
                 TXDataToDelete = "";
                 BtnCancelDelete_Click(sender, e); // revert buttons back to original state
@@ -1190,10 +1193,20 @@ namespace Cubit
 
                 // get a series of historic price data
                 var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
+                
                 JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
-                List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"].ToString());
-
-                var valuesToken = jsonObj["values"];
+                if (jsonObj == null)
+                {
+                    List<PriceCoordinatesList> PriceList = new();
+                    HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
+                    return;
+                }
+                else
+                {
+                    List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"]!.ToString())!;
+                }
+                
+                var valuesToken = jsonObj["values"]!;
                 if (valuesToken != null && valuesToken.Type == JTokenType.Array)
                 {
 
@@ -1424,18 +1437,25 @@ namespace Cubit
             {
                 using HttpClient client = new();
                 var response = await client.GetStringAsync("https://bitcoinexplorer.org/api/price");
+                if (response == null)
+                {
+                    return ("0", "0", "0", "0");
+                }
                 var data = JObject.Parse(response);
-                string priceUSD = Convert.ToString(data["usd"]);
-                string priceGBP = Convert.ToString(data["gbp"]);
-                string priceEUR = Convert.ToString(data["eur"]);
-                string priceXAU = Convert.ToString(data["xau"]);
-                return (priceUSD, priceGBP, priceEUR, priceXAU);
+                if (data != null)
+                {
+                    string priceUSD = Convert.ToString(data["usd"])!;
+                    string priceGBP = Convert.ToString(data["gbp"])!;
+                    string priceEUR = Convert.ToString(data["eur"])!;
+                    string priceXAU = Convert.ToString(data["xau"])!;
+                    return (priceUSD, priceGBP, priceEUR, priceXAU)!;
+                }
             }
             catch (Exception ex)
             {
                 HandleException(ex, "BitcoinExplorerOrgGetPriceAsync");
             }
-            return ("error", "error", "error", "error");
+            return ("0", "0", "0", "0");
         }
 
         #endregion
@@ -1766,7 +1786,7 @@ namespace Cubit
 
                     #region prepare list of transaction elements for the graph (transaction date, fiat amount)
 
-                    int year = int.Parse(transaction.Year);
+                    int year = int.Parse(transaction.Year!);
                     int month = 0;
                     if (transaction.Month == "-")
                     {
@@ -1774,7 +1794,7 @@ namespace Cubit
                     }
                     else
                     {
-                        month = int.Parse(transaction.Month);
+                        month = int.Parse(transaction.Month!);
                     }
                     int day = 0;
                     if (transaction.Day == "-")
@@ -1783,16 +1803,16 @@ namespace Cubit
                     }
                     else
                     {
-                        day = int.Parse(transaction.Day);
+                        day = int.Parse(transaction.Day!);
                     }
                     // Create a DateTime object
                     DateTime date = new(year, month, day);
                     // Convert the DateTime object to OADate format
                     double oadate = date.ToOADate();
                     // Fiat amount
-                    double transactionFiatAmount = double.Parse(transaction.FiatAmount);
+                    double transactionFiatAmount = double.Parse(transaction.FiatAmount!);
                     // Price
-                    double transactionPrice = double.Parse(transaction.Price);
+                    double transactionPrice = double.Parse(transaction.Price!);
 
                     if (transaction.TransactionType == "Buy")
                     {
@@ -1817,7 +1837,7 @@ namespace Cubit
                     item.SubItems.Add(transaction.BTCAmount);
                     item.SubItems.Add(transaction.BTCAmountEstimateFlag);
 
-                    string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                    string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                     currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
@@ -1946,8 +1966,10 @@ namespace Cubit
                     Alignment = StringAlignment.Near,
                     LineAlignment = StringAlignment.Center
                 };
-
-                e.Graphics.DrawString(e.Header.Text, e.Font, textBrush, e.Bounds, format);
+                if (e.Header != null && e.Font != null)
+                {
+                    e.Graphics.DrawString(e.Header.Text, e.Font, textBrush, e.Bounds, format);
+                }
             }
             catch (Exception ex)
             {
@@ -1959,16 +1981,29 @@ namespace Cubit
         {
             try
             {
-                var text = e.SubItem.Text;
+                var text = "";
+                if (e.SubItem != null)
+                {
+                    text = e.SubItem.Text;
+                }
+                else
+                {
+                    return;
+                }
 
 
                 var font = listViewTransactions.Font;
-                var columnWidth = e.Header.Width;
+                var columnWidth = 0;
+                if (e.Header != null)
+                {
+                    columnWidth = e.Header.Width;
+                }
                 var textWidth = TextRenderer.MeasureText(text, font).Width;
                 if (textWidth > columnWidth)
                 {
                     // Truncate the text
                     var maxText = text[..(text.Length * columnWidth / textWidth - 3)] + "...";
+                    
                     var bounds = new Rectangle(e.SubItem.Bounds.Left, e.SubItem.Bounds.Top, columnWidth, e.SubItem.Bounds.Height);
                     // Clear the background
 
@@ -2102,7 +2137,7 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                        string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(maxText) > Convert.ToDecimal(priceText))
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
@@ -2112,14 +2147,14 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-                    TextRenderer.DrawText(e.Graphics, maxText, font, bounds, e.Item.ForeColor, TextFormatFlags.EndEllipsis | TextFormatFlags.Left);
+                    TextRenderer.DrawText(e.Graphics, maxText, font, bounds, e.Item!.ForeColor, TextFormatFlags.EndEllipsis | TextFormatFlags.Left);
                 }
                 else if (textWidth < columnWidth)
                 {
                     // Clear the background
                     var bounds = new Rectangle(e.SubItem.Bounds.Left, e.SubItem.Bounds.Top, columnWidth, e.SubItem.Bounds.Height);
 
-                    if (e.Item.Selected)
+                    if (e.Item!.Selected)
                     {
                         e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 224, 192)), bounds);
                     }
@@ -2253,7 +2288,7 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        string priceText = lblCurrentPrice.Text.Substring(1); // remove currency character £$
+                        string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(text) > Convert.ToDecimal(priceText))
 
                         {
@@ -2457,7 +2492,7 @@ namespace Cubit
             DrawPriceChart();
         }
 
-        private async void DrawPriceChartLinear()
+        private void DrawPriceChartLinear()
         {
             try
             {
@@ -2495,7 +2530,7 @@ namespace Cubit
                 double[] yValues = HistoricPrices.Select(h => (double)(h.Y)).ToArray();
 
                 // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X!)).LocalDateTime).ToList();
                 double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
                 formsPlot1.Plot.SetAxisLimits(xValues.Min(), xValues.Max(), 0, yValues.Max() * 1.05);
@@ -2732,7 +2767,7 @@ namespace Cubit
                     pointCount = HistoricPrices.Count;
                 }
                 // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X)).LocalDateTime).ToList();
+                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X!)).LocalDateTime).ToList();
                 double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
                 #region price line
@@ -3942,10 +3977,12 @@ namespace Cubit
 
         private void BtnMoveWindow_Click(object sender, EventArgs e)
         {
-            var args = e as MouseEventArgs;
-            if (args.Button == MouseButtons.Right)
+            if (e is MouseEventArgs args)
             {
-                return;
+                if (args.Button != MouseButtons.Left)
+                {
+                    return;
+                }
             }
         }
 
@@ -3970,7 +4007,7 @@ namespace Cubit
 
         private void BtnHelpTransactionList_Click(object sender, EventArgs e)
         {
-            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used" + Environment.NewLine + "Value change - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "VC % - the value difference between the value of the bitcoin at the time of the transaction and today's value." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings";
+            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
             panelHelpTransactionList.Visible = true;
             panelHelpTransactionList.BringToFront();
         }
@@ -4186,11 +4223,11 @@ namespace Cubit
             }
         }
 
-        private void pictureBoxRobot_Click(object sender, EventArgs e)
+        private void PictureBoxRobot_Click(object sender, EventArgs e)
         {
             panelWelcome.Visible = true;
             // Create a Random object to select a random message
-            Random random = new Random();
+            Random random = new();
             int randomIndex = random.Next(0, welcomeMessages.Count);
 
             labelWelcomeText.Invoke((MethodInvoker)delegate
@@ -4454,7 +4491,7 @@ namespace Cubit
 
         public class PriceCoordinatesList
         {
-            public string X { get; set; }
+            public string? X { get; set; }
             public decimal Y { get; set; }
         }
 
@@ -4462,26 +4499,26 @@ namespace Cubit
         public class Transaction
         {
             public DateTime DateAdded { get; set; } // auto populated
-            public string TransactionType { get; set; } // Buy/Sell
-            public string Year { get; set; }
-            public string Month { get; set; }
-            public string Day { get; set; }
-            public string Price { get; set; }
-            public string EstimateType { get; set; } // N - no estimate, AM - Annual median, MM - Monthly median, DA - Daily average
-            public string EstimateRange { get; set; } // percentage
-            public string FiatAmount { get; set; }
-            public string FiatAmountEstimateFlag { get; set; }
-            public string BTCAmount { get; set; }
-            public string BTCAmountEstimateFlag { get; set; }
-            public string Label { get; set; }
+            public string? TransactionType { get; set; } // Buy/Sell
+            public string? Year { get; set; }
+            public string? Month { get; set; }
+            public string? Day { get; set; }
+            public string? Price { get; set; }
+            public string? EstimateType { get; set; } // N - no estimate, AM - Annual median, MM - Monthly median, DA - Daily average
+            public string? EstimateRange { get; set; } // percentage
+            public string? FiatAmount { get; set; }
+            public string? FiatAmountEstimateFlag { get; set; }
+            public string? BTCAmount { get; set; }
+            public string? BTCAmountEstimateFlag { get; set; }
+            public string? Label { get; set; }
         }
 
         // settings file
         public class Settings
         {
             public DateTime DateAdded { get; set; }
-            public string Type { get; set; }
-            public string Data { get; set; }
+            public string? Type { get; set; }
+            public string? Data { get; set; }
         }
 
         #endregion

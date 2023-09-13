@@ -7,7 +7,7 @@ namespace Cubit
 {
     public partial class About : Form
     {
-        public string CurrentVersion { get; set; }
+        public string? CurrentVersion { get; set; }
 
         #region rounded form
         [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
@@ -146,6 +146,7 @@ namespace Cubit
         {
             try
             {
+                CurrentVersion ??= "xx";
                 lblCurrentVersion.Text = "Cubit v" + CurrentVersion.ToString();
                 using WebClient client = new();
                 string VersionURL = "https://cubit.btcdir.org/CubitVersion.txt";
