@@ -94,7 +94,7 @@ namespace Cubit
         #region chart variables
         bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
-        private ScottPlot.Plottable.ScatterPlot scatter; // chart data gets plotted onto this
+        private ScottPlot.Plottable.ScatterPlot? scatter; // chart data gets plotted onto this
         private ScottPlot.Plottable.BubblePlot bubbleplotbuy = new(); // chart data gets plotted onto this
         private ScottPlot.Plottable.BubblePlot bubbleplotsell = new(); // chart data gets plotted onto this
         private ScottPlot.Plottable.MarkerPlot HighlightedPoint = new(); // highlighted (closest to pointer) plot gets plotted onto this
@@ -929,14 +929,32 @@ namespace Cubit
             textBoxPriceInput.Invoke((MethodInvoker)delegate
             {
                 textBoxPriceInput.Text = "";
+                textBoxPriceInput.Enabled = true;
+                textBoxPriceInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel6.Invoke((MethodInvoker)delegate
+            {
+                panel6.BackColor = Color.FromArgb(255, 224, 192);
             });
             textBoxFiatInput.Invoke((MethodInvoker)delegate
             {
                 textBoxFiatInput.Text = "";
+                textBoxFiatInput.Enabled = true;
+                textBoxFiatInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel5.Invoke((MethodInvoker)delegate
+            {
+                panel5.BackColor = Color.FromArgb(255, 224, 192);
             });
             textBoxBTCInput.Invoke((MethodInvoker)delegate
             {
                 textBoxBTCInput.Text = "";
+                textBoxBTCInput.Enabled = true;
+                textBoxBTCInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel4.Invoke((MethodInvoker)delegate
+            {
+                panel4.BackColor = Color.FromArgb(255, 224, 192);
             });
             textBoxLabelInput.Invoke((MethodInvoker)delegate
             {
@@ -1041,7 +1059,7 @@ namespace Cubit
 
         #region delete transaction         
 
-        private async void BtnDeleteTransaction_Click(object sender, EventArgs e)
+        private void BtnDeleteTransaction_Click(object sender, EventArgs e)
         {
             btnDeleteTransaction.Invoke((MethodInvoker)delegate
             {
@@ -3029,7 +3047,10 @@ namespace Cubit
                         {
                             if (safeToTrackPriceOnChart)
                             {
-                                (pointX, pointY, pointIndex) = scatter.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                                if (scatter != null)
+                                {
+                                    (pointX, pointY, pointIndex) = scatter.GetPointNearest(mouseCoordX, mouseCoordY, xyRatio);
+                                }
                             }
                         }
                         if (cursorTrackBuyTX)
