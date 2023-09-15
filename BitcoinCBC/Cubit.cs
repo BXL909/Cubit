@@ -2,7 +2,7 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-*/ 
+*/
 
 #region Using
 using Newtonsoft.Json;
@@ -20,13 +20,14 @@ using ScottPlot;
 using ScottPlot.Plottable;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using System.Reflection.Emit;
 #endregion
 
 namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "1.0";
+        readonly string CurrentVersion = "0.9";
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
 
@@ -155,7 +156,7 @@ namespace Cubit
             panel6.Paint += Panel_Paint;
             panel7.Paint += Panel_Paint;
             panel8.Paint += Panel_Paint;
-            panel9.Paint += Panel_Paint;
+            panelHelpTextContainer.Paint += Panel_Paint;
             panelAddTransaction.Paint += Panel_Paint;
             panel13.Paint += Panel_Paint;
             panel14.Paint += Panel_Paint;
@@ -166,15 +167,19 @@ namespace Cubit
             panel22.Paint += Panel_Paint;
             panel23.Paint += Panel_Paint;
             panel24.Paint += Panel_Paint;
+            panel25.Paint += Panel_Paint;
+            panel27.Paint += Panel_Paint;
+            panel28.Paint += Panel_Paint;
+            panel29.Paint += Panel_Paint;
+            panel30.Paint += Panel_Paint;
+            panel32.Paint += Panel_Paint;
             panelRobotSpeakOuter.Paint += Panel_Paint;
             panelWelcome.Paint += Panel_Paint;
             panelCurrencyMenu.Paint += Panel_Paint;
             panelCurrency.Paint += Panel_Paint;
-            panelHelpTransactionList.Paint += Panel_Paint;
-            panelHelpChart.Paint += Panel_Paint;
             panelTXListFooter.Paint += Panel_Paint;
             panelTXSelectContainer.Paint += Panel_Paint;
-            panelHelpAddTransaction.Paint += Panel_Paint;
+            panelAddTransactionContainer.Paint += Panel_Paint;
             panelScrollbarContainer.Paint += Panel_Paint;
             panelSpeechBubble.Paint += Panel_Paint;
             #endregion
@@ -263,7 +268,7 @@ namespace Cubit
             panel6.Invalidate();
             panel7.Invalidate();
             panel8.Invalidate();
-            panel9.Invalidate();
+            panelHelpTextContainer.Invalidate();
             panelAddTransaction.Invalidate();
             panel13.Invalidate();
             panel14.Invalidate();
@@ -274,14 +279,18 @@ namespace Cubit
             panel22.Invalidate();
             panel23.Invalidate();
             panel24.Invalidate();
+            panel25.Invalidate();
+            panel27.Invalidate();
+            panel28.Invalidate();
+            panel29.Invalidate();
+            panel30.Invalidate();
+            panel32.Invalidate();
             panelRobotSpeakOuter.Invalidate();
             panelWelcome.Invalidate();
             panelCurrency.Invalidate();
             panelCurrencyMenu.Invalidate();
             panelTXSelectContainer.Invalidate();
-            panelHelpChart.Invalidate();
-            panelHelpAddTransaction.Invalidate();
-            panelHelpTransactionList.Invalidate();
+            panelAddTransactionContainer.Invalidate();
             panelScrollbarContainer.Invalidate();
             panelTXListFooter.Invalidate();
             panelSpeechBubble.Invalidate();
@@ -1096,6 +1105,7 @@ namespace Cubit
         {
             if (numericUpDownSelectTX.Value < numericUpDownSelectTX.Maximum)
             {
+                robotIgnoreTXSelection = false;
                 numericUpDownSelectTX.Value++;
             }
         }
@@ -1104,24 +1114,61 @@ namespace Cubit
         {
             if (numericUpDownSelectTX.Value > numericUpDownSelectTX.Minimum)
             {
+                robotIgnoreTXSelection = false;
                 numericUpDownSelectTX.Value--;
             }
         }
 
+        bool robotIgnoreTXSelection = true;
+
         private void NumericUpDownSelectTX_ValueChanged(object sender, EventArgs e)
         {
-            if (numericUpDownSelectTX.Value >= numericUpDownSelectTX.Minimum && numericUpDownSelectTX.Value <= numericUpDownSelectTX.Maximum)
+            if (!robotIgnoreTXSelection)
             {
-                btnDeleteTransaction.Enabled = true;
-                btnDeleteTransaction.BackColor = Color.FromArgb(255, 224, 192);
-                lblDisabledDeleteButtonText.Visible = false;
+                if (numericUpDownSelectTX.Value >= numericUpDownSelectTX.Minimum && numericUpDownSelectTX.Value <= numericUpDownSelectTX.Maximum)
+                {
+                    btnDeleteTransaction.Enabled = true;
+                    btnDeleteTransaction.BackColor = Color.FromArgb(255, 224, 192);
+                    lblDisabledDeleteButtonText.Visible = false;
+
+                    #region display transaction label
+                    // Get the selected row number from the NumericUpdown control
+                    int selectedRowNumber = (int)numericUpDownSelectTX.Value;
+
+                    // Search for the ListViewItem with a matching value in the first column
+                    foreach (ListViewItem item in listViewTransactions.Items)
+                    {
+                        // Check if the value in the first column matches the selected value
+                        if (item.SubItems.Count > 0 && int.TryParse(item.SubItems[0].Text, out int firstColumnValue))
+                        {
+                            if (firstColumnValue == numericUpDownSelectTX.Value)
+                            {
+                                if (item.SubItems[15] == null || Convert.ToString(item.SubItems[15].Text) == "-")
+                                {
+                                    label54.Text = "no label assigned";
+                                    InterruptAndStartNewRobotSpeak("No label assigned to transaction " + Convert.ToString(numericUpDownSelectTX.Value));
+                                }
+                                // Update the label text with the value from the first column
+                                else
+                                {
+                                    label54.Text = item.SubItems[15].Text;
+                                    InterruptAndStartNewRobotSpeak("Label assigned to transaction " + Convert.ToString(numericUpDownSelectTX.Value) + ": " + Convert.ToString(item.SubItems[15].Text));
+                                }
+                                return; // Exit the loop once a matching item is found
+                            }
+                        }
+                    }
+
+                    #endregion
+                }
+                else
+                {
+                    btnDeleteTransaction.Enabled = false;
+                    btnDeleteTransaction.BackColor = Color.Gray;
+                    lblDisabledDeleteButtonText.Visible = true;
+                }
             }
-            else
-            {
-                btnDeleteTransaction.Enabled = false;
-                btnDeleteTransaction.BackColor = Color.Gray;
-                lblDisabledDeleteButtonText.Visible = true;
-            }
+
         }
 
         private async void BtnConfirmDelete_Click(object sender, EventArgs e)
@@ -1211,7 +1258,7 @@ namespace Cubit
 
                 // get a series of historic price data
                 var HistoricPriceDataJson = await HistoricPriceDataService.GetHistoricPriceDataAsync();
-                
+
                 JObject jsonObj = JObject.Parse(HistoricPriceDataJson);
                 if (jsonObj == null)
                 {
@@ -1223,7 +1270,7 @@ namespace Cubit
                 {
                     List<PriceCoordinatesList> PriceList = JsonConvert.DeserializeObject<List<PriceCoordinatesList>>(jsonObj["values"]!.ToString())!;
                 }
-                
+
                 var valuesToken = jsonObj["values"]!;
                 if (valuesToken != null && valuesToken.Type == JTokenType.Array)
                 {
@@ -1643,7 +1690,7 @@ namespace Cubit
 
                 panelScrollbarContainer.Invoke((MethodInvoker)delegate
                 {
-                    panelScrollbarContainer.Height = 142;
+                    panelScrollbarContainer.Height = 206;
                 });
                 lbl1.Invoke((MethodInvoker)delegate
                 {
@@ -1921,7 +1968,7 @@ namespace Cubit
                     counterAllTransactions++;
                 }
 
-                if (listViewTransactions.Items.Count > 6)
+                if (listViewTransactions.Items.Count > 10)
                 {
                     btnTransactionsListUp.Visible = true;
                     btnTransactionsListDown.Visible = true;
@@ -2021,7 +2068,7 @@ namespace Cubit
                 {
                     // Truncate the text
                     var maxText = text[..(text.Length * columnWidth / textWidth - 3)] + "...";
-                    
+
                     var bounds = new Rectangle(e.SubItem.Bounds.Left, e.SubItem.Bounds.Top, columnWidth, e.SubItem.Bounds.Height);
                     // Clear the background
 
@@ -2171,6 +2218,7 @@ namespace Cubit
                 {
                     // Clear the background
                     var bounds = new Rectangle(e.SubItem.Bounds.Left, e.SubItem.Bounds.Top, columnWidth, e.SubItem.Bounds.Height);
+
 
                     if (e.Item!.Selected)
                     {
@@ -2765,7 +2813,7 @@ namespace Cubit
             }
         }
 
-        private async void DrawPriceChartLog()
+        private void DrawPriceChartLog()
         {
             try
             {
@@ -4015,41 +4063,35 @@ namespace Cubit
 
         private void BtnCloseHelpAddTransaction_Click(object sender, EventArgs e)
         {
-            panelHelpAddTransaction.SendToBack();
-            panelHelpAddTransaction.Visible = false;
+            panelHelpTextContainer.Visible = false;
+            panelHideSpeechTriangle.Visible = true;
         }
 
         private void BtnHelpAddTransaction_Click(object sender, EventArgs e)
         {
-            lblHelpAddTransactionText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
-            panelHelpAddTransaction.Visible = true;
-            panelHelpAddTransaction.BringToFront();
+            lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            panelHelpTextContainer.Visible = true;
+            panelHideSpeechTriangle.Visible = false;
+            panelHelpTextContainer.BringToFront();
         }
 
         private void BtnHelpTransactionList_Click(object sender, EventArgs e)
         {
-            lblHelpTransactionListText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
-            panelHelpTransactionList.Visible = true;
-            panelHelpTransactionList.BringToFront();
+            lblHelpText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
+            panelHelpTextContainer.Visible = true;
+            panelHideSpeechTriangle.Visible = false;
+            panelHelpTextContainer.BringToFront();
         }
 
-        private void BtnCloseHelpTransactionList_Click(object sender, EventArgs e)
-        {
-            panelHelpTransactionList.SendToBack();
-            panelHelpTransactionList.Visible = false;
-        }
 
-        private void BtnCloseHelpChart_Click(object sender, EventArgs e)
-        {
-            panelHelpChart.SendToBack();
-            panelHelpChart.Visible = false;
-        }
+
 
         private void BtnHelpChart_Click(object sender, EventArgs e)
         {
-            lblHelpChartText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
-            panelHelpChart.Visible = true;
-            panelHelpChart.BringToFront();
+            lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
+            panelHelpTextContainer.Visible = true;
+            panelHideSpeechTriangle.Visible = false;
+            panelHelpTextContainer.BringToFront();
         }
 
         #endregion
@@ -4270,6 +4312,7 @@ namespace Cubit
                 ShrinkRobotTimer.Stop();
                 panelSpeechBubble.Visible = false;
                 panelWelcome.Visible = false;
+                robotIgnoreTXSelection = false;
             }
             else // shrink further
             {
@@ -4543,5 +4586,35 @@ namespace Cubit
         }
 
         #endregion
+
+        private void listViewTransactions_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Check if an item is selected
+            if (listViewTransactions.SelectedItems.Count > 0)
+            {
+                // Retrieve the selected item
+                ListViewItem selectedItem = listViewTransactions.SelectedItems[0];
+
+                // Check if there are at least 5 subitems (0-based index)
+                if (selectedItem.SubItems.Count > 4)
+                {
+                    // Access the value of the 5th column (subitem index 4)
+                    string fifthColumnValue = selectedItem.SubItems[4].Text;
+
+                    // Update the label text with the value
+                    label54.Text = fifthColumnValue;
+                }
+            }
+            else
+            {
+                // No item is selected, so clear the label text
+                label54.Text = "no label assigned to this transaction";
+            }
+        }
+
+        private void numericUpDownSelectTX_KeyDown(object sender, KeyEventArgs e)
+        {
+            robotIgnoreTXSelection = false;
+        }
     }
 }

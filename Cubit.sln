@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cubit", "BitcoinCBC\Cubit.csproj", "{35B749DC-A1DF-4F95-AC9B-3DABE41C08FA}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup1", "Setup1\Setup1.vdproj", "{F3B438BC-61AC-43F2-B23E-3524D7A933D8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,8 @@ Global
 		{35B749DC-A1DF-4F95-AC9B-3DABE41C08FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35B749DC-A1DF-4F95-AC9B-3DABE41C08FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35B749DC-A1DF-4F95-AC9B-3DABE41C08FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3B438BC-61AC-43F2-B23E-3524D7A933D8}.Debug|Any CPU.ActiveCfg = Debug
+		{F3B438BC-61AC-43F2-B23E-3524D7A933D8}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
