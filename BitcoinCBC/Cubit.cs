@@ -4,10 +4,7 @@
 ╚═╝╚═╝╚═╝╩ ╩
 find solution to displaying labels
 check robot interupts
-new image for empty transaction list (larger size)
-check for things that should be on UI thread
-change shade of selected row
- */
+*/ 
 
 #region Using
 using Newtonsoft.Json;
@@ -30,6 +27,7 @@ namespace Cubit
     public partial class Cubit : Form
     {
         readonly string CurrentVersion = "0.9";
+
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
         readonly string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -75,6 +73,7 @@ namespace Cubit
         string currencyInFile = "USD"; // the currency save in the settings file
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
+        bool robotIgnoreTXSelection = true;
         private readonly List<string> welcomeMessages = new()
         {
             "Who thought Cubit was a good name for a robot?",
@@ -426,7 +425,7 @@ namespace Cubit
             string filePath = settingsFilePath;
 
             // Write the JSON string to the settings.json file
-            System.IO.File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, json);
         }
 
         #endregion
@@ -765,9 +764,9 @@ namespace Cubit
                 {
                     btnUsePriceEstimateFlag.Text = "✔️";
                 });
-                textBoxPriceInput.Enabled = false;
                 textBoxPriceInput.Invoke((MethodInvoker)delegate
                 {
+                    textBoxPriceInput.Enabled = false;
                     textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
                     textBoxPriceInput.BackColor = Color.FromArgb(240, 240, 240);
                 });
@@ -789,7 +788,10 @@ namespace Cubit
                         lblAddDataRange.Text = Convert.ToString(selectedRangePercentage) + "%";
                     });
                 }
-                lblAddDataPriceEstimateType.Text = priceEstimateType;
+                lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                {
+                    lblAddDataPriceEstimateType.Text = priceEstimateType;
+                });
                 InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
             }
         }
@@ -802,7 +804,6 @@ namespace Cubit
                 {
                     btnUseFiatEstimateFlag.Text = "✖️";
                 });
-                textBoxFiatInput.Enabled = true;
                 textBoxFiatInput.Invoke((MethodInvoker)delegate
                 {
                     textBoxFiatInput.Text = "";
@@ -946,56 +947,80 @@ namespace Cubit
 
         private void BtnRed1_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnRed1.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnRed1.BackColor;
+            });
             selectedColor = "1";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnGreen2_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnGreen2.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnGreen2.BackColor;
+            });
             selectedColor = "2";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnBlue3_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnBlue3.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnBlue3.BackColor;
+            });
             selectedColor = "3";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnPink4_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnPink4.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnPink4.BackColor;
+            });
             selectedColor = "4";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnBrown5_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnBrown5.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnBrown5.BackColor;
+            });
             selectedColor = "5";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnPurple6_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnPurple6.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnPurple6.BackColor;
+            });
             selectedColor = "6";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnYellow7_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnYellow7.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnYellow7.BackColor;
+            });
             selectedColor = "7";
             BtnLabelColor_Click(sender, e);
         }
 
         private void BtnOrange8_Click(object sender, EventArgs e)
         {
-            btnLabelColor.BackColor = btnOrange8.BackColor;
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = btnOrange8.BackColor;
+            });
             selectedColor = "8";
             BtnLabelColor_Click(sender, e);
         }
@@ -1147,15 +1172,27 @@ namespace Cubit
             && lblAddDataFiat.Text != "" && lblAddDataFiat.Text != "-"
             && lblAddDataBTC.Text != "" && lblAddDataBTC.Text != "-")
             {
-                lblDisabledAddButtonText.Visible = false;
-                btnAddTransaction.Enabled = true;
-                btnAddTransaction.BackColor = Color.FromArgb(255, 192, 128);
+                lblDisabledAddButtonText.Invoke((MethodInvoker)delegate
+                {
+                    lblDisabledAddButtonText.Visible = false;
+                });
+                btnAddTransaction.Invoke((MethodInvoker)delegate
+                {
+                    btnAddTransaction.Enabled = true;
+                    btnAddTransaction.BackColor = Color.FromArgb(255, 192, 128);
+                });
             }
             else
             {
-                lblDisabledAddButtonText.Visible = true;
-                btnAddTransaction.Enabled = false;
-                btnAddTransaction.BackColor = Color.FromArgb(234, 234, 234);
+                lblDisabledAddButtonText.Invoke((MethodInvoker)delegate
+                {
+                    lblDisabledAddButtonText.Visible = true;
+                });
+                btnAddTransaction.Invoke((MethodInvoker)delegate
+                {
+                    btnAddTransaction.Enabled = false;
+                    btnAddTransaction.BackColor = Color.FromArgb(234, 234, 234);
+                });
             }
         }
 
@@ -1193,8 +1230,6 @@ namespace Cubit
             }
             InterruptAndStartNewRobotSpeak(robotConfirmation);
         }
-
-        bool robotIgnoreTXSelection = true;
 
         private async void BtnConfirmDelete_Click(object sender, EventArgs e)
         {
@@ -1625,7 +1660,7 @@ namespace Cubit
             string filePath = transactionsFilePath;
 
             // Write the JSON string to the json file
-            System.IO.File.WriteAllText(filePath, json);
+            File.WriteAllText(filePath, json);
         }
 
         #endregion
@@ -2010,10 +2045,11 @@ namespace Cubit
                     counterAllTransactions++;
                 }
 
+                vScrollBar1.Width = 23;
                 vScrollBar1.Maximum = listViewTransactions.Items.Count - 1;
 
                 // now reverse the order so most recent are first (did it this way round to calculate the rolling balances and cost basis first)
-                ListView listView = listViewTransactions; 
+                ListView listView = listViewTransactions;
                 listView.BeginUpdate();
 
                 List<ListViewItem> items = new();
@@ -2044,17 +2080,29 @@ namespace Cubit
             {
                 ListViewItem selectedItem = listViewTransactions.SelectedItems[0]; // Get selected row
 
-                btnDeleteTransaction.Enabled = true;
-                btnDeleteTransaction.BackColor = Color.FromArgb(255, 192, 128);
-                lblDisabledDeleteButtonText.Visible = false;
+                btnDeleteTransaction.Invoke((MethodInvoker)delegate
+                {
+                    btnDeleteTransaction.Enabled = true;
+                    btnDeleteTransaction.BackColor = Color.FromArgb(255, 192, 128);
+                });
+                lblDisabledDeleteButtonText.Invoke((MethodInvoker)delegate
+                {
+                    lblDisabledDeleteButtonText.Visible = false;
+                });
 
                 if (selectedItem.SubItems[15] == null || Convert.ToString(selectedItem.SubItems[17].Text) == "-")
                 {
-                    label54.Text = "";
+                    label54.Invoke((MethodInvoker)delegate
+                    {
+                        label54.Text = "";
+                    });
                 }
                 else // Update the label text with the value from the first column
                 {
-                    label54.Text = selectedItem.SubItems[17].Text;
+                    label54.Invoke((MethodInvoker)delegate
+                    {
+                        label54.Text = selectedItem.SubItems[17].Text;
+                    });
                     InterruptAndStartNewRobotSpeak("Label assigned to transaction: " + Convert.ToString(selectedItem.SubItems[17].Text));
                 }
             }
@@ -2119,16 +2167,20 @@ namespace Cubit
 
                     #region alternating row colours
 
-                    if (e.ItemIndex % 2 == 0)
+                    if (e.Item!.Selected)
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 240)), bounds);
-
-
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
                     }
                     else
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(listViewTransactions.BackColor), bounds);
-
+                        if (e.ItemIndex % 2 == 0)
+                        {
+                            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 240)), bounds);
+                        }
+                        else
+                        {
+                            e.Graphics.FillRectangle(new SolidBrush(listViewTransactions.BackColor), bounds);
+                        }
                     }
 
                     #endregion
@@ -2283,7 +2335,7 @@ namespace Cubit
 
                     if (e.Item!.Selected)
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 224, 192)), bounds);
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
                     }
                     else
                     {
@@ -2454,7 +2506,13 @@ namespace Cubit
 
         private void VScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            listViewTransactions.TopItem = listViewTransactions.Items[e.NewValue];
+            if (e.NewValue >= 0 && e.NewValue < listViewTransactions.Items.Count)
+            {
+                listViewTransactions.Invoke((MethodInvoker)delegate
+                {
+                    listViewTransactions.TopItem = listViewTransactions.Items[e.NewValue];
+                });
+            }
         }
 
         private void ListViewTransactions_SelectedIndexChanged(object sender, EventArgs e)
@@ -3215,9 +3273,12 @@ namespace Cubit
             }
             else // expand further
             {
-                panelToExpand.Width = currentWidthExpandingPanel;
-                panelToExpand.Invalidate();
-
+                panelToExpand.Invoke((MethodInvoker)delegate
+                {
+                    panelToExpand.Width = currentWidthExpandingPanel;
+                    panelToExpand.Invalidate();
+                });
+                
                 //shift the other panels along
                 panel21.Invoke((MethodInvoker)delegate
                 {
@@ -3313,8 +3374,9 @@ namespace Cubit
                 panelToShrink.Invoke((MethodInvoker)delegate
                 {
                     panelToShrink.Width = panelMinWidth;
+                    panelToShrink.Invalidate();
                 });
-                panelToShrink.Invalidate();
+                
                 ShrinkPanelTimer.Stop();
             }
             else // shrink further
@@ -3732,7 +3794,7 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
-            btnCurrency.Invoke((MethodInvoker)delegate
+            lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "$" + lblCurrentPrice.Text;
                 lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
@@ -3767,11 +3829,17 @@ namespace Cubit
             });
             if (btnBoughtBitcoin.Text == "✔️")
             {
-                lblFiatAmountSpentRecd.Text = "USD spent";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "USD spent";
+                });
             }
             else
             {
-                lblFiatAmountSpentRecd.Text = "USD received";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "USD received";
+                });
             }
             if (currencyInFile != "USD")
             {
@@ -3796,7 +3864,7 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
-            btnCurrency.Invoke((MethodInvoker)delegate
+            lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "€" + lblCurrentPrice.Text;
                 lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
@@ -3831,11 +3899,17 @@ namespace Cubit
             });
             if (btnBoughtBitcoin.Text == "✔️")
             {
-                lblFiatAmountSpentRecd.Text = "EUR spent";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "EUR spent";
+                });
             }
             else
             {
-                lblFiatAmountSpentRecd.Text = "EUR received";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "EUR received";
+                });
             }
             if (currencyInFile != "EUR")
             {
@@ -3860,7 +3934,7 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
-            btnCurrency.Invoke((MethodInvoker)delegate
+            lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "£" + lblCurrentPrice.Text;
                 lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
@@ -3895,11 +3969,17 @@ namespace Cubit
             });
             if (btnBoughtBitcoin.Text == "✔️")
             {
-                lblFiatAmountSpentRecd.Text = "GBP spent";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "GBP spent";
+                });
             }
             else
             {
-                lblFiatAmountSpentRecd.Text = "GBP received";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "GBP received";
+                });
             }
             if (currencyInFile != "GBP")
             {
@@ -3924,7 +4004,7 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
-            btnCurrency.Invoke((MethodInvoker)delegate
+            lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "Ꜷ" + lblCurrentPrice.Text;
                 lblCurrentPrice.Location = new Point(btnPriceRefresh.Location.X - lblCurrentPrice.Width, lblCurrentPrice.Location.Y);
@@ -3959,11 +4039,17 @@ namespace Cubit
             });
             if (btnBoughtBitcoin.Text == "✔️")
             {
-                lblFiatAmountSpentRecd.Text = "XAU spent";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "XAU spent";
+                });
             }
             else
             {
-                lblFiatAmountSpentRecd.Text = "XAU received";
+                lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
+                {
+                    lblFiatAmountSpentRecd.Text = "XAU received";
+                });
             }
             if (currencyInFile != "XAU")
             {
@@ -4057,8 +4143,14 @@ namespace Cubit
             panelAddTransactionContainer.Enabled = true;
             panel14.Enabled = true;
             panel13.Enabled = true;
-            panelHelpTextContainer.Visible = false;
-            panelHideSpeechTriangle.Visible = true;
+            panelHelpTextContainer.Invoke((MethodInvoker)delegate
+            {
+                panelHelpTextContainer.Visible = false;
+            });
+            panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+            {
+                panelHideSpeechTriangle.Visible = true;
+            });
         }
 
         private void BtnHelpAddTransaction_Click(object sender, EventArgs e)
@@ -4066,10 +4158,19 @@ namespace Cubit
             panelAddTransactionContainer.Enabled = false;
             panel14.Enabled = false;
             panel13.Enabled = false;
-            lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
-            panelHelpTextContainer.Visible = true;
-            panelHideSpeechTriangle.Visible = false;
-            panelHelpTextContainer.BringToFront();
+            lblHelpText.Invoke((MethodInvoker)delegate
+            {
+                lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+            });
+            panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+            {
+                panelHideSpeechTriangle.Visible = false;
+            });
+            panelHelpTextContainer.Invoke((MethodInvoker)delegate
+            {
+                panelHelpTextContainer.Visible = true;
+                panelHelpTextContainer.BringToFront();
+            });
         }
 
         private void BtnHelpTransactionList_Click(object sender, EventArgs e)
@@ -4077,10 +4178,19 @@ namespace Cubit
             panelAddTransactionContainer.Enabled = false;
             panel14.Enabled = false;
             panel13.Enabled = false;
-            lblHelpText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
-            panelHelpTextContainer.Visible = true;
-            panelHideSpeechTriangle.Visible = false;
-            panelHelpTextContainer.BringToFront();
+            lblHelpText.Invoke((MethodInvoker)delegate
+            {
+                lblHelpText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
+            });
+            panelHelpTextContainer.Invoke((MethodInvoker)delegate
+            {
+                panelHelpTextContainer.Visible = true;
+                panelHelpTextContainer.BringToFront();
+            });
+            panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+            {
+                panelHideSpeechTriangle.Visible = false;
+            });
         }
 
         private void BtnHelpChart_Click(object sender, EventArgs e)
@@ -4088,10 +4198,19 @@ namespace Cubit
             panelAddTransactionContainer.Enabled = false;
             panel14.Enabled = false;
             panel13.Enabled = false;
-            lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
-            panelHelpTextContainer.Visible = true;
-            panelHideSpeechTriangle.Visible = false;
-            panelHelpTextContainer.BringToFront();
+            lblHelpText.Invoke((MethodInvoker)delegate
+            {
+                lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
+            });
+            panelHelpTextContainer.Invoke((MethodInvoker)delegate
+            {
+                panelHelpTextContainer.Visible = true;
+                panelHelpTextContainer.BringToFront();
+            });
+            panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+            {
+                panelHideSpeechTriangle.Visible = false;
+            });
         }
 
         #endregion
@@ -4198,15 +4317,22 @@ namespace Cubit
                 panelSpeechBubble.Invoke((MethodInvoker)delegate
                 {
                     panelSpeechBubble.Height = 0;
+                    panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 66);
+                    panelSpeechBubble.Visible = true;
                 });
                 SpeechBubblecurrentHeight = 0;
-                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, 66);
-                panelSpeechBubble.Visible = true;
-                lblRobotSpeak.Text = "";
+
+                lblRobotSpeak.Invoke((MethodInvoker)delegate
+                {
+                    lblRobotSpeak.Text = "";
+                });
 
                 StartExpandingRobot();
                 await WaitForExpandRobotTimerToStop();
-                panelHideSpeechTriangle.Visible = false;
+                panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+                {
+                    panelHideSpeechTriangle.Visible = false;
+                });
                 expandRobotTimerRunning = false;
 
                 int charIndex = 0;
@@ -4253,7 +4379,10 @@ namespace Cubit
                     await Task.Delay(30, cancellationToken); // Delay between characters
                 }
                 await Task.Delay(3000, cancellationToken);
-                panelHideSpeechTriangle.Visible = true;
+                panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
+                {
+                    panelHideSpeechTriangle.Visible = true;
+                });
                 StartShrinkingRobot();
                 pictureBoxRobot.Invoke((MethodInvoker)delegate
                 {
@@ -4317,9 +4446,12 @@ namespace Cubit
             else // shrink further
             {
                 pictureBoxRobot.Invalidate();
-                panelSpeechBubble.Height = SpeechBubblecurrentHeight;
-                panelSpeechBubble.Invalidate();
-                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, panelSpeechBubble.Location.Y + 2);
+                panelSpeechBubble.Invoke((MethodInvoker)delegate
+                {
+                    panelSpeechBubble.Height = SpeechBubblecurrentHeight;
+                    panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, panelSpeechBubble.Location.Y + 2);
+                    panelSpeechBubble.Invalidate();
+                });
             }
         }
 
@@ -4340,9 +4472,12 @@ namespace Cubit
             }
             else // expand further
             {
-                panelSpeechBubble.Height = SpeechBubblecurrentHeight;
-                panelSpeechBubble.Invalidate();
-                panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, panelSpeechBubble.Location.Y - 2);
+                panelSpeechBubble.Invoke((MethodInvoker)delegate
+                {
+                    panelSpeechBubble.Height = SpeechBubblecurrentHeight;
+                    panelSpeechBubble.Invalidate();
+                    panelSpeechBubble.Location = new Point(panelSpeechBubble.Location.X, panelSpeechBubble.Location.Y - 2);
+                });
             }
         }
 
@@ -4447,13 +4582,19 @@ namespace Cubit
             }
             if (currentHeightExpandingPanel >= panelMaxHeight) // expanding is complete
             {
-                panelToExpandVert.Height = panelMaxHeight;
+                panelToExpandVert.Invoke((MethodInvoker)delegate
+                {
+                    panelToExpandVert.Height = panelMaxHeight;
+                });
                 ExpandPanelTimerVert.Stop();
             }
             else // expand further
             {
-                panelToExpandVert.Height = currentHeightExpandingPanel;
-                panelToExpandVert.Invalidate();
+                panelToExpandVert.Invoke((MethodInvoker)delegate
+                {
+                    panelToExpandVert.Height = currentHeightExpandingPanel;
+                    panelToExpandVert.Invalidate();
+                });
 
             }
         }
@@ -4468,14 +4609,19 @@ namespace Cubit
 
             if (currentHeightShrinkingPanel <= panelMinHeight) // shrinking is complete
             {
-                panelToShrinkVert.Height = panelMinHeight;
+                panelToShrinkVert.Invoke((MethodInvoker)delegate
+                {
+                    panelToShrinkVert.Height = panelMinHeight;
+                });
                 ShrinkPanelTimerVert.Stop();
             }
             else // shrink further
             {
-                panelToShrinkVert.Height = currentHeightShrinkingPanel;
-                panelToShrinkVert.Invalidate();
-
+                panelToShrinkVert.Invoke((MethodInvoker)delegate
+                {
+                    panelToShrinkVert.Height = currentHeightShrinkingPanel;
+                    panelToShrinkVert.Invalidate();
+                });
             }
         }
 

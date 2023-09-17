@@ -1621,7 +1621,7 @@
             // 
             panelTransactionsContainer.AutoScroll = true;
             panelTransactionsContainer.BackColor = Color.White;
-            panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions1;
+            panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions2;
             panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Stretch;
             panelTransactionsContainer.Controls.Add(listViewTransactions);
             panelTransactionsContainer.Location = new Point(1, 25);
@@ -1835,8 +1835,8 @@
             label30.Padding = new Padding(0, 2, 0, 0);
             label30.Size = new Size(20, 19);
             label30.TabIndex = 18;
-            label30.Text = "🏷️🏷️";
-            toolTip1.SetToolTip(label30, "Rolling cost basis of your bitcoin up to and including this transaction");
+            label30.Text = "🏷️";
+            toolTip1.SetToolTip(label30, "Optional label");
             // 
             // label22
             // 
@@ -1849,7 +1849,7 @@
             label22.Size = new Size(20, 19);
             label22.TabIndex = 16;
             label22.Text = "cc";
-            toolTip1.SetToolTip(label22, "Rolling cost basis of your bitcoin up to and including this transaction");
+            toolTip1.SetToolTip(label22, "Optional colour code");
             // 
             // label51
             // 
@@ -1863,7 +1863,6 @@
             label51.Size = new Size(23, 19);
             label51.TabIndex = 15;
             label51.Text = "TX";
-            toolTip1.SetToolTip(label51, "A sequentially assigned transaction number. Enter this number below to delete a transaction.");
             // 
             // label34
             // 
