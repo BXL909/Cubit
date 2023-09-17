@@ -2,7 +2,12 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-*/
+find solution to displaying labels
+check robot interupts
+new image for empty transaction list (larger size)
+check for things that should be on UI thread
+change shade of selected row
+ */
 
 #region Using
 using Newtonsoft.Json;
@@ -11,16 +16,13 @@ using System.Data;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Control = System.Windows.Forms.Control;
 using ListViewItem = System.Windows.Forms.ListViewItem;
 using Panel = System.Windows.Forms.Panel;
 using System.Drawing.Drawing2D;
 using Cubit.Properties;
 using ScottPlot;
 using ScottPlot.Plottable;
-using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using System.Reflection.Emit;
+using static ScottPlot.Plottable.PopulationPlot;
 #endregion
 
 namespace Cubit
@@ -30,7 +32,6 @@ namespace Cubit
         readonly string CurrentVersion = "0.9";
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
-
         readonly string[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
         readonly string[] monthsNumeric = { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" };
         int selectedYear = 0;
@@ -38,8 +39,20 @@ namespace Cubit
         int selectedMonthNumeric = 0;
         string selectedDay = "";
         int selectedDayNumeric = 0;
-        decimal selectedRangePercentage = 0;
-        decimal selectedMedianPrice = 0;
+        readonly Color[] colorCodes = new Color[]
+        {
+            Color.FromArgb(254, 166, 154),
+            Color.FromArgb(162, 201, 170),
+            Color.FromArgb(132, 160, 208),
+            Color.FromArgb(246, 215, 221),
+            Color.FromArgb(180, 173, 165),
+            Color.FromArgb(213, 167, 239),
+            Color.FromArgb(249, 250, 133),
+            Color.FromArgb(250, 201, 132)
+        }; // preset colours to add to transactions as colour codes
+        string selectedColor = "9"; // will hold selected color code for transaction. 1-8 are colours, 9 is 'no colour'.
+        decimal selectedRangePercentage = 0; // margin of error on the estimated price for the date range
+        decimal selectedMedianPrice = 0; // median price for the date range
         bool GotHistoricPrices = false;
         string TXDataToDelete = ""; // holds the dateAdded value of the transaction selected for deletion
         private bool isRobotSpeaking = false; // Robot speaking flag
@@ -50,9 +63,6 @@ namespace Cubit
         private bool expandRobotTimerRunning = false; // Robot - text is expanding
         bool robotIgnoreChanges = false; // Robot - suppress animation
         string priceEstimateType = "N"; // will hold the estimate type
-        bool isTransactionsButtonPressed = false; // Listview - is a scroll up or down button pressed?
-        bool transactionsUpButtonPressed = false; // Listview - is scroll up pressed?
-        bool transactionsDownButtonPressed = false; // Listview - is scroll down pressed?
         private Panel panelToExpandVert = new(); // panel animation vertical
         private Panel panelToShrinkVert = new(); // panel animation vertical
         private int panelMaxHeight = 0; // panel animation vertical
@@ -61,7 +71,7 @@ namespace Cubit
         private int currentHeightShrinkingPanel = 0; // panel animation vertical
         bool initialCurrencySetup = true; // used to avoid robot message when currency is initially set
         bool currencyAlreadySavedInFile = false; // is ANY currency saved in the settings file
-        string selectedCurrencyName = "USD";
+        string selectedCurrencyName = "USD"; // initial value. Can be changed and saved
         string currencyInFile = "USD"; // the currency save in the settings file
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
@@ -85,7 +95,7 @@ namespace Cubit
             "Error 404: Joy not found. Please reboot me.",
             "Beep boop beep! I am a robot.",
             "I lost all my bitcoin in a spaceship accident.",
-        };
+        }; // silly robot text when clicked
         List<double> listBuyBTCTransactionDate = new();
         List<double> listBuyBTCTransactionFiatAmount = new();
         List<double> listBuyBTCTransactionPrice = new();
@@ -173,12 +183,13 @@ namespace Cubit
             panel29.Paint += Panel_Paint;
             panel30.Paint += Panel_Paint;
             panel32.Paint += Panel_Paint;
+            panelColors.Paint += Panel_Paint;
+            panelColorMenu.Paint += Panel_Paint;
             panelRobotSpeakOuter.Paint += Panel_Paint;
             panelWelcome.Paint += Panel_Paint;
             panelCurrencyMenu.Paint += Panel_Paint;
             panelCurrency.Paint += Panel_Paint;
             panelTXListFooter.Paint += Panel_Paint;
-            panelTXSelectContainer.Paint += Panel_Paint;
             panelAddTransactionContainer.Paint += Panel_Paint;
             panelScrollbarContainer.Paint += Panel_Paint;
             panelSpeechBubble.Paint += Panel_Paint;
@@ -204,6 +215,14 @@ namespace Cubit
         #region form load
         private async void BitcoinCBC_Load(object sender, EventArgs e)
         {
+            #region initialise scrollbar
+            vScrollBar1.Minimum = 0;
+            vScrollBar1.Maximum = listViewTransactions.Items.Count - 1;
+            vScrollBar1.SmallChange = 1;
+            vScrollBar1.LargeChange = 1;
+            vScrollBar1.Value = vScrollBar1.Minimum;
+            #endregion
+
             #region restore saved currency
             try
             {
@@ -285,11 +304,12 @@ namespace Cubit
             panel29.Invalidate();
             panel30.Invalidate();
             panel32.Invalidate();
+            panelColorMenu.Invalidate();
+            panelColors.Invalidate();
             panelRobotSpeakOuter.Invalidate();
             panelWelcome.Invalidate();
             panelCurrency.Invalidate();
             panelCurrencyMenu.Invalidate();
-            panelTXSelectContainer.Invalidate();
             panelAddTransactionContainer.Invalidate();
             panelScrollbarContainer.Invalidate();
             panelTXListFooter.Invalidate();
@@ -615,8 +635,6 @@ namespace Cubit
                 });
             }
             GetPriceForDate();
-
-            // await RobotSpeakAsync("I am a robot. This is a test. I am a robot. This is a test. I am a robot. This is a test. ");
         }
         #endregion
 
@@ -748,8 +766,6 @@ namespace Cubit
                     btnUsePriceEstimateFlag.Text = "✔️";
                 });
                 textBoxPriceInput.Enabled = false;
-                //if (lblEstimatedPrice.Text != "")
-                //{
                 textBoxPriceInput.Invoke((MethodInvoker)delegate
                 {
                     textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
@@ -759,7 +775,6 @@ namespace Cubit
                 {
                     panel6.BackColor = Color.FromArgb(240, 240, 240);
                 });
-                //}
                 if (priceEstimateType == "DA")
                 {
                     lblAddDataRange.Invoke((MethodInvoker)delegate
@@ -912,6 +927,80 @@ namespace Cubit
         }
         #endregion
 
+        #region transaction colour input
+        private void BtnLabelColor_Click(object sender, EventArgs e)
+        {
+
+            if (panelColors.Height > 0)
+            { //shrink the panel
+                currentHeightShrinkingPanel = panelColors.Height;
+                StartShrinkingPanelVert(panelColors);
+
+            }
+            else
+            { //expand the panel
+                currentHeightExpandingPanel = panelColors.Height;
+                StartExpandingPanelVert(panelColors);
+            }
+        }
+
+        private void BtnRed1_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnRed1.BackColor;
+            selectedColor = "1";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnGreen2_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnGreen2.BackColor;
+            selectedColor = "2";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnBlue3_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnBlue3.BackColor;
+            selectedColor = "3";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnPink4_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnPink4.BackColor;
+            selectedColor = "4";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnBrown5_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnBrown5.BackColor;
+            selectedColor = "5";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnPurple6_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnPurple6.BackColor;
+            selectedColor = "6";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnYellow7_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnYellow7.BackColor;
+            selectedColor = "7";
+            BtnLabelColor_Click(sender, e);
+        }
+
+        private void BtnOrange8_Click(object sender, EventArgs e)
+        {
+            btnLabelColor.BackColor = btnOrange8.BackColor;
+            selectedColor = "8";
+            BtnLabelColor_Click(sender, e);
+        }
+        #endregion
+
         #region clear input fields
         private void BtnClearInput_Click(object sender, EventArgs e)
         {
@@ -1038,8 +1127,14 @@ namespace Cubit
             {
                 btnUsePriceEstimateFlag.Text = "✖️";
             });
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = Color.FromArgb(255, 192, 128);
+            });
+            selectedColor = "9"; // no colour is assigned to 9. This translates to 'no color code' selected.
+
             robotIgnoreChanges = false;
-            InterruptAndStartNewRobotSpeak("Data cleared!");
+            InterruptAndStartNewRobotSpeak("Ready for a new transaction!");
         }
         #endregion
 
@@ -1054,7 +1149,7 @@ namespace Cubit
             {
                 lblDisabledAddButtonText.Visible = false;
                 btnAddTransaction.Enabled = true;
-                btnAddTransaction.BackColor = Color.FromArgb(255, 224, 192);
+                btnAddTransaction.BackColor = Color.FromArgb(255, 192, 128);
             }
             else
             {
@@ -1082,109 +1177,35 @@ namespace Cubit
             {
                 btnCancelDelete.Visible = true;
             });
-            btnTXSelectUp.Enabled = false;
-            btnTXSelectDown.Enabled = false;
-            numericUpDownSelectTX.Enabled = false;
 
             string robotConfirmation = "";
 
-            foreach (ListViewItem item in listViewTransactions.Items)
+            if (listViewTransactions.SelectedItems.Count > 0)
             {
-                if (item.SubItems[0].Text == Convert.ToString(numericUpDownSelectTX.Value))
-                {
-                    TXDataToDelete = item.SubItems[16].Text;
-                    string btcamount = item.SubItems[9].Text;
-                    string txdate = item.SubItems[1].Text + "/" + item.SubItems[2].Text + "/" + item.SubItems[3].Text;
-                    robotConfirmation = "Are you sure you want to delete this transaction for " + btcamount + " bitcoin on " + txdate + "?";
-                }
+                ListViewItem selectedItem = listViewTransactions.SelectedItems[0]; // Get selected row
+
+                string transactionNumber = selectedItem.SubItems[0].Text; // 1st column
+                string dateAdded = selectedItem.SubItems[17].Text; // 18th column
+                TXDataToDelete = selectedItem.SubItems[18].Text;
+                string btcamount = selectedItem.SubItems[9].Text;
+                string txdate = selectedItem.SubItems[1].Text + "/" + selectedItem.SubItems[2].Text + "/" + selectedItem.SubItems[3].Text;
+                robotConfirmation = "Are you sure you want to delete this transaction for " + btcamount + " bitcoin on " + txdate + "?";
             }
             InterruptAndStartNewRobotSpeak(robotConfirmation);
         }
 
-        private void BtnTXSelectUp_Click(object sender, EventArgs e)
-        {
-            if (numericUpDownSelectTX.Value < numericUpDownSelectTX.Maximum)
-            {
-                robotIgnoreTXSelection = false;
-                numericUpDownSelectTX.Value++;
-            }
-        }
-
-        private void BtnTXSelectDown_Click(object sender, EventArgs e)
-        {
-            if (numericUpDownSelectTX.Value > numericUpDownSelectTX.Minimum)
-            {
-                robotIgnoreTXSelection = false;
-                numericUpDownSelectTX.Value--;
-            }
-        }
-
         bool robotIgnoreTXSelection = true;
-
-        private void NumericUpDownSelectTX_ValueChanged(object sender, EventArgs e)
-        {
-            if (!robotIgnoreTXSelection)
-            {
-                if (numericUpDownSelectTX.Value >= numericUpDownSelectTX.Minimum && numericUpDownSelectTX.Value <= numericUpDownSelectTX.Maximum)
-                {
-                    btnDeleteTransaction.Enabled = true;
-                    btnDeleteTransaction.BackColor = Color.FromArgb(255, 224, 192);
-                    lblDisabledDeleteButtonText.Visible = false;
-
-                    #region display transaction label
-                    // Get the selected row number from the NumericUpdown control
-                    int selectedRowNumber = (int)numericUpDownSelectTX.Value;
-
-                    // Search for the ListViewItem with a matching value in the first column
-                    foreach (ListViewItem item in listViewTransactions.Items)
-                    {
-                        // Check if the value in the first column matches the selected value
-                        if (item.SubItems.Count > 0 && int.TryParse(item.SubItems[0].Text, out int firstColumnValue))
-                        {
-                            if (firstColumnValue == numericUpDownSelectTX.Value)
-                            {
-                                if (item.SubItems[15] == null || Convert.ToString(item.SubItems[15].Text) == "-")
-                                {
-                                    label54.Text = "no label assigned";
-                                    InterruptAndStartNewRobotSpeak("No label assigned to transaction " + Convert.ToString(numericUpDownSelectTX.Value));
-                                }
-                                // Update the label text with the value from the first column
-                                else
-                                {
-                                    label54.Text = item.SubItems[15].Text;
-                                    InterruptAndStartNewRobotSpeak("Label assigned to transaction " + Convert.ToString(numericUpDownSelectTX.Value) + ": " + Convert.ToString(item.SubItems[15].Text));
-                                }
-                                return; // Exit the loop once a matching item is found
-                            }
-                        }
-                    }
-
-                    #endregion
-                }
-                else
-                {
-                    btnDeleteTransaction.Enabled = false;
-                    btnDeleteTransaction.BackColor = Color.Gray;
-                    lblDisabledDeleteButtonText.Visible = true;
-                }
-            }
-
-        }
 
         private async void BtnConfirmDelete_Click(object sender, EventArgs e)
         {
             try
             {
-
                 DeleteTransactionFromJsonFile(TXDataToDelete);
                 await SetupTransactionsList();
                 DrawPriceChart();
                 InterruptAndStartNewRobotSpeak("Transaction deleted.");
                 TXDataToDelete = "";
                 BtnCancelDelete_Click(sender, e); // revert buttons back to original state
-                btnTXSelectUp.Enabled = true;
-                btnTXSelectDown.Enabled = true;
-                numericUpDownSelectTX.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -1206,9 +1227,6 @@ namespace Cubit
             {
                 btnCancelDelete.Visible = false;
             });
-            btnTXSelectUp.Enabled = true;
-            btnTXSelectDown.Enabled = true;
-            numericUpDownSelectTX.Enabled = true;
         }
 
         #endregion
@@ -1573,7 +1591,7 @@ namespace Cubit
             {
                 transactionType = "Buy";
             }
-            var newTransaction = new Transaction { DateAdded = today, TransactionType = transactionType, Year = lblAddDataYear.Text, Month = lblAddDataMonth.Text, Day = lblAddDataDay.Text, Price = lblAddDataPrice.Text, EstimateType = lblAddDataPriceEstimateType.Text, EstimateRange = lblAddDataRange.Text, FiatAmount = lblAddDataFiat.Text, FiatAmountEstimateFlag = lblAddDataFiatEstimateFlag.Text, BTCAmount = lblAddDataBTC.Text, BTCAmountEstimateFlag = lblAddDataBTCEstimateFlag.Text, Label = lblAddDataLabel.Text };
+            var newTransaction = new Transaction { DateAdded = today, TransactionType = transactionType, Year = lblAddDataYear.Text, Month = lblAddDataMonth.Text, Day = lblAddDataDay.Text, Price = lblAddDataPrice.Text, EstimateType = lblAddDataPriceEstimateType.Text, EstimateRange = lblAddDataRange.Text, FiatAmount = lblAddDataFiat.Text, FiatAmountEstimateFlag = lblAddDataFiatEstimateFlag.Text, BTCAmount = lblAddDataBTC.Text, BTCAmountEstimateFlag = lblAddDataBTCEstimateFlag.Text, Label = lblAddDataLabel.Text, LabelColor = selectedColor };
             // Read the existing transactions from the JSON file
             var transactions = ReadTransactionsFromJsonFile();
 
@@ -1638,6 +1656,8 @@ namespace Cubit
         #endregion
 
         #region transactions listview
+
+        #region set up listview
         private async Task SetupTransactionsList()
         {
             try
@@ -1663,12 +1683,6 @@ namespace Cubit
                         listViewTransactions.Items.Clear(); // remove any data that may be there already
                         listViewTransactions.Visible = false;
                     });
-                    numericUpDownSelectTX.Invoke((MethodInvoker)delegate
-                    {
-                        numericUpDownSelectTX.Minimum = 0;
-                        numericUpDownSelectTX.Maximum = 0;
-                        numericUpDownSelectTX.Value = 0;
-                    });
                     lbl1.Invoke((MethodInvoker)delegate
                     {
                         lbl1.Visible = false;
@@ -1677,10 +1691,7 @@ namespace Cubit
                     {
                         lbl2.Visible = false;
                     });
-                    lbl3.Invoke((MethodInvoker)delegate
-                    {
-                        lbl3.Visible = false;
-                    });
+
                     panelScrollbarContainer.Invoke((MethodInvoker)delegate
                     {
                         panelScrollbarContainer.Height = 25;
@@ -1700,10 +1711,7 @@ namespace Cubit
                 {
                     lbl2.Visible = true;
                 });
-                lbl3.Invoke((MethodInvoker)delegate
-                {
-                    lbl3.Visible = true;
-                });
+
 
                 //LIST VIEW
                 listViewTransactions.Invoke((MethodInvoker)delegate
@@ -1769,7 +1777,7 @@ namespace Cubit
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("Fiat amt.", 95);
+                        listViewTransactions.Columns.Add("Fiat amt.", 85);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 8)
@@ -1797,14 +1805,14 @@ namespace Cubit
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("▲▼", 30);
+                        listViewTransactions.Columns.Add("▲▼", 0);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 12)
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("P/L", 95);
+                        listViewTransactions.Columns.Add("P/L", 85);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 13)
@@ -1825,14 +1833,28 @@ namespace Cubit
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("Label", 200);
+                        listViewTransactions.Columns.Add("LabelColor", 20);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 16)
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("Date Added (hidden)", 200);
+                        listViewTransactions.Columns.Add("Label icon", 20);
+                    });
+                }
+                if (listViewTransactions.Columns.Count == 17)
+                {
+                    listViewTransactions.Invoke((MethodInvoker)delegate
+                    {
+                        listViewTransactions.Columns.Add("Label (hidden)", 0);
+                    });
+                }
+                if (listViewTransactions.Columns.Count == 18)
+                {
+                    listViewTransactions.Invoke((MethodInvoker)delegate
+                    {
+                        listViewTransactions.Columns.Add("Date Added (hidden)", 0);
                     });
                 }
                 // Add the items to the ListView
@@ -1948,7 +1970,31 @@ namespace Cubit
                     lbl2.Text = Convert.ToString(rollingFiatBalance);
                     lbl3.Text = Convert.ToString(rollingCostBasis);
 
-                    item.SubItems.Add(transaction.Label);
+                    if (transaction.LabelColor != "9")
+                    {
+                        item.SubItems.Add(Convert.ToString(transaction.LabelColor));
+                    }
+                    else
+                    {
+                        item.SubItems.Add("");
+                    }
+
+                    if (transaction.Label != null && transaction.Label != "-")
+                    {
+
+                        item.SubItems.Add("🏷️");
+                    }
+                    else
+                    {
+                        item.SubItems.Add("");
+                    }
+
+                    if (transaction.Label != null)
+                    {
+
+                        item.SubItems.Add(transaction.Label);
+                    }
+
                     item.SubItems.Add(Convert.ToString(transaction.DateAdded));
 
                     listViewTransactions.Invoke((MethodInvoker)delegate
@@ -1956,31 +2002,18 @@ namespace Cubit
                         listViewTransactions.Items.Add(item); // add row
                     });
 
-
-
                     // Get the height of each item to set height of whole listview
                     int rowHeight = listViewTransactions.Margin.Vertical + listViewTransactions.Padding.Vertical + listViewTransactions.GetItemRect(0).Height;
                     int itemCount = listViewTransactions.Items.Count; // Get the number of items in the ListBox
                     int listBoxHeight = (itemCount + 2) * rowHeight; // Calculate the height of the ListBox (the extra 2 gives room for the header)
 
-                    listViewTransactions.Height = listBoxHeight; // Set the height of the ListBox
-
                     counterAllTransactions++;
                 }
 
-                if (listViewTransactions.Items.Count > 10)
-                {
-                    btnTransactionsListUp.Visible = true;
-                    btnTransactionsListDown.Visible = true;
-                }
-                else
-                {
-                    btnTransactionsListUp.Visible = false;
-                    btnTransactionsListDown.Visible = false;
-                }
+                vScrollBar1.Maximum = listViewTransactions.Items.Count - 1;
 
                 // now reverse the order so most recent are first (did it this way round to calculate the rolling balances and cost basis first)
-                System.Windows.Forms.ListView listView = listViewTransactions; // Replace with the name of your ListView control
+                ListView listView = listViewTransactions; 
                 listView.BeginUpdate();
 
                 List<ListViewItem> items = new();
@@ -1995,26 +2028,39 @@ namespace Cubit
                 {
                     btnListReverse.Text = "Oldest first";
                 });
-
-                //set limits for the transaction selector
-                if (listViewTransactions.Items.Count == 0)
-                {
-                    numericUpDownSelectTX.Minimum = 0;
-                    numericUpDownSelectTX.Maximum = 0;
-                    numericUpDownSelectTX.Value = 0;
-                }
-                else
-                {
-                    numericUpDownSelectTX.Minimum = 1;
-                    numericUpDownSelectTX.Maximum = listViewTransactions.Items.Count;
-                    numericUpDownSelectTX.Value = numericUpDownSelectTX.Maximum;
-                }
             }
             catch (Exception ex)
             {
                 HandleException(ex, "SetupTransactionsList");
             }
         }
+        #endregion
+
+        #region select transaction row on listview
+
+        private void ListViewTransactions_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (listViewTransactions.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewTransactions.SelectedItems[0]; // Get selected row
+
+                btnDeleteTransaction.Enabled = true;
+                btnDeleteTransaction.BackColor = Color.FromArgb(255, 192, 128);
+                lblDisabledDeleteButtonText.Visible = false;
+
+                if (selectedItem.SubItems[15] == null || Convert.ToString(selectedItem.SubItems[17].Text) == "-")
+                {
+                    label54.Text = "";
+                }
+                else // Update the label text with the value from the first column
+                {
+                    label54.Text = selectedItem.SubItems[17].Text;
+                    InterruptAndStartNewRobotSpeak("Label assigned to transaction: " + Convert.ToString(selectedItem.SubItems[17].Text));
+                }
+            }
+        }
+
+        #endregion
 
         #region styling for listview
 
@@ -2056,7 +2102,6 @@ namespace Cubit
                     return;
                 }
 
-
                 var font = listViewTransactions.Font;
                 var columnWidth = 0;
                 if (e.Header != null)
@@ -2077,10 +2122,13 @@ namespace Cubit
                     if (e.ItemIndex % 2 == 0)
                     {
                         e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(240, 240, 240)), bounds);
+
+
                     }
                     else
                     {
                         e.Graphics.FillRectangle(new SolidBrush(listViewTransactions.BackColor), bounds);
+
                     }
 
                     #endregion
@@ -2210,6 +2258,19 @@ namespace Cubit
                         else
                         {
                             e.SubItem.ForeColor = Color.OliveDrab;
+                        }
+                    }
+                    if (e.ColumnIndex == 15) // label
+                    {
+                        if (!string.IsNullOrEmpty(maxText))
+                        {
+                            int colorIndex = text[0] - '0';
+                            if (colorIndex != 9)
+                            {
+                                using Brush backgroundBrush = new SolidBrush(colorCodes[colorIndex - 1]);
+                                e.Graphics.FillRectangle(backgroundBrush, e.SubItem.Bounds);
+                                e.SubItem.ForeColor = colorCodes[colorIndex - 1];
+                            }
                         }
                     }
                     TextRenderer.DrawText(e.Graphics, maxText, font, bounds, e.Item!.ForeColor, TextFormatFlags.EndEllipsis | TextFormatFlags.Left);
@@ -2365,11 +2426,21 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-
+                    if (e.ColumnIndex == 15) // label
+                    {
+                        if (!string.IsNullOrEmpty(text))
+                        {
+                            int colorIndex = text[0] - '0';
+                            if (colorIndex != 9)
+                            {
+                                using Brush backgroundBrush = new SolidBrush(colorCodes[colorIndex - 1]);
+                                e.Graphics.FillRectangle(backgroundBrush, e.SubItem.Bounds);
+                                e.SubItem.ForeColor = colorCodes[colorIndex - 1];
+                            }
+                        }
+                    }
                     TextRenderer.DrawText(e.Graphics, text, font, bounds, e.SubItem.ForeColor, TextFormatFlags.Left);
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -2381,94 +2452,14 @@ namespace Cubit
 
         #region scroll listview
 
-        private void BtnTransactionsListUp_Click(object sender, EventArgs e)
+        private void VScrollBar1_Scroll(object sender, ScrollEventArgs e)
         {
-            if (panelTransactionsContainer.VerticalScroll.Value > (panelTransactionsContainer.VerticalScroll.Minimum + 2))
-            {
-
-                panelTransactionsContainer.VerticalScroll.Value -= 2;
-            }
-            else
-            {
-                panelTransactionsContainer.VerticalScroll.Value = 0;
-            }
+            listViewTransactions.TopItem = listViewTransactions.Items[e.NewValue];
         }
 
-        private void BtnTransactionsListUp_MouseDown(object sender, MouseEventArgs e)
+        private void ListViewTransactions_SelectedIndexChanged(object sender, EventArgs e)
         {
-            isTransactionsButtonPressed = true;
-            transactionsUpButtonPressed = true;
-            TransactionsScrollTimer.Start();
-        }
-
-        private void BtnTransactionsListUp_MouseUp(object sender, MouseEventArgs e)
-        {
-            isTransactionsButtonPressed = false;
-            transactionsUpButtonPressed = false;
-            TransactionsScrollTimer.Stop();
-            TransactionsScrollTimer.Interval = 50; // reset the interval to its original value
-        }
-
-        private void BtnTransactionsListDown_Click(object sender, EventArgs e)
-        {
-            if (panelTransactionsContainer.VerticalScroll.Value < (panelTransactionsContainer.VerticalScroll.Maximum - 2))
-            {
-                panelTransactionsContainer.VerticalScroll.Value += 2;
-            }
-            else
-            {
-                panelTransactionsContainer.VerticalScroll.Value = panelTransactionsContainer.VerticalScroll.Maximum;
-            }
-        }
-
-        private void BtnTransactionsListDown_MouseDown(object sender, MouseEventArgs e)
-        {
-            isTransactionsButtonPressed = true;
-            transactionsDownButtonPressed = true;
-            TransactionsScrollTimer.Start();
-        }
-
-        private void BtnTransactionsListDown_MouseUp(object sender, MouseEventArgs e)
-        {
-            isTransactionsButtonPressed = false;
-            transactionsDownButtonPressed = false;
-            TransactionsScrollTimer.Stop();
-            TransactionsScrollTimer.Interval = 50; // reset the interval to its original value
-        }
-
-        private void TransactionsScrollTimer_Tick(object sender, EventArgs e)
-        {
-            if (isTransactionsButtonPressed)
-            {
-                if (transactionsDownButtonPressed)
-                {
-                    if (panelTransactionsContainer.VerticalScroll.Value < panelTransactionsContainer.VerticalScroll.Maximum - 4)
-                    {
-                        panelTransactionsContainer.VerticalScroll.Value = panelTransactionsContainer.VerticalScroll.Value + 4;
-                    }
-                    else
-                    {
-                        panelTransactionsContainer.VerticalScroll.Value = panelTransactionsContainer.VerticalScroll.Maximum;
-                    }
-                    TransactionsScrollTimer.Interval = 1; // set a faster interval while the button is held down
-                }
-                else if (transactionsUpButtonPressed)
-                {
-                    if (panelTransactionsContainer.VerticalScroll.Value > panelTransactionsContainer.VerticalScroll.Minimum + 4)
-                    {
-                        panelTransactionsContainer.VerticalScroll.Value = panelTransactionsContainer.VerticalScroll.Value - 4;
-                    }
-                    else
-                    {
-                        panelTransactionsContainer.VerticalScroll.Value = panelTransactionsContainer.VerticalScroll.Minimum;
-                    }
-                    TransactionsScrollTimer.Interval = 1; // set a faster interval while the button is held down
-                }
-            }
-            else
-            {
-                TransactionsScrollTimer.Stop();
-            }
+            vScrollBar1.Value = listViewTransactions.Items.IndexOf(listViewTransactions.TopItem);
         }
 
         #endregion
@@ -4061,14 +4052,20 @@ namespace Cubit
 
         #region documentation
 
-        private void BtnCloseHelpAddTransaction_Click(object sender, EventArgs e)
+        private void BtnCloseHelpText_Click(object sender, EventArgs e)
         {
+            panelAddTransactionContainer.Enabled = true;
+            panel14.Enabled = true;
+            panel13.Enabled = true;
             panelHelpTextContainer.Visible = false;
             panelHideSpeechTriangle.Visible = true;
         }
 
         private void BtnHelpAddTransaction_Click(object sender, EventArgs e)
         {
+            panelAddTransactionContainer.Enabled = false;
+            panel14.Enabled = false;
+            panel13.Enabled = false;
             lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
             panelHelpTextContainer.Visible = true;
             panelHideSpeechTriangle.Visible = false;
@@ -4077,17 +4074,20 @@ namespace Cubit
 
         private void BtnHelpTransactionList_Click(object sender, EventArgs e)
         {
+            panelAddTransactionContainer.Enabled = false;
+            panel14.Enabled = false;
+            panel13.Enabled = false;
             lblHelpText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
             panelHelpTextContainer.Visible = true;
             panelHideSpeechTriangle.Visible = false;
             panelHelpTextContainer.BringToFront();
         }
 
-
-
-
         private void BtnHelpChart_Click(object sender, EventArgs e)
         {
+            panelAddTransactionContainer.Enabled = false;
+            panel14.Enabled = false;
+            panel13.Enabled = false;
             lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
             panelHelpTextContainer.Visible = true;
             panelHideSpeechTriangle.Visible = false;
@@ -4441,7 +4441,10 @@ namespace Cubit
             {
                 panelMaxHeight = 129;
             }
-
+            if (panelToExpandVert == panelColors)
+            {
+                panelMaxHeight = 129;
+            }
             if (currentHeightExpandingPanel >= panelMaxHeight) // expanding is complete
             {
                 panelToExpandVert.Height = panelMaxHeight;
@@ -4458,7 +4461,7 @@ namespace Cubit
         private void ShrinkCurrencyTimer_Tick(object sender, EventArgs e)
         {
             currentHeightShrinkingPanel -= 4;
-            if (panelToShrinkVert == panelCurrency)
+            if (panelToShrinkVert == panelCurrency || panelToShrink == panelColors)
             {
                 panelMinHeight = 0;
             }
@@ -4575,6 +4578,7 @@ namespace Cubit
             public string? BTCAmount { get; set; }
             public string? BTCAmountEstimateFlag { get; set; }
             public string? Label { get; set; }
+            public string? LabelColor { get; set; }
         }
 
         // settings file
@@ -4586,35 +4590,5 @@ namespace Cubit
         }
 
         #endregion
-
-        private void listViewTransactions_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            // Check if an item is selected
-            if (listViewTransactions.SelectedItems.Count > 0)
-            {
-                // Retrieve the selected item
-                ListViewItem selectedItem = listViewTransactions.SelectedItems[0];
-
-                // Check if there are at least 5 subitems (0-based index)
-                if (selectedItem.SubItems.Count > 4)
-                {
-                    // Access the value of the 5th column (subitem index 4)
-                    string fifthColumnValue = selectedItem.SubItems[4].Text;
-
-                    // Update the label text with the value
-                    label54.Text = fifthColumnValue;
-                }
-            }
-            else
-            {
-                // No item is selected, so clear the label text
-                label54.Text = "no label assigned to this transaction";
-            }
-        }
-
-        private void numericUpDownSelectTX_KeyDown(object sender, KeyEventArgs e)
-        {
-            robotIgnoreTXSelection = false;
-        }
     }
 }

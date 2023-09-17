@@ -12,6 +12,12 @@
 
 	<ItemGroup>
 		<Compile Remove="CubitHelpers.cs" />
+		<Compile Remove="vScrollBarColor.cs" />
+		<Compile Remove="vScrollBarColor.Designer.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Remove="vScrollBarColor.resx" />
 	</ItemGroup>
 
 	<ItemGroup>

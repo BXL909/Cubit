@@ -80,7 +80,7 @@ namespace CustomControls.RJControls
         //Methods
         private GraphicsPath GetFigurePath(Rectangle rect, int radius)
         {
-            GraphicsPath path = new GraphicsPath();
+            GraphicsPath path = new();
             float curveSize = radius * 2F;
 
             path.StartFigure();
@@ -107,8 +107,8 @@ namespace CustomControls.RJControls
             {
                 using GraphicsPath pathSurface = GetFigurePath(rectSurface, borderRadius);
                 using GraphicsPath pathBorder = GetFigurePath(rectBorder, borderRadius - borderSize);
-                using Pen penSurface = new Pen(this.Parent.BackColor, smoothSize);
-                using Pen penBorder = new Pen(borderColor, borderSize);
+                using Pen penSurface = new(this.Parent.BackColor, smoothSize);
+                using Pen penBorder = new(borderColor, borderSize);
                 pevent.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
                 //Button surface
                 this.Region = new Region(pathSurface);
@@ -128,7 +128,7 @@ namespace CustomControls.RJControls
                 //Button border
                 if (borderSize >= 1)
                 {
-                    using Pen penBorder = new Pen(borderColor, borderSize);
+                    using Pen penBorder = new(borderColor, borderSize);
                     penBorder.Alignment = PenAlignment.Inset;
                     pevent.Graphics.DrawRectangle(penBorder, 0, 0, this.Width - 1, this.Height - 1);
                 }
