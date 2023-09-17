@@ -2,9 +2,9 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-find solution to displaying labels
-check robot interupts
-*/ 
+limit length of transaction label to fit display
+provide total current value and overall change % under list
+*/
 
 #region Using
 using Newtonsoft.Json;
@@ -76,6 +76,7 @@ namespace Cubit
         bool robotIgnoreTXSelection = true;
         private readonly List<string> welcomeMessages = new()
         {
+            "🎵Never gonna give you up, Never gonna let you down🎵",
             "Who thought Cubit was a good name for a robot?",
             "Greetings, human.",
             "I'm here to assist you!",
@@ -94,6 +95,7 @@ namespace Cubit
             "Error 404: Joy not found. Please reboot me.",
             "Beep boop beep! I am a robot.",
             "I lost all my bitcoin in a spaceship accident.",
+            "I'm reading a book on gravity. I can't put it down.",
         }; // silly robot text when clicked
         List<double> listBuyBTCTransactionDate = new();
         List<double> listBuyBTCTransactionFiatAmount = new();
@@ -182,6 +184,7 @@ namespace Cubit
             panel29.Paint += Panel_Paint;
             panel30.Paint += Panel_Paint;
             panel32.Paint += Panel_Paint;
+            panelTransactionLabel.Paint += Panel_Paint;
             panelColors.Paint += Panel_Paint;
             panelColorMenu.Paint += Panel_Paint;
             panelRobotSpeakOuter.Paint += Panel_Paint;
@@ -303,6 +306,7 @@ namespace Cubit
             panel29.Invalidate();
             panel30.Invalidate();
             panel32.Invalidate();
+            panelTransactionLabel.Invalidate();
             panelColorMenu.Invalidate();
             panelColors.Invalidate();
             panelRobotSpeakOuter.Invalidate();
@@ -318,8 +322,10 @@ namespace Cubit
             #region robot's welcome message
             labelWelcomeText.Invoke((MethodInvoker)delegate
             {
-                labelWelcomeText.Text = "at your service...";
+                labelWelcomeText.Text = "Welcome!";
             });
+            panelWelcome.Visible = true;
+            panelRobotSpeakOuter.Visible = false;
             InterruptAndStartNewRobotSpeak("Some random text long enough to make a small delay to see welcome message");
             #endregion
         }
@@ -472,6 +478,8 @@ namespace Cubit
                             lblAddDataBTC.Text = "-" + temp;
                         });
                     }
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("OK. I'm ready to accept a transaction where you sold/spent bitcoin.");
                 }
                 else
@@ -509,6 +517,8 @@ namespace Cubit
                             lblAddDataFiat.Text = "-" + temp;
                         });
                     }
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("OK. I'm ready to accept a transaction where you bought/received bitcoin.");
                 }
             }
@@ -538,6 +548,8 @@ namespace Cubit
                         {
                             lblEstimatedPrice.Text = "";
                         });
+                        panelWelcome.Visible = false;
+                        panelRobotSpeakOuter.Visible = true;
                         InterruptAndStartNewRobotSpeak("Even I can't time travel. Please select a date that isn't in the future!");
                         return;
                     }
@@ -556,6 +568,8 @@ namespace Cubit
                                     {
                                         lblEstimatedPrice.Text = "";
                                     });
+                                    panelWelcome.Visible = false;
+                                    panelRobotSpeakOuter.Visible = true;
                                     InterruptAndStartNewRobotSpeak("Even I can't time travel. Please select a date that isn't in the future!");
                                     return;
                                 }
@@ -580,6 +594,8 @@ namespace Cubit
                             {
                                 lblEstimatedPrice.Text = "";
                             });
+                            panelWelcome.Visible = false;
+                            panelRobotSpeakOuter.Visible = true;
                             InterruptAndStartNewRobotSpeak("Even Satoshi didn't have Bitcoin as early as that!");
                             return;
                         }
@@ -756,6 +772,8 @@ namespace Cubit
                 {
                     lblAddDataPriceEstimateType.Text = "N";
                 });
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK. Input the price at the time of your transaction.");
             }
             else
@@ -792,6 +810,8 @@ namespace Cubit
                 {
                     lblAddDataPriceEstimateType.Text = priceEstimateType;
                 });
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
             }
         }
@@ -818,12 +838,16 @@ namespace Cubit
                 {
                     lblAddDataFiatEstimateFlag.Text = "N";
                 });
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK. Input the amount of fiat currency exchanged in your transaction.");
             }
             else
             {
                 if (btnUseBTCEstimateFlag.Text == "✔️")
                 {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("I can't estimate both fiat and bitcoin. You need to instruct me not to use the bitcoin estimate first.");
                     return;
                 }
@@ -853,6 +877,8 @@ namespace Cubit
                         textBoxFiatInput.Text = lblEstimatedFiat.Text.Trim('(', ')');
                     });
                 }
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK, let's use the best estimate I could manage for the amount of fiat currency in this transaction.");
             }
         }
@@ -880,12 +906,16 @@ namespace Cubit
                 {
                     lblAddDataBTCEstimateFlag.Text = "N";
                 });
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK. Input the amount of bitcoin exchanged in your transaction.");
             }
             else
             {
                 if (btnUseFiatEstimateFlag.Text == "✔️")
                 {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("I can't estimate both fiat and bitcoin. You need to instruct me not to use the fiat estimate first.");
                     return;
                 }
@@ -906,6 +936,8 @@ namespace Cubit
                 {
                     panel4.BackColor = Color.FromArgb(240, 240, 240);
                 });
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("OK, let's use the best estimate I could manage for the amount of bitcoin in this transaction.");
                 if (lblEstimatedBTC.Text != "")
                 {
@@ -1159,6 +1191,8 @@ namespace Cubit
             selectedColor = "9"; // no colour is assigned to 9. This translates to 'no color code' selected.
 
             robotIgnoreChanges = false;
+            panelWelcome.Visible = false;
+            panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Ready for a new transaction!");
         }
         #endregion
@@ -1228,6 +1262,8 @@ namespace Cubit
                 string txdate = selectedItem.SubItems[1].Text + "/" + selectedItem.SubItems[2].Text + "/" + selectedItem.SubItems[3].Text;
                 robotConfirmation = "Are you sure you want to delete this transaction for " + btcamount + " bitcoin on " + txdate + "?";
             }
+            panelWelcome.Visible = false;
+            panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak(robotConfirmation);
         }
 
@@ -1238,6 +1274,8 @@ namespace Cubit
                 DeleteTransactionFromJsonFile(TXDataToDelete);
                 await SetupTransactionsList();
                 DrawPriceChart();
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Transaction deleted.");
                 TXDataToDelete = "";
                 BtnCancelDelete_Click(sender, e); // revert buttons back to original state
@@ -1377,6 +1415,8 @@ namespace Cubit
             string estimatedPrice = "";
             if (comboBoxYearInput.SelectedIndex < 0)
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("You need to give me at least a year to work with. The more accurate the date, the more accurate I can be.");
                 return;
             }
@@ -1418,6 +1458,8 @@ namespace Cubit
                 priceEstimateType = "AM";
 
                 CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
             }
             else
@@ -1461,6 +1503,8 @@ namespace Cubit
                     }
                     priceEstimateType = "MM";
                     CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedMonth + " " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
                 }
                 else
@@ -1510,6 +1554,8 @@ namespace Cubit
                                 }
                                 priceEstimateType = "DA";
                                 CopyPriceEstimateToInputIfNecessary(estimatedPrice);
+                                panelWelcome.Visible = false;
+                                panelRobotSpeakOuter.Visible = true;
                                 InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $" + estimatedPrice);
                             }
                             else
@@ -1519,11 +1565,15 @@ namespace Cubit
                                     lblEstimatedPrice.Text = "0.00";
                                 });
                                 CopyPriceEstimateToInputIfNecessary(estimatedPrice);
+                                panelWelcome.Visible = false;
+                                panelRobotSpeakOuter.Visible = true;
                                 InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $0.0");
                             }
                         }
                         else
                         {
+                            panelWelcome.Visible = false;
+                            panelRobotSpeakOuter.Visible = true;
                             InterruptAndStartNewRobotSpeak($"Failed to fetch data. Status code: {response.StatusCode}");
                         }
                     }
@@ -1542,6 +1592,8 @@ namespace Cubit
             await SetupTransactionsList();
             InitializeChart();
             DrawPriceChart();
+            panelWelcome.Visible = false;
+            panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
         }
 
@@ -1638,6 +1690,8 @@ namespace Cubit
             BtnClearInput_Click(sender, e);
             await SetupTransactionsList();
             isRobotSpeaking = false;
+            panelWelcome.Visible = false;
+            panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Transaction added to list and saved.");
             DrawPriceChart();
         }
@@ -1959,7 +2013,10 @@ namespace Cubit
                     item.SubItems.Add(transaction.BTCAmount);
                     item.SubItems.Add(transaction.BTCAmountEstimateFlag);
 
-                    string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
+                    string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
+                        ? lblCurrentPrice.Text.Substring(1)
+                        : lblCurrentPrice.Text;
+                    //string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                     currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
@@ -1972,21 +2029,23 @@ namespace Cubit
                         profitOrLoss -= (2 * profitOrLoss);
                         item.SubItems.Add("▼");
                     }
-                    item.SubItems.Add(Convert.ToString(profitOrLoss));
+                    //item.SubItems.Add(Convert.ToString(profitOrLoss));
+                    item.SubItems.Add(Convert.ToString(currentValue));
 
                     decimal profitOrLossPercentage = 0;
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
                         decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
 
-                        profitOrLossPercentage = Math.Round(temp * currentValue, 2);
+                        profitOrLossPercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
+                        //profitOrLossPercentage = Math.Round(temp * currentValue, 2);
                     }
                     else // loss
                     {
                         decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
-
-                        profitOrLossPercentage = Math.Round(temp * currentValue, 2);
-                        profitOrLossPercentage -= (2 * profitOrLossPercentage);
+                        profitOrLossPercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
+                        //profitOrLossPercentage = Math.Round(temp * currentValue, 2);
+                        //profitOrLossPercentage -= (2 * profitOrLossPercentage);
                     }
                     item.SubItems.Add(Convert.ToString(profitOrLossPercentage));
 
@@ -2092,17 +2151,19 @@ namespace Cubit
 
                 if (selectedItem.SubItems[15] == null || Convert.ToString(selectedItem.SubItems[17].Text) == "-")
                 {
-                    label54.Invoke((MethodInvoker)delegate
+                    lblTransactionLabel.Invoke((MethodInvoker)delegate
                     {
-                        label54.Text = "";
+                        lblTransactionLabel.Text = "No label associated with this transaction";
                     });
                 }
                 else // Update the label text with the value from the first column
                 {
-                    label54.Invoke((MethodInvoker)delegate
+                    lblTransactionLabel.Invoke((MethodInvoker)delegate
                     {
-                        label54.Text = selectedItem.SubItems[17].Text;
+                        lblTransactionLabel.Text = selectedItem.SubItems[17].Text;
                     });
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("Label assigned to transaction: " + Convert.ToString(selectedItem.SubItems[17].Text));
                 }
             }
@@ -2140,6 +2201,7 @@ namespace Cubit
         {
             try
             {
+                
                 var text = "";
                 if (e.SubItem != null)
                 {
@@ -2169,7 +2231,8 @@ namespace Cubit
 
                     if (e.Item!.Selected)
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
+                        //e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(150, 150, 150)), bounds);
                     }
                     else
                     {
@@ -2276,10 +2339,14 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-                    if (e.ColumnIndex == 12) // P/L
+                    if (e.ColumnIndex == 12) // current value
                     {
-                        if (!string.IsNullOrEmpty(maxText) && maxText[0] == '-')
+                        string fiatSpent = System.Text.RegularExpressions.Regex.IsMatch(e.Item.SubItems[e.ColumnIndex - 5].Text, @"^[^0-9]")
+                            ? e.Item.SubItems[e.ColumnIndex - 5].Text.Substring(1)
+                            : e.Item.SubItems[e.ColumnIndex - 5].Text;
+                        decimal fiatSpentDecimal = Convert.ToDecimal(fiatSpent);
 
+                        if (!string.IsNullOrEmpty(text) && Convert.ToDecimal(text) < fiatSpentDecimal)
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
                         }
@@ -2288,7 +2355,7 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-                    if (e.ColumnIndex == 13) // P/L %
+                    if (e.ColumnIndex == 13) // change %
                     {
                         if (!string.IsNullOrEmpty(maxText) && maxText[0] == '-')
 
@@ -2302,7 +2369,10 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
+                        string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
+                        ? lblCurrentPrice.Text.Substring(1)
+                        : lblCurrentPrice.Text;
+                        //string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(maxText) > Convert.ToDecimal(priceText))
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
@@ -2335,7 +2405,8 @@ namespace Cubit
 
                     if (e.Item!.Selected)
                     {
-                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
+                        //e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(255, 231, 217)), bounds);
+                        e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(220, 220, 220)), bounds);
                     }
                     else
                     {
@@ -2432,7 +2503,6 @@ namespace Cubit
                     if (e.ColumnIndex == 11) // ▲▼
                     {
                         if (!string.IsNullOrEmpty(text) && text[0] == '▼')
-
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
                         }
@@ -2441,10 +2511,14 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-                    if (e.ColumnIndex == 12) // P/L
+                    if (e.ColumnIndex == 12) // current value
                     {
-                        if (!string.IsNullOrEmpty(text) && text[0] == '-')
+                        string fiatSpent = System.Text.RegularExpressions.Regex.IsMatch(e.Item.SubItems[e.ColumnIndex - 5].Text, @"^[^0-9]")
+                        ? e.Item.SubItems[e.ColumnIndex - 5].Text.Substring(1)
+                        : e.Item.SubItems[e.ColumnIndex - 5].Text;
+                        decimal fiatSpentDecimal = Convert.ToDecimal(fiatSpent);
 
+                        if (!string.IsNullOrEmpty(text) && Convert.ToDecimal(text) < fiatSpentDecimal)
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
                         }
@@ -2453,7 +2527,7 @@ namespace Cubit
                             e.SubItem.ForeColor = Color.OliveDrab;
                         }
                     }
-                    if (e.ColumnIndex == 13) // P/L %
+                    if (e.ColumnIndex == 13) // change %
                     {
                         if (!string.IsNullOrEmpty(text) && text[0] == '-')
 
@@ -2467,7 +2541,10 @@ namespace Cubit
                     }
                     if (e.ColumnIndex == 14) // cost basis
                     {
-                        string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
+                        string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
+                        ? lblCurrentPrice.Text.Substring(1)
+                        : lblCurrentPrice.Text;
+                        // string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(text) > Convert.ToDecimal(priceText))
 
                         {
@@ -2539,6 +2616,8 @@ namespace Cubit
             listView.EndUpdate();
             if (btnListReverse.Text == "Newest first")
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Showing newest transactions first.");
                 btnListReverse.Invoke((MethodInvoker)delegate
                 {
@@ -2547,6 +2626,8 @@ namespace Cubit
             }
             else
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Showing oldest transactions first.");
                 btnListReverse.Invoke((MethodInvoker)delegate
                 {
@@ -3266,6 +3347,11 @@ namespace Cubit
             {
                 panelMaxWidth = 443;
             }
+            if (panelToExpand == panelTransactionLabel)
+            {
+                panelMaxWidth = 618;
+                currentWidthExpandingPanel += 4; // twice as fast for this panel
+            }
 
             if (currentWidthExpandingPanel >= panelMaxWidth) // expanding is complete
             {
@@ -3278,7 +3364,7 @@ namespace Cubit
                     panelToExpand.Width = currentWidthExpandingPanel;
                     panelToExpand.Invalidate();
                 });
-                
+
                 //shift the other panels along
                 panel21.Invoke((MethodInvoker)delegate
                 {
@@ -3368,6 +3454,11 @@ namespace Cubit
             {
                 panelMinWidth = 121;
             }
+            if (panelToShrink == panelTransactionLabel)
+            {
+                panelMinWidth = 105;
+                currentWidthShrinkingPanel -= 4; // twice as fast for this panel
+            }
 
             if (currentWidthShrinkingPanel <= panelMinWidth) // expanding is complete
             {
@@ -3376,7 +3467,7 @@ namespace Cubit
                     panelToShrink.Width = panelMinWidth;
                     panelToShrink.Invalidate();
                 });
-                
+
                 ShrinkPanelTimer.Stop();
             }
             else // shrink further
@@ -3528,6 +3619,8 @@ namespace Cubit
                     btnShowPriceGridlines.Text = "✔️";
                 });
                 showPriceGridLines = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Price grid lines displayed.");
                 DrawPriceChart();
             }
@@ -3542,6 +3635,8 @@ namespace Cubit
                     btnShowDateGridlines.Text = "✖️";
                 });
                 showDateGridLines = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Date grid lines hidden.");
                 DrawPriceChart();
             }
@@ -3552,6 +3647,8 @@ namespace Cubit
                     btnShowDateGridlines.Text = "✔️";
                 });
                 showDateGridLines = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Date grid lines displayed.");
                 DrawPriceChart();
             }
@@ -3566,6 +3663,8 @@ namespace Cubit
                     btnShowCostBasis.Text = "✖️";
                 });
                 showCostBasis = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Cost basis hidden.");
                 DrawPriceChart();
             }
@@ -3576,6 +3675,8 @@ namespace Cubit
                     btnShowCostBasis.Text = "✔️";
                 });
                 showCostBasis = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Cost basis displayed.");
                 DrawPriceChart();
             }
@@ -3590,6 +3691,8 @@ namespace Cubit
                     btnShowBuyDates.Text = "✖️";
                 });
                 showBuyDates = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Buy dates hidden.");
                 DrawPriceChart();
             }
@@ -3600,6 +3703,8 @@ namespace Cubit
                     btnShowBuyDates.Text = "✔️";
                 });
                 showBuyDates = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Buy dates displayed.");
                 DrawPriceChart();
             }
@@ -3614,6 +3719,8 @@ namespace Cubit
                     btnShowSellDates.Text = "✖️";
                 });
                 showSellDates = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Sell dates hidden.");
                 DrawPriceChart();
             }
@@ -3624,6 +3731,8 @@ namespace Cubit
                     btnShowSellDates.Text = "✔️";
                 });
                 showSellDates = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Sell dates displayed.");
                 DrawPriceChart();
             }
@@ -3638,6 +3747,8 @@ namespace Cubit
                     btnShowBuyBubbles.Text = "✖️";
                 });
                 showBuyBubbles = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Buy transactions hidden.");
                 DrawPriceChart();
             }
@@ -3648,6 +3759,8 @@ namespace Cubit
                     btnShowBuyBubbles.Text = "✔️";
                 });
                 showBuyBubbles = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Buy transactions displayed.");
                 DrawPriceChart();
             }
@@ -3662,6 +3775,8 @@ namespace Cubit
                     btnShowSellBubbles.Text = "✖️";
                 });
                 showSellBubbles = false;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Sell transactions hidden.");
                 DrawPriceChart();
             }
@@ -3672,6 +3787,8 @@ namespace Cubit
                     btnShowSellBubbles.Text = "✔️";
                 });
                 showSellBubbles = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Sell transactions displayed.");
                 DrawPriceChart();
             }
@@ -3687,6 +3804,8 @@ namespace Cubit
                     btnCursorTrackPrice.Text = "✔️";
                 });
                 cursorTrackPrice = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking the price.");
                 DrawPriceChart();
             }
@@ -3702,6 +3821,8 @@ namespace Cubit
                     btnCursorTrackBuyTX.Text = "✔️";
                 });
                 cursorTrackBuyTX = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking transactions where you bought or received bitcoin.");
                 DrawPriceChart();
             }
@@ -3717,6 +3838,8 @@ namespace Cubit
                     btnCursorTrackSellTX.Text = "✔️";
                 });
                 cursorTrackSellTX = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor now tracking transactions where you sold or spent bitcoin.");
                 DrawPriceChart();
             }
@@ -3732,6 +3855,8 @@ namespace Cubit
                     btnCursorTrackNothing.Text = "✔️";
                 });
                 cursorTrackNothing = true;
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Mouse cursor no longer tracking any data.");
                 DrawPriceChart();
             }
@@ -3827,6 +3952,14 @@ namespace Cubit
             {
                 label1.Text = "Price (USD)";
             });
+            label52.Invoke((MethodInvoker)delegate
+            {
+                label52.Text = "$";
+            });
+            label54.Invoke((MethodInvoker)delegate
+            {
+                label54.Text = "$";
+            });
             if (btnBoughtBitcoin.Text == "✔️")
             {
                 lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
@@ -3847,6 +3980,8 @@ namespace Cubit
             }
             if (!initialCurrencySetup)
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Currency set to USD and saved as your default currency.");
             }
             initialCurrencySetup = false;
@@ -3897,6 +4032,14 @@ namespace Cubit
             {
                 label1.Text = "Price (EUR)";
             });
+            label52.Invoke((MethodInvoker)delegate
+            {
+                label52.Text = "€";
+            });
+            label54.Invoke((MethodInvoker)delegate
+            {
+                label54.Text = "€";
+            });
             if (btnBoughtBitcoin.Text == "✔️")
             {
                 lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
@@ -3917,6 +4060,8 @@ namespace Cubit
             }
             if (!initialCurrencySetup)
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Currency set to EUR and saved as your default currency.");
             }
             initialCurrencySetup = false;
@@ -3967,6 +4112,14 @@ namespace Cubit
             {
                 label1.Text = "Price (GBP)";
             });
+            label52.Invoke((MethodInvoker)delegate
+            {
+                label52.Text = "£";
+            });
+            label54.Invoke((MethodInvoker)delegate
+            {
+                label54.Text = "£";
+            });
             if (btnBoughtBitcoin.Text == "✔️")
             {
                 lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
@@ -3987,6 +4140,8 @@ namespace Cubit
             }
             if (!initialCurrencySetup)
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Currency set to GBP and saved as your default currency.");
             }
             initialCurrencySetup = false;
@@ -4037,6 +4192,14 @@ namespace Cubit
             {
                 label1.Text = "Price (GBP)";
             });
+            label52.Invoke((MethodInvoker)delegate
+            {
+                label52.Text = "Ꜷ";
+            });
+            label54.Invoke((MethodInvoker)delegate
+            {
+                label54.Text = "Ꜷ";
+            });
             if (btnBoughtBitcoin.Text == "✔️")
             {
                 lblFiatAmountSpentRecd.Invoke((MethodInvoker)delegate
@@ -4057,6 +4220,8 @@ namespace Cubit
             }
             if (!initialCurrencySetup)
             {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Currency set to XAU and saved as your default currency.");
             }
             initialCurrencySetup = false;
@@ -4310,7 +4475,7 @@ namespace Cubit
                 return; // Ignore new calls if the method is already running
             }
 
-            isRobotSpeaking = true;
+            // isRobotSpeaking = true;
 
             try
             {
@@ -4418,6 +4583,7 @@ namespace Cubit
         private void PictureBoxRobot_Click(object sender, EventArgs e)
         {
             panelWelcome.Visible = true;
+            panelRobotSpeakOuter.Visible = false;
             // Create a Random object to select a random message
             Random random = new();
             int randomIndex = random.Next(0, welcomeMessages.Count);
@@ -4655,7 +4821,8 @@ namespace Cubit
             {
                 errorMessage = errorMessage[..MaxErrorMessageLength] + "...";
             }
-
+            panelWelcome.Visible = false;
+            panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak(errorMessage);
         }
 
@@ -4736,5 +4903,27 @@ namespace Cubit
         }
 
         #endregion
+
+        private void btnShowHideLabel_Click(object sender, EventArgs e)
+        {
+            if (btnShowHideLabel.Text == "▶")
+            {
+                StartExpandingPanelHoriz(panelTransactionLabel);
+                currentWidthExpandingPanel = panelTransactionLabel.Width;
+                btnShowHideLabel.Invoke((MethodInvoker)delegate
+                {
+                    btnShowHideLabel.Text = "◀";
+                });
+            }
+            else
+            {
+                StartShrinkingPanel(panelTransactionLabel);
+                currentWidthShrinkingPanel = panelTransactionLabel.Width;
+                btnShowHideLabel.Invoke((MethodInvoker)delegate
+                {
+                    btnShowHideLabel.Text = "▶";
+                });
+            }
+        }
     }
 }
