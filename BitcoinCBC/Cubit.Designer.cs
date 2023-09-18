@@ -132,19 +132,20 @@
             panel13 = new Panel();
             panelTransactionsContainer = new Panel();
             panelTXListFooter = new Panel();
+            lblFinalChangeinValuePercentage = new Label();
+            lblTotalCurrentValue = new Label();
             panelTransactionLabel = new Panel();
             btnShowHideLabel = new CustomControls.RJControls.RJButton();
             lblShowHideLabel = new Label();
             lblTransactionLabel = new Label();
-            lbl3 = new Label();
             panel10 = new Panel();
             btnListReverse = new CustomControls.RJControls.RJButton();
             btnCancelDelete = new CustomControls.RJControls.RJButton();
             btnConfirmDelete = new CustomControls.RJControls.RJButton();
             lblDisabledDeleteButtonText = new Label();
             btnDeleteTransaction = new CustomControls.RJControls.RJButton();
-            lbl2 = new Label();
-            lbl1 = new Label();
+            lblTotalFiatAmount = new Label();
+            lblTotalBTCAmount = new Label();
             panel11 = new Panel();
             label30 = new Label();
             label22 = new Label();
@@ -161,6 +162,7 @@
             label24 = new Label();
             label23 = new Label();
             label16 = new Label();
+            lblFinalCostBasis = new Label();
             btnHelpTransactionList = new CustomControls.RJControls.RJButton();
             panelScrollbarContainer = new Panel();
             vScrollBar1 = new VScrollBar();
@@ -1693,19 +1695,42 @@
             // 
             panelTXListFooter.BackColor = Color.White;
             panelTXListFooter.Controls.Add(panelTransactionLabel);
-            panelTXListFooter.Controls.Add(lbl3);
+            panelTXListFooter.Controls.Add(lblFinalChangeinValuePercentage);
+            panelTXListFooter.Controls.Add(lblTotalCurrentValue);
             panelTXListFooter.Controls.Add(panel10);
             panelTXListFooter.Controls.Add(btnListReverse);
             panelTXListFooter.Controls.Add(btnCancelDelete);
             panelTXListFooter.Controls.Add(btnConfirmDelete);
             panelTXListFooter.Controls.Add(lblDisabledDeleteButtonText);
             panelTXListFooter.Controls.Add(btnDeleteTransaction);
-            panelTXListFooter.Controls.Add(lbl2);
-            panelTXListFooter.Controls.Add(lbl1);
+            panelTXListFooter.Controls.Add(lblTotalFiatAmount);
+            panelTXListFooter.Controls.Add(lblTotalBTCAmount);
             panelTXListFooter.Location = new Point(1, 185);
             panelTXListFooter.Name = "panelTXListFooter";
             panelTXListFooter.Size = new Size(859, 48);
             panelTXListFooter.TabIndex = 78;
+            // 
+            // lblFinalChangeinValuePercentage
+            // 
+            lblFinalChangeinValuePercentage.AutoSize = true;
+            lblFinalChangeinValuePercentage.ForeColor = Color.Gray;
+            lblFinalChangeinValuePercentage.Location = new Point(619, 25);
+            lblFinalChangeinValuePercentage.Name = "lblFinalChangeinValuePercentage";
+            lblFinalChangeinValuePercentage.Size = new Size(59, 15);
+            lblFinalChangeinValuePercentage.TabIndex = 115;
+            lblFinalChangeinValuePercentage.Text = "% change";
+            toolTip1.SetToolTip(lblFinalChangeinValuePercentage, "Percentage change in value of BTC held compared to fiat spent");
+            // 
+            // lblTotalCurrentValue
+            // 
+            lblTotalCurrentValue.AutoSize = true;
+            lblTotalCurrentValue.ForeColor = Color.Gray;
+            lblTotalCurrentValue.Location = new Point(534, 25);
+            lblTotalCurrentValue.Name = "lblTotalCurrentValue";
+            lblTotalCurrentValue.Size = new Size(78, 15);
+            lblTotalCurrentValue.TabIndex = 114;
+            lblTotalCurrentValue.Text = "Current value";
+            toolTip1.SetToolTip(lblTotalCurrentValue, "Current value of BTC held");
             // 
             // panelTransactionLabel
             // 
@@ -1738,7 +1763,7 @@
             btnShowHideLabel.Text = "▶";
             btnShowHideLabel.TextColor = Color.White;
             btnShowHideLabel.UseVisualStyleBackColor = false;
-            btnShowHideLabel.Click += btnShowHideLabel_Click;
+            btnShowHideLabel.Click += BtnShowHideLabel_Click;
             // 
             // lblShowHideLabel
             // 
@@ -1761,18 +1786,6 @@
             lblTransactionLabel.Size = new Size(506, 22);
             lblTransactionLabel.TabIndex = 112;
             lblTransactionLabel.Text = "transaction label";
-            // 
-            // lbl3
-            // 
-            lbl3.AutoSize = true;
-            lbl3.ForeColor = Color.Gray;
-            lbl3.Location = new Point(619, 26);
-            lbl3.Name = "lbl3";
-            lbl3.Size = new Size(97, 15);
-            lbl3.TabIndex = 113;
-            lbl3.Text = "costbasis-hidden";
-            toolTip1.SetToolTip(lbl3, "BTC total");
-            lbl3.Visible = false;
             // 
             // panel10
             // 
@@ -1885,27 +1898,27 @@
             btnDeleteTransaction.UseVisualStyleBackColor = false;
             btnDeleteTransaction.Click += BtnDeleteTransaction_Click;
             // 
-            // lbl2
+            // lblTotalFiatAmount
             // 
-            lbl2.AutoSize = true;
-            lbl2.ForeColor = Color.Gray;
-            lbl2.Location = new Point(294, 25);
-            lbl2.Name = "lbl2";
-            lbl2.Size = new Size(53, 15);
-            lbl2.TabIndex = 83;
-            lbl2.Text = "Fiat total";
-            toolTip1.SetToolTip(lbl2, "Fiat total");
+            lblTotalFiatAmount.AutoSize = true;
+            lblTotalFiatAmount.ForeColor = Color.Gray;
+            lblTotalFiatAmount.Location = new Point(294, 25);
+            lblTotalFiatAmount.Name = "lblTotalFiatAmount";
+            lblTotalFiatAmount.Size = new Size(53, 15);
+            lblTotalFiatAmount.TabIndex = 83;
+            lblTotalFiatAmount.Text = "Fiat total";
+            toolTip1.SetToolTip(lblTotalFiatAmount, "Fiat total");
             // 
-            // lbl1
+            // lblTotalBTCAmount
             // 
-            lbl1.AutoSize = true;
-            lbl1.ForeColor = Color.Gray;
-            lbl1.Location = new Point(410, 25);
-            lbl1.Name = "lbl1";
-            lbl1.Size = new Size(53, 15);
-            lbl1.TabIndex = 82;
-            lbl1.Text = "BTC total";
-            toolTip1.SetToolTip(lbl1, "BTC total");
+            lblTotalBTCAmount.AutoSize = true;
+            lblTotalBTCAmount.ForeColor = Color.Gray;
+            lblTotalBTCAmount.Location = new Point(410, 25);
+            lblTotalBTCAmount.Name = "lblTotalBTCAmount";
+            lblTotalBTCAmount.Size = new Size(53, 15);
+            lblTotalBTCAmount.TabIndex = 82;
+            lblTotalBTCAmount.Text = "BTC total";
+            toolTip1.SetToolTip(lblTotalBTCAmount, "BTC total");
             // 
             // panel11
             // 
@@ -2137,6 +2150,18 @@
             label16.TabIndex = 0;
             label16.Text = "YYYY/MM/DD";
             toolTip1.SetToolTip(label16, "Year of transaction");
+            // 
+            // lblFinalCostBasis
+            // 
+            lblFinalCostBasis.AutoSize = true;
+            lblFinalCostBasis.ForeColor = Color.Gray;
+            lblFinalCostBasis.Location = new Point(257, 492);
+            lblFinalCostBasis.Name = "lblFinalCostBasis";
+            lblFinalCostBasis.Size = new Size(97, 15);
+            lblFinalCostBasis.TabIndex = 113;
+            lblFinalCostBasis.Text = "costbasis-hidden";
+            toolTip1.SetToolTip(lblFinalCostBasis, "BTC total");
+            lblFinalCostBasis.Visible = false;
             // 
             // btnHelpTransactionList
             // 
@@ -3239,6 +3264,7 @@
             ClientSize = new Size(1178, 759);
             Controls.Add(panel9);
             Controls.Add(panelColors);
+            Controls.Add(lblFinalCostBasis);
             Controls.Add(panelScrollbarContainer);
             Controls.Add(btnCurrency);
             Controls.Add(panelCurrency);
@@ -3412,8 +3438,8 @@
         private Panel panelTransactionsContainer;
         private CustomControls.RJControls.RJButton btnMoveWindow;
         private Panel panelScrollbarContainer;
-        private Label lbl1;
-        private Label lbl2;
+        private Label lblTotalBTCAmount;
+        private Label lblTotalFiatAmount;
         private CustomControls.RJControls.RJButton btnListReverse;
         private Panel panel11;
         private Panel panel12;
@@ -3538,7 +3564,7 @@
         private Panel panel9;
         private Label label30;
         private Label label22;
-        private Label lbl3;
+        private Label lblFinalCostBasis;
         private Panel panelTransactionLabel;
         private CustomControls.RJControls.RJButton btnShowHideLabel;
         private Label lblShowHideLabel;
@@ -3546,5 +3572,7 @@
         private Label label52;
         private Label label55;
         private Label label54;
+        private Label lblTotalCurrentValue;
+        private Label lblFinalChangeinValuePercentage;
     }
 }

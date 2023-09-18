@@ -73,7 +73,6 @@ namespace Cubit
         string currencyInFile = "USD"; // the currency save in the settings file
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
-        bool robotIgnoreTXSelection = true;
         private readonly List<string> welcomeMessages = new()
         {
             "🎵Never gonna give you up, Never gonna let you down🎵",
@@ -1772,13 +1771,13 @@ namespace Cubit
                         listViewTransactions.Items.Clear(); // remove any data that may be there already
                         listViewTransactions.Visible = false;
                     });
-                    lbl1.Invoke((MethodInvoker)delegate
+                    lblTotalBTCAmount.Invoke((MethodInvoker)delegate
                     {
-                        lbl1.Visible = false;
+                        lblTotalBTCAmount.Visible = false;
                     });
-                    lbl2.Invoke((MethodInvoker)delegate
+                    lblTotalFiatAmount.Invoke((MethodInvoker)delegate
                     {
-                        lbl2.Visible = false;
+                        lblTotalFiatAmount.Visible = false;
                     });
 
                     panelScrollbarContainer.Invoke((MethodInvoker)delegate
@@ -1792,13 +1791,13 @@ namespace Cubit
                 {
                     panelScrollbarContainer.Height = 206;
                 });
-                lbl1.Invoke((MethodInvoker)delegate
+                lblTotalBTCAmount.Invoke((MethodInvoker)delegate
                 {
-                    lbl1.Visible = true;
+                    lblTotalBTCAmount.Visible = true;
                 });
-                lbl2.Invoke((MethodInvoker)delegate
+                lblTotalFiatAmount.Invoke((MethodInvoker)delegate
                 {
-                    lbl2.Visible = true;
+                    lblTotalFiatAmount.Visible = true;
                 });
 
 
@@ -1948,11 +1947,11 @@ namespace Cubit
                 }
                 // Add the items to the ListView
                 int counterAllTransactions = 0; // used to count rows in list as they're added
-                decimal profitOrLoss = 0;
                 decimal currentValue = 0;
-                decimal rollingBTCBalance = 0;
-                decimal rollingFiatBalance = 0;
+                decimal rollingBTCAmount = 0;
+                decimal rollingOriginalFiatAmount = 0;
                 decimal rollingCostBasis = 0;
+                decimal rollingCurrentValue = 0;
                 foreach (var transaction in transactions)
                 {
                     ListViewItem item = new(Convert.ToString(listViewTransactions.Items.Count + 1)); // create new row
@@ -2014,56 +2013,85 @@ namespace Cubit
                     item.SubItems.Add(transaction.BTCAmountEstimateFlag);
 
                     string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
-                        ? lblCurrentPrice.Text.Substring(1)
+                        ? lblCurrentPrice.Text[1..]
                         : lblCurrentPrice.Text;
-                    //string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                     currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
-                        profitOrLoss = Math.Round(currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2);
                         item.SubItems.Add("▲");
                     }
                     else // loss
                     {
-                        profitOrLoss = Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)) - currentValue, 2);
-                        profitOrLoss -= (2 * profitOrLoss);
                         item.SubItems.Add("▼");
                     }
-                    //item.SubItems.Add(Convert.ToString(profitOrLoss));
                     item.SubItems.Add(Convert.ToString(currentValue));
-
-                    decimal profitOrLossPercentage = 0;
+                    rollingCurrentValue += currentValue;
+                    decimal ChangeInValuePercentage = 0;
                     if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
                     {
                         decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
 
-                        profitOrLossPercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
-                        //profitOrLossPercentage = Math.Round(temp * currentValue, 2);
+                        ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
                     }
                     else // loss
                     {
                         decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
-                        profitOrLossPercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
-                        //profitOrLossPercentage = Math.Round(temp * currentValue, 2);
-                        //profitOrLossPercentage -= (2 * profitOrLossPercentage);
+                        ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
                     }
-                    item.SubItems.Add(Convert.ToString(profitOrLossPercentage));
+                    item.SubItems.Add(Convert.ToString(ChangeInValuePercentage));
 
-                    rollingBTCBalance = Math.Round(rollingBTCBalance + Convert.ToDecimal(transaction.BTCAmount), 8);
-                    rollingFiatBalance = Math.Round(rollingFiatBalance + Convert.ToDecimal(transaction.FiatAmount), 2);
-                    if (rollingBTCBalance > 0)
+                    rollingBTCAmount = Math.Round(rollingBTCAmount + Convert.ToDecimal(transaction.BTCAmount), 8);
+                    rollingOriginalFiatAmount = Math.Round(rollingOriginalFiatAmount + Convert.ToDecimal(transaction.FiatAmount), 2);
+                    if (rollingBTCAmount > 0)
                     {
-                        rollingCostBasis = Math.Abs(Math.Round(rollingFiatBalance / rollingBTCBalance, 2));
+                        rollingCostBasis = Math.Abs(Math.Round(rollingOriginalFiatAmount / rollingBTCAmount, 2));
                     }
                     else
                     {
                         rollingCostBasis = 0;
                     }
                     item.SubItems.Add(Convert.ToString(rollingCostBasis));
-                    lbl1.Text = Convert.ToString(rollingBTCBalance);
-                    lbl2.Text = Convert.ToString(rollingFiatBalance);
-                    lbl3.Text = Convert.ToString(rollingCostBasis);
-
+                    lblTotalBTCAmount.Text = "₿" + Convert.ToString(rollingBTCAmount);
+                    lblTotalFiatAmount.Text = label54.Text + Convert.ToString(rollingOriginalFiatAmount);
+                    lblFinalCostBasis.Text = Convert.ToString(rollingCostBasis);
+                    lblTotalCurrentValue.Invoke((MethodInvoker)delegate
+                    {
+                        lblTotalCurrentValue.Text = label54.Text + Convert.ToString(rollingCurrentValue);
+                    });
+                    if (rollingCurrentValue >= rollingOriginalFiatAmount)
+                    {
+                        lblTotalCurrentValue.Invoke((MethodInvoker)delegate
+                        {
+                            lblTotalCurrentValue.ForeColor = Color.OliveDrab;
+                        });
+                    }
+                    else
+                    {
+                        lblTotalCurrentValue.Invoke((MethodInvoker)delegate
+                        {
+                            lblTotalCurrentValue.ForeColor = Color.IndianRed;
+                        });
+                    }
+                    lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                    {
+                        lblFinalChangeinValuePercentage.Text = Convert.ToString(Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2)) + "%";
+                    });
+                    if (Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2) >= 100)
+                    {
+                        lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                        {
+                            lblFinalChangeinValuePercentage.ForeColor = Color.OliveDrab;
+                            lblFinalChangeinValuePercentage.Text = "▲ " + lblFinalChangeinValuePercentage.Text;
+                        });
+                    }
+                    else
+                    {
+                        lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                        {
+                            lblFinalChangeinValuePercentage.ForeColor = Color.IndianRed;
+                            lblFinalChangeinValuePercentage.Text = "▼ " + lblFinalChangeinValuePercentage.Text;
+                        });
+                    }
                     if (transaction.LabelColor != "9")
                     {
                         item.SubItems.Add(Convert.ToString(transaction.LabelColor));
@@ -2201,7 +2229,7 @@ namespace Cubit
         {
             try
             {
-                
+
                 var text = "";
                 if (e.SubItem != null)
                 {
@@ -2342,7 +2370,7 @@ namespace Cubit
                     if (e.ColumnIndex == 12) // current value
                     {
                         string fiatSpent = System.Text.RegularExpressions.Regex.IsMatch(e.Item.SubItems[e.ColumnIndex - 5].Text, @"^[^0-9]")
-                            ? e.Item.SubItems[e.ColumnIndex - 5].Text.Substring(1)
+                            ? e.Item.SubItems[e.ColumnIndex - 5].Text[1..]
                             : e.Item.SubItems[e.ColumnIndex - 5].Text;
                         decimal fiatSpentDecimal = Convert.ToDecimal(fiatSpent);
 
@@ -2370,9 +2398,8 @@ namespace Cubit
                     if (e.ColumnIndex == 14) // cost basis
                     {
                         string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
-                        ? lblCurrentPrice.Text.Substring(1)
+                        ? lblCurrentPrice.Text[1..]
                         : lblCurrentPrice.Text;
-                        //string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(maxText) > Convert.ToDecimal(priceText))
                         {
                             e.SubItem.ForeColor = Color.IndianRed;
@@ -2514,7 +2541,7 @@ namespace Cubit
                     if (e.ColumnIndex == 12) // current value
                     {
                         string fiatSpent = System.Text.RegularExpressions.Regex.IsMatch(e.Item.SubItems[e.ColumnIndex - 5].Text, @"^[^0-9]")
-                        ? e.Item.SubItems[e.ColumnIndex - 5].Text.Substring(1)
+                        ? e.Item.SubItems[e.ColumnIndex - 5].Text[1..]
                         : e.Item.SubItems[e.ColumnIndex - 5].Text;
                         decimal fiatSpentDecimal = Convert.ToDecimal(fiatSpent);
 
@@ -2542,7 +2569,7 @@ namespace Cubit
                     if (e.ColumnIndex == 14) // cost basis
                     {
                         string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
-                        ? lblCurrentPrice.Text.Substring(1)
+                        ? lblCurrentPrice.Text[1..]
                         : lblCurrentPrice.Text;
                         // string priceText = lblCurrentPrice.Text[1..]; // remove currency character £$
                         if (Convert.ToDecimal(text) > Convert.ToDecimal(priceText))
@@ -2881,7 +2908,7 @@ namespace Cubit
 
                 if (showCostBasis)
                 {
-                    if (double.TryParse(lbl3.Text, out double costBasis))
+                    if (double.TryParse(lblFinalCostBasis.Text, out double costBasis))
                     {
                         var hline = formsPlot1.Plot.AddHorizontalLine(y: costBasis, color: Color.OliveDrab, width: 1, style: LineStyle.Dash);
                         hline.PositionLabel = false;
@@ -3027,7 +3054,7 @@ namespace Cubit
 
                 if (showCostBasis)
                 {
-                    if (double.TryParse(lbl3.Text, out double costBasis))
+                    if (double.TryParse(lblFinalCostBasis.Text, out double costBasis))
                     {
                         var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.OliveDrab, width: 1, style: LineStyle.Dash, label: "H");
                         hline.PositionLabel = false;
@@ -4607,7 +4634,6 @@ namespace Cubit
                 ShrinkRobotTimer.Stop();
                 panelSpeechBubble.Visible = false;
                 panelWelcome.Visible = false;
-                robotIgnoreTXSelection = false;
             }
             else // shrink further
             {
@@ -4904,7 +4930,7 @@ namespace Cubit
 
         #endregion
 
-        private void btnShowHideLabel_Click(object sender, EventArgs e)
+        private void BtnShowHideLabel_Click(object sender, EventArgs e)
         {
             if (btnShowHideLabel.Text == "▶")
             {
