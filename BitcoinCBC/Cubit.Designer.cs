@@ -30,8 +30,6 @@
         {
             components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Cubit));
-            btnExit = new CustomControls.RJControls.RJButton();
-            btnMinimize = new CustomControls.RJControls.RJButton();
             comboBoxYearInput = new CustomControls.RJControls.RJComboBox();
             comboBoxMonthInput = new CustomControls.RJControls.RJComboBox();
             comboBoxDayInput = new CustomControls.RJControls.RJComboBox();
@@ -93,7 +91,7 @@
             btnAddTransaction = new CustomControls.RJControls.RJButton();
             btnClearInput = new CustomControls.RJControls.RJButton();
             panelHelpTextContainer = new Panel();
-            panel19 = new Panel();
+            panelHelp = new Panel();
             lblHelpText = new Label();
             panel20 = new Panel();
             btnCloseHelpText = new CustomControls.RJControls.RJButton();
@@ -126,18 +124,17 @@
             btnGreen2 = new CustomControls.RJControls.RJButton();
             btnRed1 = new CustomControls.RJControls.RJButton();
             panelAddTransactionContainer = new Panel();
-            lblCurrentPrice = new Label();
-            btnPriceRefresh = new CustomControls.RJControls.RJButton();
             listViewTransactions = new ListView();
             panel13 = new Panel();
             panelTransactionsContainer = new Panel();
             panelTXListFooter = new Panel();
-            lblFinalChangeinValuePercentage = new Label();
-            lblTotalCurrentValue = new Label();
             panelTransactionLabel = new Panel();
             btnShowHideLabel = new CustomControls.RJControls.RJButton();
             lblShowHideLabel = new Label();
             lblTransactionLabel = new Label();
+            lblFinalChangeinValuePercentage = new Label();
+            lblFinalCostBasis = new Label();
+            lblTotalCurrentValue = new Label();
             panel10 = new Panel();
             btnListReverse = new CustomControls.RJControls.RJButton();
             btnCancelDelete = new CustomControls.RJControls.RJButton();
@@ -162,7 +159,6 @@
             label24 = new Label();
             label23 = new Label();
             label16 = new Label();
-            lblFinalCostBasis = new Label();
             btnHelpTransactionList = new CustomControls.RJControls.RJButton();
             panelScrollbarContainer = new Panel();
             vScrollBar1 = new VScrollBar();
@@ -225,19 +221,63 @@
             pictureBoxRobot = new PictureBox();
             pictureBox1 = new PictureBox();
             pictureBox2 = new PictureBox();
-            pictureBoxBTCLogo = new PictureBox();
-            btnAbout = new CustomControls.RJControls.RJButton();
+            ExpandPanelTimerVert = new System.Windows.Forms.Timer(components);
+            ShrinkPanelTimerVert = new System.Windows.Forms.Timer(components);
+            toolTip1 = new ToolTip(components);
+            btnPriceRefresh = new CustomControls.RJControls.RJButton();
+            panel9 = new Panel();
+            panelSummaryContainer = new Panel();
+            panelSummary = new Panel();
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction = new Label();
+            lblSummaryAvgBTCSpentPerSellTransaction = new Label();
+            lblSummaryTotalBTCSpentFromSellTransactions = new Label();
+            lblSummaryTotalFiatReceivedOnSellTransactions = new Label();
+            lblSummaryAvgBTCRecdPerBuyTransaction = new Label();
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction = new Label();
+            lblSummaryTotalBTCRecdFromBuyTransactions = new Label();
+            lblSummaryTotalFiatSpentOnBuyTransactions = new Label();
+            label73 = new Label();
+            lblSummaryPercentOfAllBitcoinOwned = new Label();
+            lblSummaryValueOfBTC = new Label();
+            lblSummaryNetFiatAmount = new Label();
+            lblSummaryCostBasis = new Label();
+            lblSummaryBTCHeld = new Label();
+            lblSummaryTXCountRecdBTC = new Label();
+            lblSummaryTXCountSpentBTC = new Label();
+            lblSummaryTransactionCount = new Label();
+            label72 = new Label();
+            label71 = new Label();
+            label69 = new Label();
+            label70 = new Label();
+            label68 = new Label();
+            label67 = new Label();
+            label66 = new Label();
+            label65 = new Label();
+            label63 = new Label();
+            label64 = new Label();
+            label62 = new Label();
+            label61 = new Label();
+            label60 = new Label();
+            label59 = new Label();
+            label57 = new Label();
+            labelSummary1 = new Label();
+            panel31 = new Panel();
+            btnCloseSummary = new CustomControls.RJControls.RJButton();
+            label58 = new Label();
+            panelTopControls = new Panel();
+            btnSummary = new CustomControls.RJControls.RJButton();
             btnCurrency = new CustomControls.RJControls.RJButton();
+            panelCurrency = new Panel();
             panelCurrencyMenu = new Panel();
             btnXAU = new CustomControls.RJControls.RJButton();
             btnGBP = new CustomControls.RJControls.RJButton();
             btnEUR = new CustomControls.RJControls.RJButton();
             btnUSD = new CustomControls.RJControls.RJButton();
-            ExpandPanelTimerVert = new System.Windows.Forms.Timer(components);
-            ShrinkPanelTimerVert = new System.Windows.Forms.Timer(components);
-            panelCurrency = new Panel();
-            toolTip1 = new ToolTip(components);
-            panel9 = new Panel();
+            btnAbout = new CustomControls.RJControls.RJButton();
+            pictureBoxBTCLogo = new PictureBox();
+            lblCurrentPrice = new Label();
+            btnMinimize = new CustomControls.RJControls.RJButton();
+            btnExit = new CustomControls.RJControls.RJButton();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -247,7 +287,7 @@
             panel7.SuspendLayout();
             panel8.SuspendLayout();
             panelHelpTextContainer.SuspendLayout();
-            panel19.SuspendLayout();
+            panelHelp.SuspendLayout();
             panel20.SuspendLayout();
             panelAddTransaction.SuspendLayout();
             panel32.SuspendLayout();
@@ -284,55 +324,15 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
-            panelCurrencyMenu.SuspendLayout();
-            panelCurrency.SuspendLayout();
             panel9.SuspendLayout();
+            panelSummaryContainer.SuspendLayout();
+            panelSummary.SuspendLayout();
+            panel31.SuspendLayout();
+            panelTopControls.SuspendLayout();
+            panelCurrency.SuspendLayout();
+            panelCurrencyMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
             SuspendLayout();
-            // 
-            // btnExit
-            // 
-            btnExit.BackColor = Color.FromArgb(255, 192, 128);
-            btnExit.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnExit.BorderColor = Color.PaleVioletRed;
-            btnExit.BorderRadius = 14;
-            btnExit.BorderSize = 0;
-            btnExit.FlatAppearance.BorderSize = 0;
-            btnExit.FlatStyle = FlatStyle.Flat;
-            btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(1142, 15);
-            btnExit.Name = "btnExit";
-            btnExit.Padding = new Padding(3, 1, 0, 0);
-            btnExit.Size = new Size(24, 24);
-            btnExit.TabIndex = 1;
-            btnExit.TabStop = false;
-            btnExit.Text = "✖️";
-            btnExit.TextColor = Color.White;
-            btnExit.UseVisualStyleBackColor = false;
-            btnExit.Click += BtnExit_Click;
-            // 
-            // btnMinimize
-            // 
-            btnMinimize.BackColor = Color.FromArgb(255, 192, 128);
-            btnMinimize.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnMinimize.BorderColor = Color.PaleVioletRed;
-            btnMinimize.BorderRadius = 12;
-            btnMinimize.BorderSize = 0;
-            btnMinimize.FlatAppearance.BorderSize = 0;
-            btnMinimize.FlatStyle = FlatStyle.Flat;
-            btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnMinimize.ForeColor = Color.White;
-            btnMinimize.Location = new Point(1113, 15);
-            btnMinimize.Name = "btnMinimize";
-            btnMinimize.Padding = new Padding(2, 0, 0, 0);
-            btnMinimize.Size = new Size(24, 24);
-            btnMinimize.TabIndex = 2;
-            btnMinimize.TabStop = false;
-            btnMinimize.Text = "➖";
-            btnMinimize.TextColor = Color.White;
-            btnMinimize.UseVisualStyleBackColor = false;
-            btnMinimize.Click += BtnMinimize_Click;
             // 
             // comboBoxYearInput
             // 
@@ -966,7 +966,7 @@
             textBoxLabelInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
             textBoxLabelInput.ForeColor = Color.LightSlateGray;
             textBoxLabelInput.Location = new Point(6, 1);
-            textBoxLabelInput.MaxLength = 100;
+            textBoxLabelInput.MaxLength = 80;
             textBoxLabelInput.Name = "textBoxLabelInput";
             textBoxLabelInput.Size = new Size(100, 18);
             textBoxLabelInput.TabIndex = 7;
@@ -1101,7 +1101,7 @@
             // panelHelpTextContainer
             // 
             panelHelpTextContainer.BackColor = Color.FromArgb(255, 224, 192);
-            panelHelpTextContainer.Controls.Add(panel19);
+            panelHelpTextContainer.Controls.Add(panelHelp);
             panelHelpTextContainer.Controls.Add(panel20);
             panelHelpTextContainer.Location = new Point(371, 370);
             panelHelpTextContainer.Name = "panelHelpTextContainer";
@@ -1109,15 +1109,15 @@
             panelHelpTextContainer.TabIndex = 73;
             panelHelpTextContainer.Visible = false;
             // 
-            // panel19
+            // panelHelp
             // 
-            panel19.BackColor = Color.White;
-            panel19.Controls.Add(lblHelpText);
-            panel19.ForeColor = Color.White;
-            panel19.Location = new Point(2, 25);
-            panel19.Name = "panel19";
-            panel19.Size = new Size(671, 213);
-            panel19.TabIndex = 74;
+            panelHelp.BackColor = Color.White;
+            panelHelp.Controls.Add(lblHelpText);
+            panelHelp.ForeColor = Color.White;
+            panelHelp.Location = new Point(2, 25);
+            panelHelp.Name = "panelHelp";
+            panelHelp.Size = new Size(671, 213);
+            panelHelp.TabIndex = 74;
             // 
             // lblHelpText
             // 
@@ -1606,42 +1606,6 @@
             panelAddTransactionContainer.Size = new Size(284, 434);
             panelAddTransactionContainer.TabIndex = 75;
             // 
-            // lblCurrentPrice
-            // 
-            lblCurrentPrice.AutoSize = true;
-            lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCurrentPrice.ForeColor = Color.DarkGray;
-            lblCurrentPrice.Location = new Point(892, 18);
-            lblCurrentPrice.Name = "lblCurrentPrice";
-            lblCurrentPrice.Size = new Size(86, 17);
-            lblCurrentPrice.TabIndex = 74;
-            lblCurrentPrice.Text = "current price";
-            // 
-            // btnPriceRefresh
-            // 
-            btnPriceRefresh.BackColor = Color.Transparent;
-            btnPriceRefresh.BackgroundColor = Color.Transparent;
-            btnPriceRefresh.BackgroundImage = Properties.Resources.Refresh;
-            btnPriceRefresh.BackgroundImageLayout = ImageLayout.Stretch;
-            btnPriceRefresh.BorderColor = Color.PaleVioletRed;
-            btnPriceRefresh.BorderRadius = 0;
-            btnPriceRefresh.BorderSize = 0;
-            btnPriceRefresh.FlatAppearance.BorderSize = 0;
-            btnPriceRefresh.FlatStyle = FlatStyle.Flat;
-            btnPriceRefresh.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
-            btnPriceRefresh.ForeColor = Color.FromArgb(255, 128, 0);
-            btnPriceRefresh.Location = new Point(989, 15);
-            btnPriceRefresh.Name = "btnPriceRefresh";
-            btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
-            btnPriceRefresh.Size = new Size(23, 22);
-            btnPriceRefresh.TabIndex = 75;
-            btnPriceRefresh.TabStop = false;
-            btnPriceRefresh.TextAlign = ContentAlignment.TopCenter;
-            btnPriceRefresh.TextColor = Color.FromArgb(255, 128, 0);
-            toolTip1.SetToolTip(btnPriceRefresh, "Refresh the current price");
-            btnPriceRefresh.UseVisualStyleBackColor = false;
-            btnPriceRefresh.Click += BtnPriceRefresh_Click;
-            // 
             // listViewTransactions
             // 
             listViewTransactions.Activation = ItemActivation.OneClick;
@@ -1696,6 +1660,7 @@
             panelTXListFooter.BackColor = Color.White;
             panelTXListFooter.Controls.Add(panelTransactionLabel);
             panelTXListFooter.Controls.Add(lblFinalChangeinValuePercentage);
+            panelTXListFooter.Controls.Add(lblFinalCostBasis);
             panelTXListFooter.Controls.Add(lblTotalCurrentValue);
             panelTXListFooter.Controls.Add(panel10);
             panelTXListFooter.Controls.Add(btnListReverse);
@@ -1710,35 +1675,13 @@
             panelTXListFooter.Size = new Size(859, 48);
             panelTXListFooter.TabIndex = 78;
             // 
-            // lblFinalChangeinValuePercentage
-            // 
-            lblFinalChangeinValuePercentage.AutoSize = true;
-            lblFinalChangeinValuePercentage.ForeColor = Color.Gray;
-            lblFinalChangeinValuePercentage.Location = new Point(619, 25);
-            lblFinalChangeinValuePercentage.Name = "lblFinalChangeinValuePercentage";
-            lblFinalChangeinValuePercentage.Size = new Size(59, 15);
-            lblFinalChangeinValuePercentage.TabIndex = 115;
-            lblFinalChangeinValuePercentage.Text = "% change";
-            toolTip1.SetToolTip(lblFinalChangeinValuePercentage, "Percentage change in value of BTC held compared to fiat spent");
-            // 
-            // lblTotalCurrentValue
-            // 
-            lblTotalCurrentValue.AutoSize = true;
-            lblTotalCurrentValue.ForeColor = Color.Gray;
-            lblTotalCurrentValue.Location = new Point(534, 25);
-            lblTotalCurrentValue.Name = "lblTotalCurrentValue";
-            lblTotalCurrentValue.Size = new Size(78, 15);
-            lblTotalCurrentValue.TabIndex = 114;
-            lblTotalCurrentValue.Text = "Current value";
-            toolTip1.SetToolTip(lblTotalCurrentValue, "Current value of BTC held");
-            // 
             // panelTransactionLabel
             // 
             panelTransactionLabel.BackColor = SystemColors.ButtonFace;
             panelTransactionLabel.Controls.Add(btnShowHideLabel);
             panelTransactionLabel.Controls.Add(lblShowHideLabel);
             panelTransactionLabel.Controls.Add(lblTransactionLabel);
-            panelTransactionLabel.Location = new Point(97, 22);
+            panelTransactionLabel.Location = new Point(94, 22);
             panelTransactionLabel.Name = "panelTransactionLabel";
             panelTransactionLabel.Size = new Size(105, 23);
             panelTransactionLabel.TabIndex = 101;
@@ -1783,9 +1726,42 @@
             lblTransactionLabel.ForeColor = Color.Gray;
             lblTransactionLabel.Location = new Point(104, 3);
             lblTransactionLabel.Name = "lblTransactionLabel";
-            lblTransactionLabel.Size = new Size(506, 22);
+            lblTransactionLabel.Size = new Size(557, 22);
             lblTransactionLabel.TabIndex = 112;
-            lblTransactionLabel.Text = "transaction label";
+            lblTransactionLabel.Text = "No transaction selected";
+            // 
+            // lblFinalChangeinValuePercentage
+            // 
+            lblFinalChangeinValuePercentage.AutoSize = true;
+            lblFinalChangeinValuePercentage.ForeColor = Color.Gray;
+            lblFinalChangeinValuePercentage.Location = new Point(619, 25);
+            lblFinalChangeinValuePercentage.Name = "lblFinalChangeinValuePercentage";
+            lblFinalChangeinValuePercentage.Size = new Size(59, 15);
+            lblFinalChangeinValuePercentage.TabIndex = 115;
+            lblFinalChangeinValuePercentage.Text = "% change";
+            toolTip1.SetToolTip(lblFinalChangeinValuePercentage, "Percentage change in value of BTC held compared to fiat spent");
+            // 
+            // lblFinalCostBasis
+            // 
+            lblFinalCostBasis.AutoSize = true;
+            lblFinalCostBasis.ForeColor = Color.Gray;
+            lblFinalCostBasis.Location = new Point(695, 25);
+            lblFinalCostBasis.Name = "lblFinalCostBasis";
+            lblFinalCostBasis.Size = new Size(60, 15);
+            lblFinalCostBasis.TabIndex = 113;
+            lblFinalCostBasis.Text = "Cost basis";
+            toolTip1.SetToolTip(lblFinalCostBasis, "BTC total");
+            // 
+            // lblTotalCurrentValue
+            // 
+            lblTotalCurrentValue.AutoSize = true;
+            lblTotalCurrentValue.ForeColor = Color.Gray;
+            lblTotalCurrentValue.Location = new Point(534, 25);
+            lblTotalCurrentValue.Name = "lblTotalCurrentValue";
+            lblTotalCurrentValue.Size = new Size(78, 15);
+            lblTotalCurrentValue.TabIndex = 114;
+            lblTotalCurrentValue.Text = "Current value";
+            toolTip1.SetToolTip(lblTotalCurrentValue, "Current value of BTC held");
             // 
             // panel10
             // 
@@ -1806,7 +1782,7 @@
             btnListReverse.FlatStyle = FlatStyle.Flat;
             btnListReverse.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnListReverse.ForeColor = Color.White;
-            btnListReverse.Location = new Point(5, 21);
+            btnListReverse.Location = new Point(2, 21);
             btnListReverse.Name = "btnListReverse";
             btnListReverse.Padding = new Padding(1, 0, 0, 0);
             btnListReverse.Size = new Size(86, 24);
@@ -1826,15 +1802,15 @@
             btnCancelDelete.BorderSize = 0;
             btnCancelDelete.FlatAppearance.BorderSize = 0;
             btnCancelDelete.FlatStyle = FlatStyle.Flat;
-            btnCancelDelete.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnCancelDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCancelDelete.ForeColor = Color.White;
-            btnCancelDelete.Location = new Point(800, 21);
+            btnCancelDelete.Location = new Point(832, 22);
             btnCancelDelete.Name = "btnCancelDelete";
             btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
-            btnCancelDelete.Size = new Size(55, 24);
+            btnCancelDelete.Size = new Size(24, 24);
             btnCancelDelete.TabIndex = 94;
             btnCancelDelete.TabStop = false;
-            btnCancelDelete.Text = "Cancel";
+            btnCancelDelete.Text = "✖️";
             btnCancelDelete.TextColor = Color.White;
             btnCancelDelete.UseVisualStyleBackColor = false;
             btnCancelDelete.Visible = false;
@@ -1849,15 +1825,15 @@
             btnConfirmDelete.BorderSize = 0;
             btnConfirmDelete.FlatAppearance.BorderSize = 0;
             btnConfirmDelete.FlatStyle = FlatStyle.Flat;
-            btnConfirmDelete.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnConfirmDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnConfirmDelete.ForeColor = Color.White;
-            btnConfirmDelete.Location = new Point(721, 21);
+            btnConfirmDelete.Location = new Point(800, 22);
             btnConfirmDelete.Name = "btnConfirmDelete";
             btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
-            btnConfirmDelete.Size = new Size(64, 24);
+            btnConfirmDelete.Size = new Size(24, 24);
             btnConfirmDelete.TabIndex = 93;
             btnConfirmDelete.TabStop = false;
-            btnConfirmDelete.Text = "Confirm";
+            btnConfirmDelete.Text = "✔️";
             btnConfirmDelete.TextColor = Color.White;
             btnConfirmDelete.UseVisualStyleBackColor = false;
             btnConfirmDelete.Visible = false;
@@ -1870,11 +1846,11 @@
             lblDisabledDeleteButtonText.Enabled = false;
             lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDisabledDeleteButtonText.ForeColor = Color.Gray;
-            lblDisabledDeleteButtonText.Location = new Point(732, 25);
+            lblDisabledDeleteButtonText.Location = new Point(807, 25);
             lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
-            lblDisabledDeleteButtonText.Size = new Size(113, 17);
+            lblDisabledDeleteButtonText.Size = new Size(45, 17);
             lblDisabledDeleteButtonText.TabIndex = 92;
-            lblDisabledDeleteButtonText.Text = "Delete transaction";
+            lblDisabledDeleteButtonText.Text = "Delete";
             // 
             // btnDeleteTransaction
             // 
@@ -1888,12 +1864,12 @@
             btnDeleteTransaction.FlatStyle = FlatStyle.Flat;
             btnDeleteTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnDeleteTransaction.ForeColor = Color.White;
-            btnDeleteTransaction.Location = new Point(721, 21);
+            btnDeleteTransaction.Location = new Point(799, 21);
             btnDeleteTransaction.Name = "btnDeleteTransaction";
             btnDeleteTransaction.Padding = new Padding(1, 0, 0, 0);
-            btnDeleteTransaction.Size = new Size(134, 24);
+            btnDeleteTransaction.Size = new Size(57, 24);
             btnDeleteTransaction.TabIndex = 87;
-            btnDeleteTransaction.Text = "Delete transaction";
+            btnDeleteTransaction.Text = "Delete";
             btnDeleteTransaction.TextColor = Color.White;
             btnDeleteTransaction.UseVisualStyleBackColor = false;
             btnDeleteTransaction.Click += BtnDeleteTransaction_Click;
@@ -2151,18 +2127,6 @@
             label16.Text = "YYYY/MM/DD";
             toolTip1.SetToolTip(label16, "Year of transaction");
             // 
-            // lblFinalCostBasis
-            // 
-            lblFinalCostBasis.AutoSize = true;
-            lblFinalCostBasis.ForeColor = Color.Gray;
-            lblFinalCostBasis.Location = new Point(257, 492);
-            lblFinalCostBasis.Name = "lblFinalCostBasis";
-            lblFinalCostBasis.Size = new Size(97, 15);
-            lblFinalCostBasis.TabIndex = 113;
-            lblFinalCostBasis.Text = "costbasis-hidden";
-            toolTip1.SetToolTip(lblFinalCostBasis, "BTC total");
-            lblFinalCostBasis.Visible = false;
-            // 
             // btnHelpTransactionList
             // 
             btnHelpTransactionList.BackColor = Color.FromArgb(255, 192, 128);
@@ -2227,7 +2191,7 @@
             btnMoveWindow.ForeColor = Color.White;
             btnMoveWindow.Location = new Point(130, 4);
             btnMoveWindow.Name = "btnMoveWindow";
-            btnMoveWindow.Size = new Size(728, 46);
+            btnMoveWindow.Size = new Size(623, 46);
             btnMoveWindow.TabIndex = 81;
             btnMoveWindow.TabStop = false;
             btnMoveWindow.TextColor = Color.White;
@@ -2984,6 +2948,7 @@
             // 
             // labelWelcomeText
             // 
+            labelWelcomeText.Font = new Font("OCR A Extended", 8F, FontStyle.Regular, GraphicsUnit.Point);
             labelWelcomeText.ForeColor = Color.Gray;
             labelWelcomeText.Location = new Point(1, 52);
             labelWelcomeText.Name = "labelWelcomeText";
@@ -3075,37 +3040,514 @@
             pictureBox2.TabIndex = 104;
             pictureBox2.TabStop = false;
             // 
-            // pictureBoxBTCLogo
+            // ExpandPanelTimerVert
             // 
-            pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
-            pictureBoxBTCLogo.Location = new Point(863, 16);
-            pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
-            pictureBoxBTCLogo.Size = new Size(23, 23);
-            pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBoxBTCLogo.TabIndex = 105;
-            pictureBoxBTCLogo.TabStop = false;
+            ExpandPanelTimerVert.Interval = 1;
+            ExpandPanelTimerVert.Tick += ExpandCurrencyTimer_Tick;
             // 
-            // btnAbout
+            // ShrinkPanelTimerVert
             // 
-            btnAbout.BackColor = Color.FromArgb(255, 192, 128);
-            btnAbout.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnAbout.BorderColor = Color.PaleVioletRed;
-            btnAbout.BorderRadius = 14;
-            btnAbout.BorderSize = 0;
-            btnAbout.FlatAppearance.BorderSize = 0;
-            btnAbout.FlatStyle = FlatStyle.Flat;
-            btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAbout.ForeColor = Color.White;
-            btnAbout.Location = new Point(1083, 15);
-            btnAbout.Name = "btnAbout";
-            btnAbout.Padding = new Padding(3, 0, 0, 0);
-            btnAbout.Size = new Size(24, 24);
-            btnAbout.TabIndex = 106;
-            btnAbout.TabStop = false;
-            btnAbout.Text = "\U0001f5a4";
-            btnAbout.TextColor = Color.White;
-            btnAbout.UseVisualStyleBackColor = false;
-            btnAbout.Click += BtnAbout_Click;
+            ShrinkPanelTimerVert.Interval = 1;
+            ShrinkPanelTimerVert.Tick += ShrinkCurrencyTimer_Tick;
+            // 
+            // btnPriceRefresh
+            // 
+            btnPriceRefresh.BackColor = Color.Transparent;
+            btnPriceRefresh.BackgroundColor = Color.Transparent;
+            btnPriceRefresh.BackgroundImage = Properties.Resources.Refresh;
+            btnPriceRefresh.BackgroundImageLayout = ImageLayout.Stretch;
+            btnPriceRefresh.BorderColor = Color.PaleVioletRed;
+            btnPriceRefresh.BorderRadius = 0;
+            btnPriceRefresh.BorderSize = 0;
+            btnPriceRefresh.FlatAppearance.BorderSize = 0;
+            btnPriceRefresh.FlatStyle = FlatStyle.Flat;
+            btnPriceRefresh.Font = new Font("Segoe UI", 20.25F, FontStyle.Regular, GraphicsUnit.Point);
+            btnPriceRefresh.ForeColor = Color.FromArgb(255, 128, 0);
+            btnPriceRefresh.Location = new Point(131, 7);
+            btnPriceRefresh.Name = "btnPriceRefresh";
+            btnPriceRefresh.Padding = new Padding(1, 0, 0, 0);
+            btnPriceRefresh.Size = new Size(23, 22);
+            btnPriceRefresh.TabIndex = 140;
+            btnPriceRefresh.TabStop = false;
+            btnPriceRefresh.TextAlign = ContentAlignment.TopCenter;
+            btnPriceRefresh.TextColor = Color.FromArgb(255, 128, 0);
+            toolTip1.SetToolTip(btnPriceRefresh, "Refresh the current price");
+            btnPriceRefresh.UseVisualStyleBackColor = false;
+            btnPriceRefresh.Click += BtnPriceRefresh_Click;
+            // 
+            // panel9
+            // 
+            panel9.BackColor = Color.FromArgb(255, 246, 232);
+            panel9.Controls.Add(btnLabelColor);
+            panel9.Location = new Point(1054, 415);
+            panel9.Name = "panel9";
+            panel9.Size = new Size(83, 24);
+            panel9.TabIndex = 113;
+            // 
+            // panelSummaryContainer
+            // 
+            panelSummaryContainer.BackColor = Color.FromArgb(255, 224, 192);
+            panelSummaryContainer.Controls.Add(panelSummary);
+            panelSummaryContainer.Controls.Add(panel31);
+            panelSummaryContainer.Location = new Point(371, 370);
+            panelSummaryContainer.Name = "panelSummaryContainer";
+            panelSummaryContainer.Size = new Size(675, 241);
+            panelSummaryContainer.TabIndex = 119;
+            panelSummaryContainer.Visible = false;
+            // 
+            // panelSummary
+            // 
+            panelSummary.BackColor = Color.White;
+            panelSummary.Controls.Add(lblSummaryAvgFiatAmtReceivedPerSellTransaction);
+            panelSummary.Controls.Add(lblSummaryAvgBTCSpentPerSellTransaction);
+            panelSummary.Controls.Add(lblSummaryTotalBTCSpentFromSellTransactions);
+            panelSummary.Controls.Add(lblSummaryTotalFiatReceivedOnSellTransactions);
+            panelSummary.Controls.Add(lblSummaryAvgBTCRecdPerBuyTransaction);
+            panelSummary.Controls.Add(lblSummaryAvgFiatAmtSpentPerBuyTransaction);
+            panelSummary.Controls.Add(lblSummaryTotalBTCRecdFromBuyTransactions);
+            panelSummary.Controls.Add(lblSummaryTotalFiatSpentOnBuyTransactions);
+            panelSummary.Controls.Add(label73);
+            panelSummary.Controls.Add(lblSummaryPercentOfAllBitcoinOwned);
+            panelSummary.Controls.Add(lblSummaryValueOfBTC);
+            panelSummary.Controls.Add(lblSummaryNetFiatAmount);
+            panelSummary.Controls.Add(lblSummaryCostBasis);
+            panelSummary.Controls.Add(lblSummaryBTCHeld);
+            panelSummary.Controls.Add(lblSummaryTXCountRecdBTC);
+            panelSummary.Controls.Add(lblSummaryTXCountSpentBTC);
+            panelSummary.Controls.Add(lblSummaryTransactionCount);
+            panelSummary.Controls.Add(label72);
+            panelSummary.Controls.Add(label71);
+            panelSummary.Controls.Add(label69);
+            panelSummary.Controls.Add(label70);
+            panelSummary.Controls.Add(label68);
+            panelSummary.Controls.Add(label67);
+            panelSummary.Controls.Add(label66);
+            panelSummary.Controls.Add(label65);
+            panelSummary.Controls.Add(label63);
+            panelSummary.Controls.Add(label64);
+            panelSummary.Controls.Add(label62);
+            panelSummary.Controls.Add(label61);
+            panelSummary.Controls.Add(label60);
+            panelSummary.Controls.Add(label59);
+            panelSummary.Controls.Add(label57);
+            panelSummary.Controls.Add(labelSummary1);
+            panelSummary.ForeColor = Color.White;
+            panelSummary.Location = new Point(2, 25);
+            panelSummary.Name = "panelSummary";
+            panelSummary.Size = new Size(671, 213);
+            panelSummary.TabIndex = 74;
+            // 
+            // lblSummaryAvgFiatAmtReceivedPerSellTransaction
+            // 
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.AutoSize = true;
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.Location = new Point(275, 149);
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.Name = "lblSummaryAvgFiatAmtReceivedPerSellTransaction";
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.Size = new Size(13, 15);
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.TabIndex = 119;
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.Text = "0";
+            // 
+            // lblSummaryAvgBTCSpentPerSellTransaction
+            // 
+            lblSummaryAvgBTCSpentPerSellTransaction.AutoSize = true;
+            lblSummaryAvgBTCSpentPerSellTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgBTCSpentPerSellTransaction.Location = new Point(275, 133);
+            lblSummaryAvgBTCSpentPerSellTransaction.Name = "lblSummaryAvgBTCSpentPerSellTransaction";
+            lblSummaryAvgBTCSpentPerSellTransaction.Size = new Size(13, 15);
+            lblSummaryAvgBTCSpentPerSellTransaction.TabIndex = 118;
+            lblSummaryAvgBTCSpentPerSellTransaction.Text = "0";
+            // 
+            // lblSummaryTotalBTCSpentFromSellTransactions
+            // 
+            lblSummaryTotalBTCSpentFromSellTransactions.AutoSize = true;
+            lblSummaryTotalBTCSpentFromSellTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalBTCSpentFromSellTransactions.Location = new Point(134, 180);
+            lblSummaryTotalBTCSpentFromSellTransactions.Name = "lblSummaryTotalBTCSpentFromSellTransactions";
+            lblSummaryTotalBTCSpentFromSellTransactions.Size = new Size(13, 15);
+            lblSummaryTotalBTCSpentFromSellTransactions.TabIndex = 117;
+            lblSummaryTotalBTCSpentFromSellTransactions.Text = "0";
+            // 
+            // lblSummaryTotalFiatReceivedOnSellTransactions
+            // 
+            lblSummaryTotalFiatReceivedOnSellTransactions.AutoSize = true;
+            lblSummaryTotalFiatReceivedOnSellTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalFiatReceivedOnSellTransactions.Location = new Point(174, 164);
+            lblSummaryTotalFiatReceivedOnSellTransactions.Name = "lblSummaryTotalFiatReceivedOnSellTransactions";
+            lblSummaryTotalFiatReceivedOnSellTransactions.Size = new Size(13, 15);
+            lblSummaryTotalFiatReceivedOnSellTransactions.TabIndex = 116;
+            lblSummaryTotalFiatReceivedOnSellTransactions.Text = "0";
+            // 
+            // lblSummaryAvgBTCRecdPerBuyTransaction
+            // 
+            lblSummaryAvgBTCRecdPerBuyTransaction.AutoSize = true;
+            lblSummaryAvgBTCRecdPerBuyTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgBTCRecdPerBuyTransaction.Location = new Point(294, 48);
+            lblSummaryAvgBTCRecdPerBuyTransaction.Name = "lblSummaryAvgBTCRecdPerBuyTransaction";
+            lblSummaryAvgBTCRecdPerBuyTransaction.Size = new Size(13, 15);
+            lblSummaryAvgBTCRecdPerBuyTransaction.TabIndex = 115;
+            lblSummaryAvgBTCRecdPerBuyTransaction.Text = "0";
+            // 
+            // lblSummaryAvgFiatAmtSpentPerBuyTransaction
+            // 
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.AutoSize = true;
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.Location = new Point(259, 64);
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.Name = "lblSummaryAvgFiatAmtSpentPerBuyTransaction";
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.Size = new Size(13, 15);
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.TabIndex = 114;
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.Text = "0";
+            // 
+            // lblSummaryTotalBTCRecdFromBuyTransactions
+            // 
+            lblSummaryTotalBTCRecdFromBuyTransactions.AutoSize = true;
+            lblSummaryTotalBTCRecdFromBuyTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalBTCRecdFromBuyTransactions.Location = new Point(159, 100);
+            lblSummaryTotalBTCRecdFromBuyTransactions.Name = "lblSummaryTotalBTCRecdFromBuyTransactions";
+            lblSummaryTotalBTCRecdFromBuyTransactions.Size = new Size(13, 15);
+            lblSummaryTotalBTCRecdFromBuyTransactions.TabIndex = 113;
+            lblSummaryTotalBTCRecdFromBuyTransactions.Text = "0";
+            // 
+            // lblSummaryTotalFiatSpentOnBuyTransactions
+            // 
+            lblSummaryTotalFiatSpentOnBuyTransactions.AutoSize = true;
+            lblSummaryTotalFiatSpentOnBuyTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalFiatSpentOnBuyTransactions.Location = new Point(159, 83);
+            lblSummaryTotalFiatSpentOnBuyTransactions.Name = "lblSummaryTotalFiatSpentOnBuyTransactions";
+            lblSummaryTotalFiatSpentOnBuyTransactions.Size = new Size(13, 15);
+            lblSummaryTotalFiatSpentOnBuyTransactions.TabIndex = 112;
+            lblSummaryTotalFiatSpentOnBuyTransactions.Text = "0";
+            // 
+            // label73
+            // 
+            label73.AutoSize = true;
+            label73.ForeColor = Color.DarkGray;
+            label73.Location = new Point(472, 86);
+            label73.Name = "label73";
+            label73.Size = new Size(198, 15);
+            label73.TabIndex = 111;
+            label73.Text = "of the eventual bitcoin supply (21m)";
+            // 
+            // lblSummaryPercentOfAllBitcoinOwned
+            // 
+            lblSummaryPercentOfAllBitcoinOwned.AutoSize = true;
+            lblSummaryPercentOfAllBitcoinOwned.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryPercentOfAllBitcoinOwned.Location = new Point(401, 86);
+            lblSummaryPercentOfAllBitcoinOwned.Name = "lblSummaryPercentOfAllBitcoinOwned";
+            lblSummaryPercentOfAllBitcoinOwned.Size = new Size(74, 15);
+            lblSummaryPercentOfAllBitcoinOwned.TabIndex = 110;
+            lblSummaryPercentOfAllBitcoinOwned.Text = "0.00000000%";
+            // 
+            // lblSummaryValueOfBTC
+            // 
+            lblSummaryValueOfBTC.AutoSize = true;
+            lblSummaryValueOfBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryValueOfBTC.Location = new Point(513, 29);
+            lblSummaryValueOfBTC.Name = "lblSummaryValueOfBTC";
+            lblSummaryValueOfBTC.Size = new Size(13, 15);
+            lblSummaryValueOfBTC.TabIndex = 109;
+            lblSummaryValueOfBTC.Text = "0";
+            // 
+            // lblSummaryNetFiatAmount
+            // 
+            lblSummaryNetFiatAmount.AutoSize = true;
+            lblSummaryNetFiatAmount.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryNetFiatAmount.Location = new Point(448, 59);
+            lblSummaryNetFiatAmount.Name = "lblSummaryNetFiatAmount";
+            lblSummaryNetFiatAmount.Size = new Size(13, 15);
+            lblSummaryNetFiatAmount.TabIndex = 108;
+            lblSummaryNetFiatAmount.Text = "0";
+            // 
+            // lblSummaryCostBasis
+            // 
+            lblSummaryCostBasis.AutoSize = true;
+            lblSummaryCostBasis.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryCostBasis.Location = new Point(543, 43);
+            lblSummaryCostBasis.Name = "lblSummaryCostBasis";
+            lblSummaryCostBasis.Size = new Size(13, 15);
+            lblSummaryCostBasis.TabIndex = 107;
+            lblSummaryCostBasis.Text = "0";
+            // 
+            // lblSummaryBTCHeld
+            // 
+            lblSummaryBTCHeld.AutoSize = true;
+            lblSummaryBTCHeld.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryBTCHeld.Location = new Point(485, 9);
+            lblSummaryBTCHeld.Name = "lblSummaryBTCHeld";
+            lblSummaryBTCHeld.Size = new Size(13, 15);
+            lblSummaryBTCHeld.TabIndex = 106;
+            lblSummaryBTCHeld.Text = "0";
+            // 
+            // lblSummaryTXCountRecdBTC
+            // 
+            lblSummaryTXCountRecdBTC.AutoSize = true;
+            lblSummaryTXCountRecdBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTXCountRecdBTC.Location = new Point(236, 28);
+            lblSummaryTXCountRecdBTC.Name = "lblSummaryTXCountRecdBTC";
+            lblSummaryTXCountRecdBTC.Size = new Size(13, 15);
+            lblSummaryTXCountRecdBTC.TabIndex = 105;
+            lblSummaryTXCountRecdBTC.Text = "0";
+            // 
+            // lblSummaryTXCountSpentBTC
+            // 
+            lblSummaryTXCountSpentBTC.AutoSize = true;
+            lblSummaryTXCountSpentBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTXCountSpentBTC.Location = new Point(231, 114);
+            lblSummaryTXCountSpentBTC.Name = "lblSummaryTXCountSpentBTC";
+            lblSummaryTXCountSpentBTC.Size = new Size(13, 15);
+            lblSummaryTXCountSpentBTC.TabIndex = 104;
+            lblSummaryTXCountSpentBTC.Text = "0";
+            // 
+            // lblSummaryTransactionCount
+            // 
+            lblSummaryTransactionCount.AutoSize = true;
+            lblSummaryTransactionCount.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTransactionCount.Location = new Point(148, 9);
+            lblSummaryTransactionCount.Name = "lblSummaryTransactionCount";
+            lblSummaryTransactionCount.Size = new Size(13, 15);
+            lblSummaryTransactionCount.TabIndex = 103;
+            lblSummaryTransactionCount.Text = "0";
+            // 
+            // label72
+            // 
+            label72.AutoSize = true;
+            label72.ForeColor = Color.DarkGray;
+            label72.Location = new Point(349, 86);
+            label72.Name = "label72";
+            label72.Size = new Size(53, 15);
+            label72.TabIndex = 102;
+            label72.Text = "You own";
+            // 
+            // label71
+            // 
+            label71.AutoSize = true;
+            label71.ForeColor = Color.DarkGray;
+            label71.Location = new Point(349, 28);
+            label71.Name = "label71";
+            label71.Size = new Size(158, 15);
+            label71.TabIndex = 101;
+            label71.Text = "Current value of bitcoin held";
+            // 
+            // label69
+            // 
+            label69.AutoSize = true;
+            label69.ForeColor = Color.DarkGray;
+            label69.Location = new Point(24, 180);
+            label69.Name = "label69";
+            label69.Size = new Size(104, 15);
+            label69.TabIndex = 100;
+            label69.Text = "Total bitcoin spent";
+            // 
+            // label70
+            // 
+            label70.AutoSize = true;
+            label70.ForeColor = Color.DarkGray;
+            label70.Location = new Point(24, 164);
+            label70.Name = "label70";
+            label70.Size = new Size(144, 15);
+            label70.TabIndex = 99;
+            label70.Text = "Total fiat amount received";
+            // 
+            // label68
+            // 
+            label68.AutoSize = true;
+            label68.ForeColor = Color.DarkGray;
+            label68.Location = new Point(24, 99);
+            label68.Name = "label68";
+            label68.Size = new Size(119, 15);
+            label68.TabIndex = 98;
+            label68.Text = "Total bitcoin received";
+            // 
+            // label67
+            // 
+            label67.AutoSize = true;
+            label67.ForeColor = Color.DarkGray;
+            label67.Location = new Point(24, 83);
+            label67.Name = "label67";
+            label67.Size = new Size(129, 15);
+            label67.TabIndex = 97;
+            label67.Text = "Total fiat amount spent";
+            // 
+            // label66
+            // 
+            label66.AutoSize = true;
+            label66.ForeColor = Color.DarkGray;
+            label66.Location = new Point(349, 59);
+            label66.Name = "label66";
+            label66.Size = new Size(91, 15);
+            label66.TabIndex = 96;
+            label66.Text = "Net fiat amount";
+            // 
+            // label65
+            // 
+            label65.AutoSize = true;
+            label65.ForeColor = Color.DarkGray;
+            label65.Location = new Point(349, 9);
+            label65.Name = "label65";
+            label65.Size = new Size(120, 15);
+            label65.TabIndex = 95;
+            label65.Text = "Bitcoin currently held";
+            // 
+            // label63
+            // 
+            label63.AutoSize = true;
+            label63.ForeColor = Color.DarkGray;
+            label63.Location = new Point(24, 149);
+            label63.Name = "label63";
+            label63.Size = new Size(244, 15);
+            label63.TabIndex = 94;
+            label63.Text = "Average fiat amount received per transaction";
+            // 
+            // label64
+            // 
+            label64.AutoSize = true;
+            label64.ForeColor = Color.DarkGray;
+            label64.Location = new Point(24, 133);
+            label64.Name = "label64";
+            label64.Size = new Size(249, 15);
+            label64.TabIndex = 93;
+            label64.Text = "Average bitcoin amount spent per transaction";
+            // 
+            // label62
+            // 
+            label62.AutoSize = true;
+            label62.ForeColor = Color.DarkGray;
+            label62.Location = new Point(24, 64);
+            label62.Name = "label62";
+            label62.Size = new Size(229, 15);
+            label62.TabIndex = 92;
+            label62.Text = "Average fiat amount spent per transaction";
+            // 
+            // label61
+            // 
+            label61.AutoSize = true;
+            label61.ForeColor = Color.DarkGray;
+            label61.Location = new Point(24, 48);
+            label61.Name = "label61";
+            label61.Size = new Size(264, 15);
+            label61.TabIndex = 91;
+            label61.Text = "Average bitcoin amount received per transaction";
+            // 
+            // label60
+            // 
+            label60.AutoSize = true;
+            label60.ForeColor = Color.DarkGray;
+            label60.Location = new Point(10, 28);
+            label60.Name = "label60";
+            label60.Size = new Size(220, 15);
+            label60.TabIndex = 90;
+            label60.Text = "Number of transactions (receive bitcoin)";
+            // 
+            // label59
+            // 
+            label59.AutoSize = true;
+            label59.ForeColor = Color.DarkGray;
+            label59.Location = new Point(10, 114);
+            label59.Name = "label59";
+            label59.Size = new Size(215, 15);
+            label59.TabIndex = 89;
+            label59.Text = "Number of transactions (spend bitcoin)";
+            // 
+            // label57
+            // 
+            label57.AutoSize = true;
+            label57.ForeColor = Color.DarkGray;
+            label57.Location = new Point(10, 9);
+            label57.Name = "label57";
+            label57.Size = new Size(132, 15);
+            label57.TabIndex = 88;
+            label57.Text = "Number of transactions";
+            // 
+            // labelSummary1
+            // 
+            labelSummary1.AutoSize = true;
+            labelSummary1.ForeColor = Color.DarkGray;
+            labelSummary1.Location = new Point(349, 43);
+            labelSummary1.Name = "labelSummary1";
+            labelSummary1.Size = new Size(188, 15);
+            labelSummary1.TabIndex = 87;
+            labelSummary1.Text = "Average puchase price (cost basis)";
+            // 
+            // panel31
+            // 
+            panel31.BackColor = Color.FromArgb(255, 224, 192);
+            panel31.Controls.Add(btnCloseSummary);
+            panel31.Controls.Add(label58);
+            panel31.ForeColor = Color.Black;
+            panel31.Location = new Point(0, 0);
+            panel31.Name = "panel31";
+            panel31.Size = new Size(674, 25);
+            panel31.TabIndex = 78;
+            // 
+            // btnCloseSummary
+            // 
+            btnCloseSummary.BackColor = Color.FromArgb(255, 192, 128);
+            btnCloseSummary.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnCloseSummary.BorderColor = Color.PaleVioletRed;
+            btnCloseSummary.BorderRadius = 12;
+            btnCloseSummary.BorderSize = 0;
+            btnCloseSummary.FlatAppearance.BorderSize = 0;
+            btnCloseSummary.FlatStyle = FlatStyle.Flat;
+            btnCloseSummary.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnCloseSummary.ForeColor = Color.White;
+            btnCloseSummary.Location = new Point(648, 0);
+            btnCloseSummary.Name = "btnCloseSummary";
+            btnCloseSummary.Padding = new Padding(2, 0, 0, 0);
+            btnCloseSummary.Size = new Size(24, 24);
+            btnCloseSummary.TabIndex = 88;
+            btnCloseSummary.Text = "✖️";
+            btnCloseSummary.TextColor = Color.White;
+            btnCloseSummary.UseVisualStyleBackColor = false;
+            btnCloseSummary.Click += BtnCloseSummary_Click;
+            // 
+            // label58
+            // 
+            label58.AutoSize = true;
+            label58.BackColor = Color.Transparent;
+            label58.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label58.ForeColor = Color.LightSlateGray;
+            label58.Location = new Point(2, 0);
+            label58.Name = "label58";
+            label58.Padding = new Padding(0, 2, 0, 0);
+            label58.Size = new Size(62, 19);
+            label58.TabIndex = 0;
+            label58.Text = "Summary";
+            // 
+            // panelTopControls
+            // 
+            panelTopControls.Controls.Add(btnSummary);
+            panelTopControls.Controls.Add(btnCurrency);
+            panelTopControls.Controls.Add(panelCurrency);
+            panelTopControls.Controls.Add(btnAbout);
+            panelTopControls.Controls.Add(pictureBoxBTCLogo);
+            panelTopControls.Controls.Add(lblCurrentPrice);
+            panelTopControls.Controls.Add(btnPriceRefresh);
+            panelTopControls.Controls.Add(btnMinimize);
+            panelTopControls.Controls.Add(btnExit);
+            panelTopControls.Location = new Point(774, 6);
+            panelTopControls.Name = "panelTopControls";
+            panelTopControls.Size = new Size(392, 39);
+            panelTopControls.TabIndex = 120;
+            // 
+            // btnSummary
+            // 
+            btnSummary.BackColor = Color.FromArgb(255, 192, 128);
+            btnSummary.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnSummary.BorderColor = Color.PaleVioletRed;
+            btnSummary.BorderRadius = 11;
+            btnSummary.BorderSize = 0;
+            btnSummary.FlatAppearance.BorderSize = 0;
+            btnSummary.FlatStyle = FlatStyle.Flat;
+            btnSummary.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnSummary.ForeColor = Color.White;
+            btnSummary.Location = new Point(224, 7);
+            btnSummary.Name = "btnSummary";
+            btnSummary.Padding = new Padding(1, 0, 0, 0);
+            btnSummary.Size = new Size(78, 24);
+            btnSummary.TabIndex = 145;
+            btnSummary.Text = "Summary";
+            btnSummary.TextColor = Color.White;
+            btnSummary.UseVisualStyleBackColor = false;
+            btnSummary.Click += BtnSummary_Click;
             // 
             // btnCurrency
             // 
@@ -3118,16 +3560,25 @@
             btnCurrency.FlatStyle = FlatStyle.Flat;
             btnCurrency.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnCurrency.ForeColor = Color.White;
-            btnCurrency.Location = new Point(1015, 15);
+            btnCurrency.Location = new Point(157, 7);
             btnCurrency.Name = "btnCurrency";
             btnCurrency.Padding = new Padding(3, 0, 0, 0);
             btnCurrency.Size = new Size(63, 24);
-            btnCurrency.TabIndex = 107;
+            btnCurrency.TabIndex = 143;
             btnCurrency.TabStop = false;
             btnCurrency.Text = "$ USD";
             btnCurrency.TextColor = Color.White;
             btnCurrency.UseVisualStyleBackColor = false;
             btnCurrency.Click += BtnCurrency_Click;
+            // 
+            // panelCurrency
+            // 
+            panelCurrency.BackColor = Color.FromArgb(255, 192, 128);
+            panelCurrency.Controls.Add(panelCurrencyMenu);
+            panelCurrency.Location = new Point(159, 16);
+            panelCurrency.Name = "panelCurrency";
+            panelCurrency.Size = new Size(59, 0);
+            panelCurrency.TabIndex = 144;
             // 
             // panelCurrencyMenu
             // 
@@ -3160,7 +3611,6 @@
             btnXAU.Text = "Ꜷ XAU";
             btnXAU.TextColor = Color.FromArgb(255, 128, 0);
             btnXAU.UseVisualStyleBackColor = false;
-            btnXAU.Click += BtnXAU_Click;
             // 
             // btnGBP
             // 
@@ -3181,7 +3631,6 @@
             btnGBP.Text = "£ GBP";
             btnGBP.TextColor = Color.FromArgb(255, 128, 0);
             btnGBP.UseVisualStyleBackColor = false;
-            btnGBP.Click += BtnGBP_Click;
             // 
             // btnEUR
             // 
@@ -3202,7 +3651,6 @@
             btnEUR.Text = "€ EUR";
             btnEUR.TextColor = Color.FromArgb(255, 128, 0);
             btnEUR.UseVisualStyleBackColor = false;
-            btnEUR.Click += BtnEUR_Click;
             // 
             // btnUSD
             // 
@@ -3224,35 +3672,93 @@
             btnUSD.Text = "$ USD";
             btnUSD.TextColor = Color.FromArgb(255, 128, 0);
             btnUSD.UseVisualStyleBackColor = false;
-            btnUSD.Click += BtnUSD_Click;
             // 
-            // ExpandPanelTimerVert
+            // btnAbout
             // 
-            ExpandPanelTimerVert.Interval = 1;
-            ExpandPanelTimerVert.Tick += ExpandCurrencyTimer_Tick;
+            btnAbout.BackColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BorderColor = Color.PaleVioletRed;
+            btnAbout.BorderRadius = 14;
+            btnAbout.BorderSize = 0;
+            btnAbout.FlatAppearance.BorderSize = 0;
+            btnAbout.FlatStyle = FlatStyle.Flat;
+            btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAbout.ForeColor = Color.White;
+            btnAbout.Location = new Point(305, 7);
+            btnAbout.Name = "btnAbout";
+            btnAbout.Padding = new Padding(3, 0, 0, 0);
+            btnAbout.Size = new Size(24, 24);
+            btnAbout.TabIndex = 142;
+            btnAbout.TabStop = false;
+            btnAbout.Text = "\U0001f5a4";
+            btnAbout.TextColor = Color.White;
+            btnAbout.UseVisualStyleBackColor = false;
+            btnAbout.Click += BtnAbout_Click;
             // 
-            // ShrinkPanelTimerVert
+            // pictureBoxBTCLogo
             // 
-            ShrinkPanelTimerVert.Interval = 1;
-            ShrinkPanelTimerVert.Tick += ShrinkCurrencyTimer_Tick;
+            pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
+            pictureBoxBTCLogo.Location = new Point(5, 8);
+            pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
+            pictureBoxBTCLogo.Size = new Size(23, 23);
+            pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxBTCLogo.TabIndex = 141;
+            pictureBoxBTCLogo.TabStop = false;
             // 
-            // panelCurrency
+            // lblCurrentPrice
             // 
-            panelCurrency.BackColor = Color.FromArgb(255, 192, 128);
-            panelCurrency.Controls.Add(panelCurrencyMenu);
-            panelCurrency.Location = new Point(1017, 24);
-            panelCurrency.Name = "panelCurrency";
-            panelCurrency.Size = new Size(59, 0);
-            panelCurrency.TabIndex = 111;
+            lblCurrentPrice.AutoSize = true;
+            lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lblCurrentPrice.ForeColor = Color.DarkGray;
+            lblCurrentPrice.Location = new Point(34, 10);
+            lblCurrentPrice.Name = "lblCurrentPrice";
+            lblCurrentPrice.Size = new Size(86, 17);
+            lblCurrentPrice.TabIndex = 139;
+            lblCurrentPrice.Text = "current price";
             // 
-            // panel9
+            // btnMinimize
             // 
-            panel9.BackColor = Color.FromArgb(255, 246, 232);
-            panel9.Controls.Add(btnLabelColor);
-            panel9.Location = new Point(1054, 415);
-            panel9.Name = "panel9";
-            panel9.Size = new Size(83, 24);
-            panel9.TabIndex = 113;
+            btnMinimize.BackColor = Color.FromArgb(255, 192, 128);
+            btnMinimize.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnMinimize.BorderColor = Color.PaleVioletRed;
+            btnMinimize.BorderRadius = 12;
+            btnMinimize.BorderSize = 0;
+            btnMinimize.FlatAppearance.BorderSize = 0;
+            btnMinimize.FlatStyle = FlatStyle.Flat;
+            btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnMinimize.ForeColor = Color.White;
+            btnMinimize.Location = new Point(335, 7);
+            btnMinimize.Name = "btnMinimize";
+            btnMinimize.Padding = new Padding(2, 0, 0, 0);
+            btnMinimize.Size = new Size(24, 24);
+            btnMinimize.TabIndex = 138;
+            btnMinimize.TabStop = false;
+            btnMinimize.Text = "➖";
+            btnMinimize.TextColor = Color.White;
+            btnMinimize.UseVisualStyleBackColor = false;
+            btnMinimize.Click += BtnMinimize_Click;
+            // 
+            // btnExit
+            // 
+            btnExit.BackColor = Color.FromArgb(255, 192, 128);
+            btnExit.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnExit.BorderColor = Color.PaleVioletRed;
+            btnExit.BorderRadius = 14;
+            btnExit.BorderSize = 0;
+            btnExit.FlatAppearance.BorderSize = 0;
+            btnExit.FlatStyle = FlatStyle.Flat;
+            btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnExit.ForeColor = Color.White;
+            btnExit.Location = new Point(364, 7);
+            btnExit.Name = "btnExit";
+            btnExit.Padding = new Padding(3, 1, 0, 0);
+            btnExit.Size = new Size(24, 24);
+            btnExit.TabIndex = 137;
+            btnExit.TabStop = false;
+            btnExit.Text = "✖️";
+            btnExit.TextColor = Color.White;
+            btnExit.UseVisualStyleBackColor = false;
+            btnExit.Click += BtnExit_Click;
             // 
             // Cubit
             // 
@@ -3262,24 +3768,17 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
+            Controls.Add(panelTopControls);
+            Controls.Add(panelSummaryContainer);
             Controls.Add(panel9);
             Controls.Add(panelColors);
-            Controls.Add(lblFinalCostBasis);
             Controls.Add(panelScrollbarContainer);
-            Controls.Add(btnCurrency);
-            Controls.Add(panelCurrency);
-            Controls.Add(btnAbout);
-            Controls.Add(pictureBoxBTCLogo);
-            Controls.Add(lblCurrentPrice);
-            Controls.Add(btnPriceRefresh);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(panel16);
             Controls.Add(panel14);
             Controls.Add(panel13);
             Controls.Add(btnMoveWindow);
-            Controls.Add(btnMinimize);
-            Controls.Add(btnExit);
             Controls.Add(panelAddTransactionContainer);
             Controls.Add(panelHelpTextContainer);
             DoubleBuffered = true;
@@ -3304,7 +3803,7 @@
             panel7.PerformLayout();
             panel8.ResumeLayout(false);
             panelHelpTextContainer.ResumeLayout(false);
-            panel19.ResumeLayout(false);
+            panelHelp.ResumeLayout(false);
             panel20.ResumeLayout(false);
             panel20.PerformLayout();
             panelAddTransaction.ResumeLayout(false);
@@ -3357,17 +3856,21 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
-            panelCurrencyMenu.ResumeLayout(false);
-            panelCurrency.ResumeLayout(false);
             panel9.ResumeLayout(false);
+            panelSummaryContainer.ResumeLayout(false);
+            panelSummary.ResumeLayout(false);
+            panelSummary.PerformLayout();
+            panel31.ResumeLayout(false);
+            panel31.PerformLayout();
+            panelTopControls.ResumeLayout(false);
+            panelTopControls.PerformLayout();
+            panelCurrency.ResumeLayout(false);
+            panelCurrencyMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-        private CustomControls.RJControls.RJButton btnExit;
-        private CustomControls.RJControls.RJButton btnMinimize;
         private CustomControls.RJControls.RJComboBox comboBoxYearInput;
         private CustomControls.RJControls.RJComboBox comboBoxMonthInput;
         private CustomControls.RJControls.RJComboBox comboBoxDayInput;
@@ -3431,8 +3934,6 @@
         private Label lblDisabledAddButtonText;
         private Label label15;
         private Label lblAddDataPriceEstimateType;
-        private Label lblCurrentPrice;
-        private CustomControls.RJControls.RJButton btnPriceRefresh;
         private ListView listViewTransactions;
         private Panel panel13;
         private Panel panelTransactionsContainer;
@@ -3471,7 +3972,7 @@
         private CustomControls.RJControls.RJButton btnHelpAddTransaction;
         private CustomControls.RJControls.RJButton btnHelpTransactionList;
         private Panel panelAddTransactionContainer;
-        private Panel panel19;
+        private Panel panelHelp;
         private Panel panel20;
         private CustomControls.RJControls.RJButton btnCloseHelpText;
         private Label label42;
@@ -3512,17 +4013,8 @@
         private PictureBox pictureBoxRobot;
         private PictureBox pictureBox1;
         private PictureBox pictureBox2;
-        private PictureBox pictureBoxBTCLogo;
-        private CustomControls.RJControls.RJButton btnAbout;
-        private CustomControls.RJControls.RJButton btnCurrency;
-        private Panel panelCurrencyMenu;
-        private CustomControls.RJControls.RJButton btnXAU;
-        private CustomControls.RJControls.RJButton btnGBP;
-        private CustomControls.RJControls.RJButton btnEUR;
-        private CustomControls.RJControls.RJButton btnUSD;
         private System.Windows.Forms.Timer ExpandPanelTimerVert;
         private System.Windows.Forms.Timer ShrinkPanelTimerVert;
-        private Panel panelCurrency;
         private Panel panelWelcome;
         private PictureBox pictureBox3;
         private PictureBox pictureBox4;
@@ -3574,5 +4066,58 @@
         private Label label54;
         private Label lblTotalCurrentValue;
         private Label lblFinalChangeinValuePercentage;
+        private Panel panelSummaryContainer;
+        private Panel panelSummary;
+        private Label labelSummary1;
+        private Panel panel31;
+        private CustomControls.RJControls.RJButton btnCloseSummary;
+        private Label label58;
+        private Label label65;
+        private Label label63;
+        private Label label64;
+        private Label label62;
+        private Label label61;
+        private Label label60;
+        private Label label59;
+        private Label label57;
+        private Label label71;
+        private Label label69;
+        private Label label70;
+        private Label label68;
+        private Label label67;
+        private Label label66;
+        private Label label72;
+        private Label lblSummaryTransactionCount;
+        private Label lblSummaryTXCountRecdBTC;
+        private Label lblSummaryTXCountSpentBTC;
+        private Label lblSummaryBTCHeld;
+        private Label lblSummaryCostBasis;
+        private Label lblSummaryNetFiatAmount;
+        private Label lblSummaryValueOfBTC;
+        private Label lblSummaryPercentOfAllBitcoinOwned;
+        private Label label73;
+        private Label lblSummaryTotalFiatSpentOnBuyTransactions;
+        private Label lblSummaryTotalBTCRecdFromBuyTransactions;
+        private Label lblSummaryAvgFiatAmtSpentPerBuyTransaction;
+        private Label lblSummaryAvgBTCRecdPerBuyTransaction;
+        private Label lblSummaryTotalFiatReceivedOnSellTransactions;
+        private Label lblSummaryTotalBTCSpentFromSellTransactions;
+        private Label lblSummaryAvgBTCSpentPerSellTransaction;
+        private Label lblSummaryAvgFiatAmtReceivedPerSellTransaction;
+        private Panel panelTopControls;
+        private CustomControls.RJControls.RJButton btnSummary;
+        private CustomControls.RJControls.RJButton btnCurrency;
+        private Panel panelCurrency;
+        private Panel panelCurrencyMenu;
+        private CustomControls.RJControls.RJButton btnXAU;
+        private CustomControls.RJControls.RJButton btnGBP;
+        private CustomControls.RJControls.RJButton btnEUR;
+        private CustomControls.RJControls.RJButton btnUSD;
+        private CustomControls.RJControls.RJButton btnAbout;
+        private PictureBox pictureBoxBTCLogo;
+        private Label lblCurrentPrice;
+        private CustomControls.RJControls.RJButton btnPriceRefresh;
+        private CustomControls.RJControls.RJButton btnMinimize;
+        private CustomControls.RJControls.RJButton btnExit;
     }
 }
