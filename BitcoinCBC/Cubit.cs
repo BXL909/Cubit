@@ -2,8 +2,8 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-limit length of transaction label to fit display
-provide total current value and overall change % under list
+pictures in robot speech
+currency wording on summary screen
 */
 
 #region Using
@@ -20,6 +20,8 @@ using Cubit.Properties;
 using ScottPlot;
 using ScottPlot.Plottable;
 using static ScottPlot.Plottable.PopulationPlot;
+using System.Windows.Forms;
+using System.Runtime.Intrinsics.X86;
 #endregion
 
 namespace Cubit
@@ -71,6 +73,7 @@ namespace Cubit
         bool currencyAlreadySavedInFile = false; // is ANY currency saved in the settings file
         string selectedCurrencyName = "USD"; // initial value. Can be changed and saved
         string currencyInFile = "USD"; // the currency save in the settings file
+        string selectedCurrencySymbol = "$"; // initial value.
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
         private readonly List<string> welcomeMessages = new()
@@ -183,6 +186,10 @@ namespace Cubit
             panel29.Paint += Panel_Paint;
             panel30.Paint += Panel_Paint;
             panel32.Paint += Panel_Paint;
+            panelSummaryChangeInValue.Paint += Panel_Paint;
+            panelSummaryBTCHeld.Paint += Panel_Paint;
+            panelSummaryBuyTransactions.Paint += Panel_Paint;
+            panelSummarySellTransactions.Paint += Panel_Paint;
             panelSummary.Paint += Panel_Paint;
             panelSummaryContainer.Paint += Panel_Paint;
             panelTransactionLabel.Paint += Panel_Paint;
@@ -252,6 +259,7 @@ namespace Cubit
             else
             {
                 selectedCurrencyName = "USD";
+                selectedCurrencySymbol = "$";
                 SaveSettingsToSettingsFile();
             }
 
@@ -307,6 +315,10 @@ namespace Cubit
             panel29.Invalidate();
             panel30.Invalidate();
             panel32.Invalidate();
+            panelSummaryChangeInValue.Invalidate();
+            panelSummaryBTCHeld.Invalidate();
+            panelSummaryBuyTransactions.Invalidate();
+            panelSummarySellTransactions.Invalidate();
             panelSummary.Invalidate();
             panelSummaryContainer.Invalidate();
             panelTransactionLabel.Invalidate();
@@ -1666,6 +1678,7 @@ namespace Cubit
                 .ThenBy(b => b.Month)
                 .ThenBy(b => b.Day)
                 .ToList();
+
             return transactions;
         }
 
@@ -1755,18 +1768,42 @@ namespace Cubit
         double totalBTCReceivedOnBuyTransactions = 0;
         double totalFiatReceivedOnSellTransactions = 0;
         double totalBTCSpentOnSellTransactions = 0;
-
+        int yearOfFirstTransaction = 0;
+        int monthOfFirstTransaction = 0;
+        int dayOfFirstTransaction = 0;
+        double highestPricePaid = 0;
+        double lowestPricePaid = 999999999;
+        double highestPriceSold = 0;
+        double lowestPriceSold = 999999999;
+        double mostFiatSpentInOneTransaction = 0;
+        double mostBTCReceivedInOneTransaction = 0;
+        double mostFiatReceivedInOneTransaction = 0;
+        double mostBTCSpentInOneTransaction = 0;
         #region set up listview
+
+
+
         private async Task SetupTransactionsList()
         {
             try
             {
+                dayOfFirstTransaction = 0;
+                monthOfFirstTransaction = 0;
+                yearOfFirstTransaction = 0;
                 totalFiatSpentOnBuyTransactions = 0;
                 totalBTCReceivedOnBuyTransactions = 0;
                 totalFiatReceivedOnSellTransactions = 0;
                 totalBTCSpentOnSellTransactions = 0;
                 totalTXCountReceiveBTC = 0;
                 totalTXCountSpendBTC = 0;
+                highestPricePaid = 0;
+                lowestPricePaid = 999999999;
+                highestPriceSold = 0;
+                lowestPriceSold = 999999999;
+                mostFiatSpentInOneTransaction = 0;
+                mostBTCReceivedInOneTransaction = 0;
+                mostFiatReceivedInOneTransaction = 0;
+                mostBTCSpentInOneTransaction = 0;
                 listBuyBTCTransactionDate = new();
                 listBuyBTCTransactionFiatAmount = new();
                 listBuyBTCTransactionPrice = new();
@@ -1779,6 +1816,20 @@ namespace Cubit
                 if (transactions.Count > 0)
                 {
                     transactionFound = true;
+
+                    Transaction firstTransaction = transactions.FirstOrDefault();
+                    if (firstTransaction.Year != "-")
+                    {
+                        yearOfFirstTransaction = Convert.ToInt16(firstTransaction.Year);
+                    }
+                    if (firstTransaction.Month != "-")
+                    {
+                        monthOfFirstTransaction = Convert.ToInt16(firstTransaction.Month);
+                    }
+                    if (firstTransaction.Day != "-")
+                    {
+                        dayOfFirstTransaction = Convert.ToInt16(firstTransaction.Day);
+                    }
                 }
 
                 if (!transactionFound) // there are no transactions
@@ -1969,6 +2020,7 @@ namespace Cubit
                 decimal rollingOriginalFiatAmount = 0;
                 decimal rollingCostBasis = 0;
                 decimal rollingCurrentValue = 0;
+
                 foreach (var transaction in transactions)
                 {
                     ListViewItem item = new(Convert.ToString(listViewTransactions.Items.Count + 1)); // create new row
@@ -2011,19 +2063,50 @@ namespace Cubit
                         totalTXCountReceiveBTC++;
                         totalFiatSpentOnBuyTransactions += transactionFiatAmount;
                         totalBTCReceivedOnBuyTransactions += Convert.ToDouble(transaction.BTCAmount);
+                        if (Convert.ToDouble(transaction.Price) > highestPricePaid)
+                        {
+                            highestPricePaid = Convert.ToDouble(transaction.Price);
+                        }
+                        if (Convert.ToDouble(transaction.Price) < lowestPricePaid)
+                        {
+                            lowestPricePaid = Convert.ToDouble(transaction.Price);
+                        }
                         listBuyBTCTransactionDate.Add(oadate);
                         listBuyBTCTransactionFiatAmount.Add(transactionFiatAmount);
                         listBuyBTCTransactionPrice.Add(transactionPrice);
-
+                        if (Math.Abs(Convert.ToDouble(transaction.FiatAmount)) > mostFiatSpentInOneTransaction)
+                        {
+                            mostFiatSpentInOneTransaction = Math.Abs(Convert.ToDouble(transaction.FiatAmount));
+                        }
+                        if (Convert.ToDouble(transaction.BTCAmount) > mostBTCReceivedInOneTransaction)
+                        {
+                            mostBTCReceivedInOneTransaction = Convert.ToDouble(transaction.BTCAmount);
+                        }
                     }
                     else
                     {
                         totalTXCountSpendBTC++;
                         totalFiatReceivedOnSellTransactions += transactionFiatAmount;
                         totalBTCSpentOnSellTransactions += Convert.ToDouble(transaction.BTCAmount);
+                        if (Convert.ToDouble(transaction.Price) > highestPriceSold)
+                        {
+                            highestPriceSold = Convert.ToDouble(transaction.Price);
+                        }
+                        if (Convert.ToDouble(transaction.Price) < lowestPriceSold)
+                        {
+                            lowestPriceSold = Convert.ToDouble(transaction.Price);
+                        }
                         listSellBTCTransactionDate.Add(oadate);
                         listSellBTCTransactionFiatAmount.Add(transactionFiatAmount);
                         listSellBTCTransactionPrice.Add(transactionPrice);
+                        if (Convert.ToDouble(transaction.FiatAmount) > mostFiatReceivedInOneTransaction)
+                        {
+                            mostFiatReceivedInOneTransaction = Convert.ToDouble(transaction.FiatAmount);
+                        }
+                        if (Math.Abs(Convert.ToDouble(transaction.BTCAmount)) > mostBTCSpentInOneTransaction)
+                        {
+                            mostBTCSpentInOneTransaction = Math.Abs(Convert.ToDouble(transaction.BTCAmount));
+                        }
                     }
 
                     #endregion
@@ -2099,7 +2182,7 @@ namespace Cubit
                     });
                     lblFinalCostBasis.Invoke((MethodInvoker)delegate
                     {
-                        lblFinalCostBasis.Text = Convert.ToString(rollingCostBasis);
+                        lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(rollingCostBasis);
                     });
                     lblTotalCurrentValue.Invoke((MethodInvoker)delegate
                     {
@@ -3988,6 +4071,7 @@ namespace Cubit
             currentHeightShrinkingPanel = panelCurrency.Height;
             StartShrinkingPanelVert(panelCurrency);
             selectedCurrencyName = "USD";
+            selectedCurrencySymbol = "$";
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
@@ -4068,6 +4152,7 @@ namespace Cubit
             currentHeightShrinkingPanel = panelCurrency.Height;
             StartShrinkingPanelVert(panelCurrency);
             selectedCurrencyName = "EUR";
+            selectedCurrencySymbol = "€";
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
@@ -4148,6 +4233,7 @@ namespace Cubit
             currentHeightShrinkingPanel = panelCurrency.Height;
             StartShrinkingPanelVert(panelCurrency);
             selectedCurrencyName = "GBP";
+            selectedCurrencySymbol = "£";
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
@@ -4228,6 +4314,7 @@ namespace Cubit
             currentHeightShrinkingPanel = panelCurrency.Height;
             StartShrinkingPanelVert(panelCurrency);
             selectedCurrencyName = "XAU";
+            selectedCurrencySymbol = "Ꜷ";
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
@@ -5019,41 +5106,96 @@ namespace Cubit
             // prepare data
             lblSummaryTransactionCount.Invoke((MethodInvoker)delegate
             {
-                lblSummaryTransactionCount.Text = Convert.ToString(listViewTransactions.Items.Count);
+                lblSummaryTransactionCount.Text = Convert.ToString(listViewTransactions.Items.Count - 1);
+            });
+            label85.Invoke((MethodInvoker)delegate
+            {
+                label85.Location = new Point(lblSummaryTransactionCount.Location.X + lblSummaryTransactionCount.Width, label85.Location.Y);
             });
             lblSummaryTXCountRecdBTC.Invoke((MethodInvoker)delegate
             {
                 lblSummaryTXCountRecdBTC.Text = Convert.ToString(totalTXCountReceiveBTC);
             });
+            label74.Invoke((MethodInvoker)delegate
+            {
+                label74.Location = new Point(lblSummaryTXCountRecdBTC.Location.X + lblSummaryTXCountRecdBTC.Width, label74.Location.Y);
+            });
             lblSummaryTXCountSpentBTC.Invoke((MethodInvoker)delegate
             {
                 lblSummaryTXCountSpentBTC.Text = Convert.ToString(totalTXCountSpendBTC);
             });
+            label75.Invoke((MethodInvoker)delegate
+            {
+                label75.Location = new Point(lblSummaryTXCountSpentBTC.Location.X + lblSummaryTXCountSpentBTC.Width, label75.Location.Y);
+            });
             lblSummaryBTCHeld.Invoke((MethodInvoker)delegate
             {
                 lblSummaryBTCHeld.Text = lblTotalBTCAmount.Text;
+                lblSummaryBTCHeld.Location = new Point(label65.Location.X + label65.Width, lblSummaryBTCHeld.Location.Y);
+            });
+            label71.Invoke((MethodInvoker)delegate
+            {
+                label71.Location = new Point(lblSummaryBTCHeld.Location.X + lblSummaryBTCHeld.Width, label71.Location.Y);
             });
             lblSummaryCostBasis.Invoke((MethodInvoker)delegate
             {
                 lblSummaryCostBasis.Text = lblFinalCostBasis.Text;
             });
-            lblSummaryNetFiatAmount.Invoke((MethodInvoker)delegate
-            {
-                lblSummaryNetFiatAmount.Text = lblTotalFiatAmount.Text;
-            });
+
             lblSummaryValueOfBTC.Invoke((MethodInvoker)delegate
             {
                 lblSummaryValueOfBTC.Text = lblTotalCurrentValue.Text;
             });
+
+            label66.Invoke((MethodInvoker)delegate
+            {
+                label66.Location = new Point(lblSummaryValueOfBTC.Location.X + lblSummaryValueOfBTC.Width, label66.Location.Y);
+            });
+            lblSummaryNetFiatAmount.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryNetFiatAmount.Text = lblTotalFiatAmount.Text;
+                lblSummaryNetFiatAmount.Location = new Point(label66.Location.X + label66.Width, lblSummaryNetFiatAmount.Location.Y);
+            });
+            label86.Invoke((MethodInvoker)delegate
+            {
+                label86.Location = new Point(lblSummaryNetFiatAmount.Location.X + lblSummaryNetFiatAmount.Width, label86.Location.Y);
+            });
             string temp = Convert.ToString(Convert.ToDecimal(lblTotalBTCAmount.Text[1..]) / 21000000 * 100);
             lblSummaryPercentOfAllBitcoinOwned.Invoke((MethodInvoker)delegate
             {
-                lblSummaryPercentOfAllBitcoinOwned.Text = temp.Substring(0, Math.Min(10, temp.Length)) + "%";
+                lblSummaryPercentOfAllBitcoinOwned.Text = temp[..Math.Min(10, temp.Length)] + "%";
+                lblSummaryPercentOfAllBitcoinOwned.Location = new Point(label85.Location.X + label85.Width, lblSummaryPercentOfAllBitcoinOwned.Location.Y);
+            });
+            label73.Invoke((MethodInvoker)delegate
+            {
+                label73.Location = new Point(lblSummaryPercentOfAllBitcoinOwned.Location.X + lblSummaryPercentOfAllBitcoinOwned.Width, label73.Location.Y);
+            });
+            lblSummaryPercentageChangeInValue.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryPercentageChangeInValue.Text = lblFinalChangeinValuePercentage.Text;
+            });
+            if (lblSummaryPercentageChangeInValue.Text[..1] == "▲")
+            {
+                lblSummaryPercentageChangeInValue.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryPercentageChangeInValue.ForeColor = Color.DarkSeaGreen;
+                });
+            }
+            else
+            {
+                lblSummaryPercentageChangeInValue.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryPercentageChangeInValue.ForeColor = Color.RosyBrown;
+                });
+            }
+            lblSummaryCostToValue.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryCostToValue.Text = "from " + lblSummaryNetFiatAmount.Text + " to " + lblSummaryValueOfBTC.Text;
             });
             #region 'buy' transactions
             lblSummaryTotalFiatSpentOnBuyTransactions.Invoke((MethodInvoker)delegate
             {
-                lblSummaryTotalFiatSpentOnBuyTransactions.Text = Convert.ToString(Math.Abs(totalFiatSpentOnBuyTransactions));
+                lblSummaryTotalFiatSpentOnBuyTransactions.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(totalFiatSpentOnBuyTransactions));
             });
             lblSummaryTotalBTCRecdFromBuyTransactions.Invoke((MethodInvoker)delegate
             {
@@ -5061,7 +5203,7 @@ namespace Cubit
             });
             lblSummaryAvgFiatAmtSpentPerBuyTransaction.Invoke((MethodInvoker)delegate
             {
-                lblSummaryAvgFiatAmtSpentPerBuyTransaction.Text = Convert.ToString(Math.Round(totalFiatSpentOnBuyTransactions / totalTXCountReceiveBTC, 2));
+                lblSummaryAvgFiatAmtSpentPerBuyTransaction.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(Math.Round(totalFiatSpentOnBuyTransactions / totalTXCountReceiveBTC, 2)));
             });
             lblSummaryAvgBTCRecdPerBuyTransaction.Invoke((MethodInvoker)delegate
             {
@@ -5071,7 +5213,7 @@ namespace Cubit
             #region 'sell' transactions
             lblSummaryTotalFiatReceivedOnSellTransactions.Invoke((MethodInvoker)delegate
             {
-                lblSummaryTotalFiatReceivedOnSellTransactions.Text = Convert.ToString(Math.Abs(totalFiatReceivedOnSellTransactions));
+                lblSummaryTotalFiatReceivedOnSellTransactions.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(totalFiatReceivedOnSellTransactions));
             });
             lblSummaryTotalBTCSpentFromSellTransactions.Invoke((MethodInvoker)delegate
             {
@@ -5079,17 +5221,124 @@ namespace Cubit
             });
             lblSummaryAvgFiatAmtReceivedPerSellTransaction.Invoke((MethodInvoker)delegate
             {
-                lblSummaryAvgFiatAmtReceivedPerSellTransaction.Text = Convert.ToString(Math.Round(totalFiatReceivedOnSellTransactions / totalTXCountSpendBTC, 2));
+                lblSummaryAvgFiatAmtReceivedPerSellTransaction.Text = selectedCurrencySymbol + Convert.ToString(Math.Round(totalFiatReceivedOnSellTransactions / totalTXCountSpendBTC, 2));
             });
             lblSummaryAvgBTCSpentPerSellTransaction.Invoke((MethodInvoker)delegate
             {
                 lblSummaryAvgBTCSpentPerSellTransaction.Text = Convert.ToString(Math.Round(totalBTCSpentOnSellTransactions / totalTXCountSpendBTC, 8));
             });
             #endregion
+            string bitcoinAge = "";
+            string firstTransactionText = "";
+            if (yearOfFirstTransaction != 0 && monthOfFirstTransaction != 0 && dayOfFirstTransaction != 0)
+            {
+                firstTransactionText = "Your first transaction was " + CalculateDateDifference(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ", on the " + FormatDate(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ". ";
+                bitcoinAge = "Bitcoin was " + CalculateDateDifferenceGenesis(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + " old at that time.";
+            }
+            if (yearOfFirstTransaction != 0 && monthOfFirstTransaction != 0 && dayOfFirstTransaction == 0)
+            {
+                dayOfFirstTransaction = 15;
+                firstTransactionText = "Your first transaction was approx. " + CalculateDateDifference(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ", on the " + FormatDate(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ". This is an estimated date because your earliest transaction lacks a complete date. ";
+                bitcoinAge = "Bitcoin was " + CalculateDateDifferenceGenesis(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + " old at that time.";
+            }
+            if (yearOfFirstTransaction != 0 && monthOfFirstTransaction == 0 && dayOfFirstTransaction == 0)
+            {
+                dayOfFirstTransaction = 15;
+                monthOfFirstTransaction = 6;
+                firstTransactionText = "Your first transaction was approx. " + CalculateDateDifference(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ", on the " + FormatDate(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + ". This is an estimated date because your earliest transaction lacks a complete date. ";
+                bitcoinAge = "Bitcoin was " + CalculateDateDifferenceGenesis(yearOfFirstTransaction, monthOfFirstTransaction, dayOfFirstTransaction) + " old at that time.";
+            }
+            lblFirstTXDate.Invoke((MethodInvoker)delegate
+            {
+                lblFirstTXDate.Text = firstTransactionText + bitcoinAge;
+            });
+            panel19.Invoke((MethodInvoker)delegate
+            {
+                panel19.Location = new Point(panel19.Location.X, lblFirstTXDate.Location.Y + lblFirstTXDate.Height);
+            });
+            lblSummaryHighestPricePaid.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryHighestPricePaid.Text = selectedCurrencySymbol + Convert.ToString(highestPricePaid);
+            });
+            if (lowestPricePaid == 999999999)
+            {
+                lblSummaryLowestPricePaid.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryLowestPricePaid.Text = "-";
+                });
+            }
+            else
+            {
+                lblSummaryLowestPricePaid.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryLowestPricePaid.Text = selectedCurrencySymbol + Convert.ToString(lowestPricePaid);
+                });
+            }
+            lblSummaryHighestPriceSold.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryHighestPriceSold.Text = selectedCurrencySymbol + Convert.ToString(highestPriceSold);
+            });
+            if (lowestPriceSold == 999999999)
+            {
+                lblSummaryLowestPriceSold.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryLowestPriceSold.Text = "-";
+                });
+            }
+            else
+            {
+                lblSummaryLowestPriceSold.Invoke((MethodInvoker)delegate
+                {
+                    lblSummaryLowestPriceSold.Text = selectedCurrencySymbol + Convert.ToString(lowestPriceSold);
+                });
+            }
+            lblSummaryMostFiatSpentInOneTX.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryMostFiatSpentInOneTX.Text = selectedCurrencySymbol + Convert.ToString(mostFiatSpentInOneTransaction);
+            });
+            lblSummaryMostBTCReceivedInOneTX.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryMostBTCReceivedInOneTX.Text = Convert.ToString(mostBTCReceivedInOneTransaction);
+            });
+            lblSummaryMostFiatReceivedInOneTX.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryMostFiatReceivedInOneTX.Text = selectedCurrencySymbol + Convert.ToString(mostFiatReceivedInOneTransaction);
+            });
+            lblSummaryMostBTCSpentInOneTX.Invoke((MethodInvoker)delegate
+            {
+                lblSummaryMostBTCSpentInOneTX.Text = Convert.ToString(mostBTCSpentInOneTransaction);
+            });
+
+            label62.Invoke((MethodInvoker)delegate
+            {
+                label62.Text = "Avg " + selectedCurrencyName + " spent per transaction";
+            });
+            label67.Invoke((MethodInvoker)delegate
+            {
+                label67.Text = "Total " + selectedCurrencyName + " spent";
+            });
+            label81.Invoke((MethodInvoker)delegate
+            {
+                label81.Text = "Most " + selectedCurrencyName + " spent in one TX";
+            });
+            label63.Invoke((MethodInvoker)delegate
+            {
+                label63.Text = "Avg " + selectedCurrencyName + " received per transaction";
+            });
+            label70.Invoke((MethodInvoker)delegate
+            {
+                label70.Text = "Total " + selectedCurrencyName + " received";
+            });
+            label88.Invoke((MethodInvoker)delegate
+            {
+                label88.Text = "Most " + selectedCurrencyName + " received in one TX";
+            });
+
             panelAddTransactionContainer.Enabled = false;
             panel14.Enabled = false;
             panel13.Enabled = false;
             panelTopControls.Enabled = false;
+            panel9.Enabled = false;
             panelSummaryContainer.Invoke((MethodInvoker)delegate
             {
                 panelSummaryContainer.Visible = true;
@@ -5108,6 +5357,7 @@ namespace Cubit
             panel14.Enabled = true;
             panel13.Enabled = true;
             panelTopControls.Enabled = true;
+            panel9.Enabled = true;
             panelSummaryContainer.Invoke((MethodInvoker)delegate
             {
                 panelSummaryContainer.Visible = false;
@@ -5116,6 +5366,69 @@ namespace Cubit
             {
                 panelHideSpeechTriangle.Visible = true;
             });
+        }
+
+        public static string CalculateDateDifference(int inputYear, int inputMonth, int inputDay)
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime inputDate = new(inputYear, inputMonth, inputDay);
+
+            // Calculate the difference between the current date and the input date
+            TimeSpan difference = currentDate - inputDate;
+
+            // Calculate years, months, and days
+            int years = difference.Days / 365;
+            int months = (difference.Days % 365) / 30;
+            int days = difference.Days % 30;
+
+            // Build the result string
+            string result = $"{years} years, {months} months, and {days} days ago";
+
+            return result;
+        }
+
+        public static string CalculateDateDifferenceGenesis(int inputYear, int inputMonth, int inputDay)
+        {
+            DateTime GenesisDate = new(2009, 1, 9);
+            DateTime inputDate = new(inputYear, inputMonth, inputDay);
+
+            // Calculate the difference between the current date and the input date
+            TimeSpan difference = inputDate - GenesisDate;
+
+            // Calculate years, months, and days
+            int years = difference.Days / 365;
+            int months = (difference.Days % 365) / 30;
+            int days = difference.Days % 30;
+
+            // Build the result string
+            string result = $"{years} years, {months} months, and {days} days";
+
+            return result;
+        }
+
+        public static string FormatDate(int inputYear, int inputMonth, int inputDay)
+        {
+            DateTime inputDate = new(inputYear, inputMonth, inputDay);
+
+            string formattedDate = $"{inputDate.Day}{GetDaySuffix(inputDate.Day)} {inputDate:MMMM yyyy}";
+
+            return formattedDate;
+        }
+
+        public static string GetDaySuffix(int day)
+        {
+            if (day >= 11 && day <= 13)
+            {
+                return "th";
+            }
+
+            return (day % 10) switch
+            {
+                1 => "st",
+                2 => "nd",
+                3 => "rd",
+                _ => "th",
+            };
         }
     }
 }
