@@ -214,7 +214,6 @@
             panelWelcome = new Panel();
             labelWelcomeText = new Label();
             pictureBox3 = new PictureBox();
-            pictureBox4 = new PictureBox();
             panelRobotSpeakOuter = new Panel();
             lblRobotSpeak = new Label();
             panelHideSpeechTriangle = new Panel();
@@ -231,11 +230,12 @@
             btnCloseSummary = new CustomControls.RJControls.RJButton();
             label58 = new Label();
             panelSummary = new Panel();
+            btnCloseSummaryButton = new CustomControls.RJControls.RJButton();
             panelSummaryChangeInValue = new Panel();
             lblSummaryCostToValue = new Label();
-            lblSummaryPercentageChangeInValue = new Label();
             panel36 = new Panel();
             label90 = new Label();
+            lblSummaryPercentageChangeInValue = new Label();
             panel19 = new Panel();
             label57 = new Label();
             label85 = new Label();
@@ -301,6 +301,11 @@
             lblSummaryTotalBTCRecdFromBuyTransactions = new Label();
             panelTopControls = new Panel();
             btnSummary = new CustomControls.RJControls.RJButton();
+            btnAbout = new CustomControls.RJControls.RJButton();
+            pictureBoxBTCLogo = new PictureBox();
+            lblCurrentPrice = new Label();
+            btnMinimize = new CustomControls.RJControls.RJButton();
+            btnExit = new CustomControls.RJControls.RJButton();
             btnCurrency = new CustomControls.RJControls.RJButton();
             panelCurrency = new Panel();
             panelCurrencyMenu = new Panel();
@@ -308,11 +313,6 @@
             btnGBP = new CustomControls.RJControls.RJButton();
             btnEUR = new CustomControls.RJControls.RJButton();
             btnUSD = new CustomControls.RJControls.RJButton();
-            btnAbout = new CustomControls.RJControls.RJButton();
-            pictureBoxBTCLogo = new PictureBox();
-            lblCurrentPrice = new Label();
-            btnMinimize = new CustomControls.RJControls.RJButton();
-            btnExit = new CustomControls.RJControls.RJButton();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -354,7 +354,6 @@
             panelSpeechBubble.SuspendLayout();
             panelWelcome.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).BeginInit();
             panelRobotSpeakOuter.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
@@ -373,9 +372,9 @@
             panelSummaryBuyTransactions.SuspendLayout();
             panel34.SuspendLayout();
             panelTopControls.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
             panelCurrency.SuspendLayout();
             panelCurrencyMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
             SuspendLayout();
             // 
             // comboBoxYearInput
@@ -1147,9 +1146,9 @@
             panelHelpTextContainer.BackColor = Color.FromArgb(255, 224, 192);
             panelHelpTextContainer.Controls.Add(panelHelp);
             panelHelpTextContainer.Controls.Add(panel20);
-            panelHelpTextContainer.Location = new Point(371, 370);
+            panelHelpTextContainer.Location = new Point(371, 330);
             panelHelpTextContainer.Name = "panelHelpTextContainer";
-            panelHelpTextContainer.Size = new Size(675, 241);
+            panelHelpTextContainer.Size = new Size(675, 281);
             panelHelpTextContainer.TabIndex = 73;
             panelHelpTextContainer.Visible = false;
             // 
@@ -1160,7 +1159,7 @@
             panelHelp.ForeColor = Color.White;
             panelHelp.Location = new Point(2, 25);
             panelHelp.Name = "panelHelp";
-            panelHelp.Size = new Size(671, 213);
+            panelHelp.Size = new Size(671, 253);
             panelHelp.TabIndex = 74;
             // 
             // lblHelpText
@@ -1168,7 +1167,7 @@
             lblHelpText.ForeColor = Color.DarkGray;
             lblHelpText.Location = new Point(7, 9);
             lblHelpText.Name = "lblHelpText";
-            lblHelpText.Size = new Size(657, 197);
+            lblHelpText.Size = new Size(657, 237);
             lblHelpText.TabIndex = 87;
             lblHelpText.Text = "Line 1\\r\\nLine 2";
             // 
@@ -1985,9 +1984,9 @@
             label22.Location = new Point(790, 0);
             label22.Name = "label22";
             label22.Padding = new Padding(0, 2, 0, 0);
-            label22.Size = new Size(20, 19);
+            label22.Size = new Size(26, 19);
             label22.TabIndex = 16;
-            label22.Text = "cc";
+            label22.Text = "CC";
             toolTip1.SetToolTip(label22, "Optional colour code");
             // 
             // label51
@@ -2984,7 +2983,6 @@
             panelWelcome.BackColor = Color.White;
             panelWelcome.Controls.Add(labelWelcomeText);
             panelWelcome.Controls.Add(pictureBox3);
-            panelWelcome.Controls.Add(pictureBox4);
             panelWelcome.Location = new Point(2, 2);
             panelWelcome.Name = "panelWelcome";
             panelWelcome.Size = new Size(161, 92);
@@ -2994,32 +2992,22 @@
             // 
             labelWelcomeText.Font = new Font("OCR A Extended", 8F, FontStyle.Regular, GraphicsUnit.Point);
             labelWelcomeText.ForeColor = Color.Gray;
-            labelWelcomeText.Location = new Point(1, 52);
+            labelWelcomeText.Location = new Point(1, 46);
             labelWelcomeText.Name = "labelWelcomeText";
-            labelWelcomeText.Size = new Size(159, 37);
+            labelWelcomeText.Size = new Size(159, 46);
             labelWelcomeText.TabIndex = 107;
             labelWelcomeText.Text = "label54";
             labelWelcomeText.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // pictureBox3
             // 
-            pictureBox3.Image = Properties.Resources.text;
-            pictureBox3.Location = new Point(52, 6);
+            pictureBox3.Image = Properties.Resources.logoForSpeechBubble;
+            pictureBox3.Location = new Point(8, 6);
             pictureBox3.Name = "pictureBox3";
-            pictureBox3.Size = new Size(102, 37);
+            pictureBox3.Size = new Size(140, 40);
             pictureBox3.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox3.TabIndex = 106;
             pictureBox3.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            pictureBox4.Image = Properties.Resources.logo;
-            pictureBox4.Location = new Point(8, 9);
-            pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new Size(40, 40);
-            pictureBox4.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBox4.TabIndex = 105;
-            pictureBox4.TabStop = false;
             // 
             // panelRobotSpeakOuter
             // 
@@ -3187,6 +3175,7 @@
             // panelSummary
             // 
             panelSummary.BackColor = Color.White;
+            panelSummary.Controls.Add(btnCloseSummaryButton);
             panelSummary.Controls.Add(panelSummaryChangeInValue);
             panelSummary.Controls.Add(panel19);
             panelSummary.Controls.Add(lblFirstTXDate);
@@ -3199,38 +3188,48 @@
             panelSummary.Size = new Size(671, 435);
             panelSummary.TabIndex = 74;
             // 
+            // btnCloseSummaryButton
+            // 
+            btnCloseSummaryButton.BackColor = Color.FromArgb(255, 192, 128);
+            btnCloseSummaryButton.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnCloseSummaryButton.BorderColor = Color.PaleVioletRed;
+            btnCloseSummaryButton.BorderRadius = 11;
+            btnCloseSummaryButton.BorderSize = 0;
+            btnCloseSummaryButton.FlatAppearance.BorderSize = 0;
+            btnCloseSummaryButton.FlatStyle = FlatStyle.Flat;
+            btnCloseSummaryButton.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnCloseSummaryButton.ForeColor = Color.White;
+            btnCloseSummaryButton.Location = new Point(581, 398);
+            btnCloseSummaryButton.Name = "btnCloseSummaryButton";
+            btnCloseSummaryButton.Padding = new Padding(1, 0, 0, 0);
+            btnCloseSummaryButton.Size = new Size(78, 24);
+            btnCloseSummaryButton.TabIndex = 146;
+            btnCloseSummaryButton.Text = "Close";
+            btnCloseSummaryButton.TextColor = Color.White;
+            btnCloseSummaryButton.UseVisualStyleBackColor = false;
+            btnCloseSummaryButton.Click += btnCloseSummaryButton_Click;
+            // 
             // panelSummaryChangeInValue
             // 
             panelSummaryChangeInValue.BackColor = Color.FromArgb(255, 246, 232);
             panelSummaryChangeInValue.Controls.Add(lblSummaryCostToValue);
-            panelSummaryChangeInValue.Controls.Add(lblSummaryPercentageChangeInValue);
             panelSummaryChangeInValue.Controls.Add(panel36);
+            panelSummaryChangeInValue.Controls.Add(lblSummaryPercentageChangeInValue);
             panelSummaryChangeInValue.Location = new Point(339, 307);
             panelSummaryChangeInValue.Name = "panelSummaryChangeInValue";
-            panelSummaryChangeInValue.Size = new Size(320, 111);
+            panelSummaryChangeInValue.Size = new Size(320, 85);
             panelSummaryChangeInValue.TabIndex = 122;
             // 
             // lblSummaryCostToValue
             // 
             lblSummaryCostToValue.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
             lblSummaryCostToValue.ForeColor = Color.FromArgb(255, 192, 128);
-            lblSummaryCostToValue.Location = new Point(13, 67);
+            lblSummaryCostToValue.Location = new Point(9, 60);
             lblSummaryCostToValue.Name = "lblSummaryCostToValue";
-            lblSummaryCostToValue.Size = new Size(292, 43);
+            lblSummaryCostToValue.Size = new Size(292, 17);
             lblSummaryCostToValue.TabIndex = 109;
             lblSummaryCostToValue.Text = "from 0 to 0";
             lblSummaryCostToValue.TextAlign = ContentAlignment.MiddleCenter;
-            // 
-            // lblSummaryPercentageChangeInValue
-            // 
-            lblSummaryPercentageChangeInValue.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lblSummaryPercentageChangeInValue.ForeColor = Color.FromArgb(255, 192, 128);
-            lblSummaryPercentageChangeInValue.Location = new Point(13, 28);
-            lblSummaryPercentageChangeInValue.Name = "lblSummaryPercentageChangeInValue";
-            lblSummaryPercentageChangeInValue.Size = new Size(292, 43);
-            lblSummaryPercentageChangeInValue.TabIndex = 108;
-            lblSummaryPercentageChangeInValue.Text = "0%";
-            lblSummaryPercentageChangeInValue.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // panel36
             // 
@@ -3254,6 +3253,17 @@
             label90.Size = new Size(100, 19);
             label90.TabIndex = 0;
             label90.Text = "Change in value";
+            // 
+            // lblSummaryPercentageChangeInValue
+            // 
+            lblSummaryPercentageChangeInValue.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblSummaryPercentageChangeInValue.ForeColor = Color.FromArgb(255, 192, 128);
+            lblSummaryPercentageChangeInValue.Location = new Point(13, 24);
+            lblSummaryPercentageChangeInValue.Name = "lblSummaryPercentageChangeInValue";
+            lblSummaryPercentageChangeInValue.Size = new Size(292, 37);
+            lblSummaryPercentageChangeInValue.TabIndex = 108;
+            lblSummaryPercentageChangeInValue.Text = "0%";
+            lblSummaryPercentageChangeInValue.TextAlign = ContentAlignment.TopCenter;
             // 
             // panel19
             // 
@@ -3951,8 +3961,6 @@
             // panelTopControls
             // 
             panelTopControls.Controls.Add(btnSummary);
-            panelTopControls.Controls.Add(btnCurrency);
-            panelTopControls.Controls.Add(panelCurrency);
             panelTopControls.Controls.Add(btnAbout);
             panelTopControls.Controls.Add(pictureBoxBTCLogo);
             panelTopControls.Controls.Add(lblCurrentPrice);
@@ -3985,6 +3993,93 @@
             btnSummary.UseVisualStyleBackColor = false;
             btnSummary.Click += BtnSummary_Click;
             // 
+            // btnAbout
+            // 
+            btnAbout.BackColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnAbout.BorderColor = Color.PaleVioletRed;
+            btnAbout.BorderRadius = 14;
+            btnAbout.BorderSize = 0;
+            btnAbout.FlatAppearance.BorderSize = 0;
+            btnAbout.FlatStyle = FlatStyle.Flat;
+            btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnAbout.ForeColor = Color.White;
+            btnAbout.Location = new Point(305, 7);
+            btnAbout.Name = "btnAbout";
+            btnAbout.Padding = new Padding(3, 0, 0, 0);
+            btnAbout.Size = new Size(24, 24);
+            btnAbout.TabIndex = 142;
+            btnAbout.TabStop = false;
+            btnAbout.Text = "\U0001f5a4";
+            btnAbout.TextColor = Color.White;
+            btnAbout.UseVisualStyleBackColor = false;
+            btnAbout.Click += BtnAbout_Click;
+            // 
+            // pictureBoxBTCLogo
+            // 
+            pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
+            pictureBoxBTCLogo.Location = new Point(5, 8);
+            pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
+            pictureBoxBTCLogo.Size = new Size(23, 23);
+            pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBoxBTCLogo.TabIndex = 141;
+            pictureBoxBTCLogo.TabStop = false;
+            // 
+            // lblCurrentPrice
+            // 
+            lblCurrentPrice.AutoSize = true;
+            lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            lblCurrentPrice.ForeColor = Color.DarkGray;
+            lblCurrentPrice.Location = new Point(34, 10);
+            lblCurrentPrice.Name = "lblCurrentPrice";
+            lblCurrentPrice.Size = new Size(86, 17);
+            lblCurrentPrice.TabIndex = 139;
+            lblCurrentPrice.Text = "current price";
+            // 
+            // btnMinimize
+            // 
+            btnMinimize.BackColor = Color.FromArgb(255, 192, 128);
+            btnMinimize.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnMinimize.BorderColor = Color.PaleVioletRed;
+            btnMinimize.BorderRadius = 12;
+            btnMinimize.BorderSize = 0;
+            btnMinimize.FlatAppearance.BorderSize = 0;
+            btnMinimize.FlatStyle = FlatStyle.Flat;
+            btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnMinimize.ForeColor = Color.White;
+            btnMinimize.Location = new Point(335, 7);
+            btnMinimize.Name = "btnMinimize";
+            btnMinimize.Padding = new Padding(2, 0, 0, 0);
+            btnMinimize.Size = new Size(24, 24);
+            btnMinimize.TabIndex = 138;
+            btnMinimize.TabStop = false;
+            btnMinimize.Text = "➖";
+            btnMinimize.TextColor = Color.White;
+            btnMinimize.UseVisualStyleBackColor = false;
+            btnMinimize.Click += BtnMinimize_Click;
+            // 
+            // btnExit
+            // 
+            btnExit.BackColor = Color.FromArgb(255, 192, 128);
+            btnExit.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnExit.BorderColor = Color.PaleVioletRed;
+            btnExit.BorderRadius = 14;
+            btnExit.BorderSize = 0;
+            btnExit.FlatAppearance.BorderSize = 0;
+            btnExit.FlatStyle = FlatStyle.Flat;
+            btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnExit.ForeColor = Color.White;
+            btnExit.Location = new Point(364, 7);
+            btnExit.Name = "btnExit";
+            btnExit.Padding = new Padding(3, 1, 0, 0);
+            btnExit.Size = new Size(24, 24);
+            btnExit.TabIndex = 137;
+            btnExit.TabStop = false;
+            btnExit.Text = "✖️";
+            btnExit.TextColor = Color.White;
+            btnExit.UseVisualStyleBackColor = false;
+            btnExit.Click += BtnExit_Click;
+            // 
             // btnCurrency
             // 
             btnCurrency.BackColor = Color.FromArgb(255, 192, 128);
@@ -3996,7 +4091,7 @@
             btnCurrency.FlatStyle = FlatStyle.Flat;
             btnCurrency.Font = new Font("Century Gothic", 9F, FontStyle.Bold, GraphicsUnit.Point);
             btnCurrency.ForeColor = Color.White;
-            btnCurrency.Location = new Point(157, 7);
+            btnCurrency.Location = new Point(930, 13);
             btnCurrency.Name = "btnCurrency";
             btnCurrency.Padding = new Padding(3, 0, 0, 0);
             btnCurrency.Size = new Size(63, 24);
@@ -4011,7 +4106,7 @@
             // 
             panelCurrency.BackColor = Color.FromArgb(255, 192, 128);
             panelCurrency.Controls.Add(panelCurrencyMenu);
-            panelCurrency.Location = new Point(159, 16);
+            panelCurrency.Location = new Point(932, 22);
             panelCurrency.Name = "panelCurrency";
             panelCurrency.Size = new Size(59, 0);
             panelCurrency.TabIndex = 144;
@@ -4109,93 +4204,6 @@
             btnUSD.TextColor = Color.FromArgb(255, 128, 0);
             btnUSD.UseVisualStyleBackColor = false;
             // 
-            // btnAbout
-            // 
-            btnAbout.BackColor = Color.FromArgb(255, 192, 128);
-            btnAbout.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnAbout.BorderColor = Color.PaleVioletRed;
-            btnAbout.BorderRadius = 14;
-            btnAbout.BorderSize = 0;
-            btnAbout.FlatAppearance.BorderSize = 0;
-            btnAbout.FlatStyle = FlatStyle.Flat;
-            btnAbout.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnAbout.ForeColor = Color.White;
-            btnAbout.Location = new Point(305, 7);
-            btnAbout.Name = "btnAbout";
-            btnAbout.Padding = new Padding(3, 0, 0, 0);
-            btnAbout.Size = new Size(24, 24);
-            btnAbout.TabIndex = 142;
-            btnAbout.TabStop = false;
-            btnAbout.Text = "\U0001f5a4";
-            btnAbout.TextColor = Color.White;
-            btnAbout.UseVisualStyleBackColor = false;
-            btnAbout.Click += BtnAbout_Click;
-            // 
-            // pictureBoxBTCLogo
-            // 
-            pictureBoxBTCLogo.Image = Properties.Resources.BitcoinLogo;
-            pictureBoxBTCLogo.Location = new Point(5, 8);
-            pictureBoxBTCLogo.Name = "pictureBoxBTCLogo";
-            pictureBoxBTCLogo.Size = new Size(23, 23);
-            pictureBoxBTCLogo.SizeMode = PictureBoxSizeMode.StretchImage;
-            pictureBoxBTCLogo.TabIndex = 141;
-            pictureBoxBTCLogo.TabStop = false;
-            // 
-            // lblCurrentPrice
-            // 
-            lblCurrentPrice.AutoSize = true;
-            lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCurrentPrice.ForeColor = Color.DarkGray;
-            lblCurrentPrice.Location = new Point(34, 10);
-            lblCurrentPrice.Name = "lblCurrentPrice";
-            lblCurrentPrice.Size = new Size(86, 17);
-            lblCurrentPrice.TabIndex = 139;
-            lblCurrentPrice.Text = "current price";
-            // 
-            // btnMinimize
-            // 
-            btnMinimize.BackColor = Color.FromArgb(255, 192, 128);
-            btnMinimize.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnMinimize.BorderColor = Color.PaleVioletRed;
-            btnMinimize.BorderRadius = 12;
-            btnMinimize.BorderSize = 0;
-            btnMinimize.FlatAppearance.BorderSize = 0;
-            btnMinimize.FlatStyle = FlatStyle.Flat;
-            btnMinimize.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnMinimize.ForeColor = Color.White;
-            btnMinimize.Location = new Point(335, 7);
-            btnMinimize.Name = "btnMinimize";
-            btnMinimize.Padding = new Padding(2, 0, 0, 0);
-            btnMinimize.Size = new Size(24, 24);
-            btnMinimize.TabIndex = 138;
-            btnMinimize.TabStop = false;
-            btnMinimize.Text = "➖";
-            btnMinimize.TextColor = Color.White;
-            btnMinimize.UseVisualStyleBackColor = false;
-            btnMinimize.Click += BtnMinimize_Click;
-            // 
-            // btnExit
-            // 
-            btnExit.BackColor = Color.FromArgb(255, 192, 128);
-            btnExit.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnExit.BorderColor = Color.PaleVioletRed;
-            btnExit.BorderRadius = 14;
-            btnExit.BorderSize = 0;
-            btnExit.FlatAppearance.BorderSize = 0;
-            btnExit.FlatStyle = FlatStyle.Flat;
-            btnExit.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnExit.ForeColor = Color.White;
-            btnExit.Location = new Point(364, 7);
-            btnExit.Name = "btnExit";
-            btnExit.Padding = new Padding(3, 1, 0, 0);
-            btnExit.Size = new Size(24, 24);
-            btnExit.TabIndex = 137;
-            btnExit.TabStop = false;
-            btnExit.Text = "✖️";
-            btnExit.TextColor = Color.White;
-            btnExit.UseVisualStyleBackColor = false;
-            btnExit.Click += BtnExit_Click;
-            // 
             // Cubit
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -4204,6 +4212,8 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
+            Controls.Add(btnCurrency);
+            Controls.Add(panelCurrency);
             Controls.Add(panelTopControls);
             Controls.Add(panelSummaryContainer);
             Controls.Add(panel9);
@@ -4287,7 +4297,6 @@
             panelSpeechBubble.ResumeLayout(false);
             panelWelcome.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             panelRobotSpeakOuter.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)pictureBoxRobot).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -4316,9 +4325,9 @@
             panel34.PerformLayout();
             panelTopControls.ResumeLayout(false);
             panelTopControls.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
             panelCurrency.ResumeLayout(false);
             panelCurrencyMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
             ResumeLayout(false);
         }
 
@@ -4469,7 +4478,6 @@
         private System.Windows.Forms.Timer ShrinkPanelTimerVert;
         private Panel panelWelcome;
         private PictureBox pictureBox3;
-        private PictureBox pictureBox4;
         private Label labelWelcomeText;
         private Panel panelRobotSpeakOuter;
         private ToolTip toolTip1;
@@ -4606,5 +4614,6 @@
         private Label label90;
         private Label lblSummaryCostToValue;
         private Label lblSummaryPercentageChangeInValue;
+        private CustomControls.RJControls.RJButton btnCloseSummaryButton;
     }
 }

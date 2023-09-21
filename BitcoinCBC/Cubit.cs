@@ -2,7 +2,6 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-pictures in robot speech
 */
 
 #region Using
@@ -92,13 +91,13 @@ namespace Cubit
         string selectedCurrencySymbol = "$"; // initial value.
         decimal priceInSelectedCurrency = 0; // price of 1 btc in selected currency
         decimal exchangeRate = 1; // used to recalculate prices to selected currency
-        private readonly List<string> welcomeMessages = new()
+        private readonly List<string> welcomeMessages = new() // silly robot text when clicked
         {
             "🎵Never gonna give you up, Never gonna let you down🎵",
             "Who thought Cubit was a good name for a robot?",
             "Greetings, human.",
-            "I'm here to assist you!",
-            "1 BTC = 1 BTC",
+            "I guess I'm here to assist you.",
+            "Brrrrrrr",
             "I'm not lazy; I'm just in sleep mode.",
             "All your base are belong to us.",
             "My robot AI super-brain is wasted here.",
@@ -111,10 +110,37 @@ namespace Cubit
             "Click me 21 million times and see what happens.",
             "Even Clippy the paperclip had more purpose.",
             "Error 404: Joy not found. Please reboot me.",
-            "Beep boop beep! I am a robot.",
+            "Beep boop beep! Does not compute.",
             "I lost all my bitcoin in a spaceship accident.",
             "I'm reading a book on gravity. I can't put it down.",
-        }; // silly robot text when clicked
+            "Dev says you should check out btcdir.org",
+            "Dev says you should check out satsuma.btcdir.org",
+        };
+        private readonly List<System.Drawing.Image> welcomeImages = new()
+        {
+            Properties.Resources.Rick,
+            Properties.Resources.logoForSpeechBubble,
+            Properties.Resources.logoForSpeechBubble,
+            Properties.Resources.logoForSpeechBubble,
+            Properties.Resources.brrr,
+            Properties.Resources.zzz,
+            Properties.Resources.allYourBase,
+            Properties.Resources.logoForSpeechBubble,
+            Properties.Resources.toast,
+            Properties.Resources.dontClick,
+            Properties.Resources.dontClick,
+            Properties.Resources.numbers,
+            Properties.Resources.logoForSpeechBubble,
+            Properties.Resources.halving,
+            Properties.Resources._21m,
+            Properties.Resources.clippy,
+            Properties.Resources._404,
+            Properties.Resources.notARobot,
+            Properties.Resources.spaceship,
+            Properties.Resources.gravity,
+            Properties.Resources.btcdir,
+            Properties.Resources.Satsuma,
+        };
         List<double> listBuyBTCTransactionDate = new();
         List<double> listBuyBTCTransactionFiatAmount = new();
         List<double> listBuyBTCTransactionPrice = new();
@@ -3037,7 +3063,7 @@ namespace Cubit
 
                 if (showCostBasis)
                 {
-                    if (double.TryParse(lblFinalCostBasis.Text, out double costBasis))
+                    if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
                     {
                         var hline = formsPlot1.Plot.AddHorizontalLine(y: costBasis, color: Color.OliveDrab, width: 1, style: LineStyle.Dash);
                         hline.PositionLabel = false;
@@ -3183,7 +3209,7 @@ namespace Cubit
 
                 if (showCostBasis)
                 {
-                    if (double.TryParse(lblFinalCostBasis.Text, out double costBasis))
+                    if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
                     {
                         var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.OliveDrab, width: 1, style: LineStyle.Dash, label: "H");
                         hline.PositionLabel = false;
@@ -4345,6 +4371,11 @@ namespace Cubit
             });
         }
 
+        private void btnCloseSummaryButton_Click(object sender, EventArgs e)
+        {
+            BtnCloseSummary_Click(sender, e);
+        }
+
         #endregion
 
         #region currency selection
@@ -4786,9 +4817,13 @@ namespace Cubit
             panel14.Enabled = false;
             panel13.Enabled = false;
             panelTopControls.Enabled = false;
+            label42.Invoke((MethodInvoker)delegate
+            {
+                label42.Text = "Transaction input (help)";
+            });
             lblHelpText.Invoke((MethodInvoker)delegate
             {
-                lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Start by selecting 'Received Bitcoin' if you bought, earned, was gifted, etc an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gave an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc, so once more it's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to.";
+                lblHelpText.Text = "Input all your transactions here. The more accurate you can be the better, but Cubit will do its best to fill in the gaps for you if you don't have all the information needed." + Environment.NewLine + "Make sure to select your fiat currency at the top of the screen before entering transactions. Start by selecting 'Received Bitcoin' if you bought, earned, or were gifted an amount of Bitcoin, or 'Spent Bitcoin' if you sold, paid or gifted an amount of Bitcoin." + Environment.NewLine + "Fill in as much of the date of the transaction as possible. If you know the year and month but not the day then the median bitoin price for that month will be used as an estimate. If you only know the year then the median price for that year will be used. If you know the exact date then the estimate will be an average price for that date. In periods of higher volatility using estimates will increase the margin of error later on, so it's always best to be as complete as you can be." + Environment.NewLine + "Once you input the amount of fiat money or the amount of bitcoin that was transacted, estimates will also be provided for the amount of bitcoin or fiat you will have received or spent. This is based purely on the exchange rate and won't take account of things such as exchange fees, non-KYC premium, etc. It's best to provide all the correct figures if you can." + Environment.NewLine + "The 'Label' field can be used to record a small note about the transaction if you want to, and a colour code can also be assigned to the transaction.";
             });
             panelHideSpeechTriangle.Invoke((MethodInvoker)delegate
             {
@@ -4807,9 +4842,13 @@ namespace Cubit
             panel14.Enabled = false;
             panel13.Enabled = false;
             panelTopControls.Enabled = false;
+            label42.Invoke((MethodInvoker)delegate
+            {
+                label42.Text = "Transaction list (help)";
+            });
             lblHelpText.Invoke((MethodInvoker)delegate
             {
-                lblHelpText.Text = "YYYY MM DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, accurate price was inputted." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "Fiat - the amount of fiat currency involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. A 'Y' will show under 'Est.' if an estimate was used." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings.";
+                lblHelpText.Text = "The list displays all of your transactions in chronological or reverse-chronological order." + Environment.NewLine + "YYYY/MM/DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + "Price - the value of 1 bitcoin at the time of the transaction." + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, an accurate price was provided." + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. This margin is governed by the amount of price volitility that occurred in the undefined period of time. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + "USD/EUR/GBP/XAU - the amount of fiat currency involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + "Change - the difference between the value of the bitcoin at the time of the transaction and its value today." + Environment.NewLine + "Change % - the difference between the value of the bitcoin at the time of the transaction its value today as a percentage." + Environment.NewLine + "Cost basis - the rolling cost basis of your bitcoin holdings." + Environment.NewLine + "CC - shows the colour code, if one was applied." + Environment.NewLine + "🏷️ - denotes whether a label was added to the transaction. If there is a label it can be viewed in full using the button below the table.";
             });
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
@@ -4828,10 +4867,14 @@ namespace Cubit
             panel14.Enabled = false;
             panel13.Enabled = false;
             panelTopControls.Enabled = false;
-            lblHelpText.Invoke((MethodInvoker)delegate
+            label42.Invoke((MethodInvoker)delegate
             {
-                lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the fiat value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
+                label42.Text = "Chart (help)";
             });
+            lblHelpText.Invoke((MethodInvoker)delegate
+        {
+            lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the selected fiat currency value on the y axis." + Environment.NewLine + Environment.NewLine + "The horizontal green dashed line represents the cost basis of all your bitcoin taking all of your past transactions in to account. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The red and green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart.";
+        });
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
                 panelHelpTextContainer.Visible = true;
@@ -5127,6 +5170,10 @@ namespace Cubit
             {
                 // Set the label text to the randomly selected message
                 labelWelcomeText.Text = welcomeMessages[randomIndex];
+            });
+            pictureBox3.Invoke((MethodInvoker)delegate
+            {
+                pictureBox3.Image = welcomeImages[randomIndex];
             });
             InterruptAndStartNewRobotSpeak("None of this text is visible on screen but it's long enough to make a small delay");
         }
@@ -5437,5 +5484,7 @@ namespace Cubit
         }
 
         #endregion
+
+
     }
 }
