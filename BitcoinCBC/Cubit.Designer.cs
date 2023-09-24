@@ -166,6 +166,8 @@
             btnMoveWindow = new CustomControls.RJControls.RJButton();
             panel14 = new Panel();
             panelChartContainer = new Panel();
+            panelNoRefreshMessage = new Panel();
+            label78 = new Label();
             panel23 = new Panel();
             btnExpandTrackingPanel = new CustomControls.RJControls.RJButton();
             label50 = new Label();
@@ -344,6 +346,7 @@
             panel12.SuspendLayout();
             panel14.SuspendLayout();
             panelChartContainer.SuspendLayout();
+            panelNoRefreshMessage.SuspendLayout();
             panel23.SuspendLayout();
             panel21.SuspendLayout();
             panel24.SuspendLayout();
@@ -2039,9 +2042,9 @@
             label32.Location = new Point(620, 0);
             label32.Name = "label32";
             label32.Padding = new Padding(0, 2, 0, 0);
-            label32.Size = new Size(71, 19);
+            label32.Size = new Size(58, 19);
             label32.TabIndex = 12;
-            label32.Text = "Change(%)";
+            label32.Text = "BTC total";
             toolTip1.SetToolTip(label32, "The fiat value change of the BTC amount now compared to at the time of transaction, expressed as a percentage");
             // 
             // label31
@@ -2053,9 +2056,9 @@
             label31.Location = new Point(535, 0);
             label31.Name = "label31";
             label31.Padding = new Padding(0, 2, 0, 0);
-            label31.Size = new Size(67, 19);
+            label31.Size = new Size(58, 19);
             label31.TabIndex = 11;
-            label31.Text = "Value now";
+            label31.Text = "Fiat total";
             toolTip1.SetToolTip(label31, "The fiat value change of the BTC amount now compared to at the time of transaction");
             // 
             // label29
@@ -2255,6 +2258,7 @@
             // panelChartContainer
             // 
             panelChartContainer.BackColor = Color.White;
+            panelChartContainer.Controls.Add(panelNoRefreshMessage);
             panelChartContainer.Controls.Add(panel23);
             panelChartContainer.Controls.Add(panel21);
             panelChartContainer.Controls.Add(panel24);
@@ -2267,6 +2271,25 @@
             panelChartContainer.Name = "panelChartContainer";
             panelChartContainer.Size = new Size(859, 433);
             panelChartContainer.TabIndex = 0;
+            // 
+            // panelNoRefreshMessage
+            // 
+            panelNoRefreshMessage.BackColor = Color.FromArgb(234, 234, 234);
+            panelNoRefreshMessage.Controls.Add(label78);
+            panelNoRefreshMessage.Location = new Point(410, 74);
+            panelNoRefreshMessage.Name = "panelNoRefreshMessage";
+            panelNoRefreshMessage.Size = new Size(436, 27);
+            panelNoRefreshMessage.TabIndex = 101;
+            panelNoRefreshMessage.Visible = false;
+            // 
+            // label78
+            // 
+            label78.ForeColor = Color.Gray;
+            label78.Location = new Point(16, 5);
+            label78.Name = "label78";
+            label78.Size = new Size(576, 25);
+            label78.TabIndex = 0;
+            label78.Text = "The chart will be refreshed again when the bitcoin balance is greater than 0.";
             // 
             // panel23
             // 
@@ -3207,7 +3230,7 @@
             btnCloseSummaryButton.Text = "Close";
             btnCloseSummaryButton.TextColor = Color.White;
             btnCloseSummaryButton.UseVisualStyleBackColor = false;
-            btnCloseSummaryButton.Click += btnCloseSummaryButton_Click;
+            btnCloseSummaryButton.Click += BtnCloseSummaryButton_Click;
             // 
             // panelSummaryChangeInValue
             // 
@@ -4142,6 +4165,7 @@
             btnXAU.Text = "Ꜷ XAU";
             btnXAU.TextColor = Color.FromArgb(255, 128, 0);
             btnXAU.UseVisualStyleBackColor = false;
+            btnXAU.Click += BtnXAU_Click;
             // 
             // btnGBP
             // 
@@ -4162,6 +4186,7 @@
             btnGBP.Text = "£ GBP";
             btnGBP.TextColor = Color.FromArgb(255, 128, 0);
             btnGBP.UseVisualStyleBackColor = false;
+            btnGBP.Click += BtnGBP_Click;
             // 
             // btnEUR
             // 
@@ -4182,6 +4207,7 @@
             btnEUR.Text = "€ EUR";
             btnEUR.TextColor = Color.FromArgb(255, 128, 0);
             btnEUR.UseVisualStyleBackColor = false;
+            btnEUR.Click += BtnEUR_Click;
             // 
             // btnUSD
             // 
@@ -4203,6 +4229,7 @@
             btnUSD.Text = "$ USD";
             btnUSD.TextColor = Color.FromArgb(255, 128, 0);
             btnUSD.UseVisualStyleBackColor = false;
+            btnUSD.Click += BtnUSD_Click;
             // 
             // Cubit
             // 
@@ -4215,7 +4242,6 @@
             Controls.Add(btnCurrency);
             Controls.Add(panelCurrency);
             Controls.Add(panelTopControls);
-            Controls.Add(panelSummaryContainer);
             Controls.Add(panel9);
             Controls.Add(panelColors);
             Controls.Add(panelScrollbarContainer);
@@ -4227,6 +4253,7 @@
             Controls.Add(btnMoveWindow);
             Controls.Add(panelAddTransactionContainer);
             Controls.Add(panelHelpTextContainer);
+            Controls.Add(panelSummaryContainer);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;
@@ -4281,6 +4308,7 @@
             panel12.ResumeLayout(false);
             panel14.ResumeLayout(false);
             panelChartContainer.ResumeLayout(false);
+            panelNoRefreshMessage.ResumeLayout(false);
             panel23.ResumeLayout(false);
             panel23.PerformLayout();
             panel21.ResumeLayout(false);
@@ -4615,5 +4643,7 @@
         private Label lblSummaryCostToValue;
         private Label lblSummaryPercentageChangeInValue;
         private CustomControls.RJControls.RJButton btnCloseSummaryButton;
+        private Panel panelNoRefreshMessage;
+        private Label label78;
     }
 }

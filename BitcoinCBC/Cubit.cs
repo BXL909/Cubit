@@ -2,6 +2,14 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
+add second Y axis for value of holdings?
+check/test the rolling totals on the listview
+validation to perform after clicking the add transaction button:
+    btc amount not more than 21m
+    sell btc amount not more than currently held
+    if any of the above, show message and disable the add button, then return
+remove hidden unneccessary columns in listview
+add buy/sell column or somehow make transaction type more apparent
 */
 
 #region Using
@@ -147,10 +155,13 @@ namespace Cubit
         List<double> listSellBTCTransactionDate = new();
         List<double> listSellBTCTransactionFiatAmount = new();
         List<double> listSellBTCTransactionPrice = new();
+        List<double> listTransactionDate = new();
+        List<double> listCostBasisAmounts = new();
         #region chart variables
         bool safeToTrackPriceOnChart = false;
         private int LastHighlightedIndex = -1; // used by charts for mousemove events to highlight plots closest to pointer
         private ScottPlot.Plottable.ScatterPlot? scatter; // chart data gets plotted onto this
+        private ScottPlot.Plottable.ScatterPlot? scatter2; // chart data gets plotted onto this
         private ScottPlot.Plottable.BubblePlot bubbleplotbuy = new(); // chart data gets plotted onto this
         private ScottPlot.Plottable.BubblePlot bubbleplotsell = new(); // chart data gets plotted onto this
         private ScottPlot.Plottable.MarkerPlot HighlightedPoint = new(); // highlighted (closest to pointer) plot gets plotted onto this
@@ -750,6 +761,12 @@ namespace Cubit
             {
                 lblAddDataPrice.Text = textBoxPriceInput.Text;
             });
+            if (textBoxPriceInput.Text != "0" && textBoxPriceInput.Text != "." && textBoxPriceInput.Text != "0." && textBoxPriceInput.Text != "0.0" && textBoxPriceInput.Text != "0.00")
+            {
+                // recalculate btc and fiat estimates
+                TextBoxBTCInput_TextChanged(sender, e);
+                TextBoxFiatInput_TextChanged(sender, e);
+            }
         }
 
         private void TextBoxFiatInput_TextChanged(object sender, EventArgs e)
@@ -760,12 +777,19 @@ namespace Cubit
             });
             if (lblAddDataFiat.Text != "")
             {
-                decimal estimatedBTC = Math.Round((Convert.ToDecimal(lblAddDataFiat.Text) / Convert.ToDecimal(lblAddDataPrice.Text)), 8);
-                lblEstimatedBTC.Invoke((MethodInvoker)delegate
+                if (lblAddDataFiat.Text == ".")
                 {
-                    lblEstimatedBTC.Text = "(" + Convert.ToString((decimal)estimatedBTC) + ")";
-                });
-                CopyBTCEstimateToInputIfNecessary(lblEstimatedBTC.Text.Trim('(', ')'));
+                    lblAddDataFiat.Text = "0.";
+                }
+                if (decimal.TryParse(lblAddDataPrice.Text, out decimal btcPrice))
+                {
+                    decimal estimatedBTC = Math.Round((Convert.ToDecimal(lblAddDataFiat.Text) / Convert.ToDecimal(lblAddDataPrice.Text)), 8);
+                    lblEstimatedBTC.Invoke((MethodInvoker)delegate
+                    {
+                        lblEstimatedBTC.Text = "(" + Convert.ToString((decimal)estimatedBTC) + ")";
+                    });
+                    CopyBTCEstimateToInputIfNecessary(lblEstimatedBTC.Text.Trim('(', ')'));
+                }
             }
             if (btnBoughtBitcoin.Text == "✔️")
             {
@@ -785,12 +809,25 @@ namespace Cubit
             });
             if (lblAddDataBTC.Text != "")
             {
-                decimal estimatedFiat = Math.Round((Convert.ToDecimal(lblAddDataPrice.Text) * Convert.ToDecimal(lblAddDataBTC.Text)), 2);
-                lblEstimatedFiat.Invoke((MethodInvoker)delegate
+                if (lblAddDataBTC.Text == ".")
                 {
-                    lblEstimatedFiat.Text = "(" + Convert.ToString((decimal)estimatedFiat) + ")";
-                });
-                CopyFiatEstimateToInputIfNecessary(lblEstimatedFiat.Text.Trim('(', ')'));
+                    lblAddDataBTC.Invoke((MethodInvoker)delegate
+                    {
+                        lblAddDataBTC.Text = "0.";
+                    });
+                }
+
+                if (decimal.TryParse(lblAddDataPrice.Text, out decimal btcPrice))
+                {
+                    decimal estimatedFiat = Math.Round((Convert.ToDecimal(lblAddDataPrice.Text) * Convert.ToDecimal(lblAddDataBTC.Text)), 2);
+
+                    lblEstimatedFiat.Invoke((MethodInvoker)delegate
+                    {
+                        lblEstimatedFiat.Text = "(" + Convert.ToString((decimal)estimatedFiat) + ")";
+                    });
+                    CopyFiatEstimateToInputIfNecessary(lblEstimatedFiat.Text.Trim('(', ')'));
+                }
+
             }
             if (btnSoldBitcoin.Text == "✔️")
             {
@@ -1330,7 +1367,7 @@ namespace Cubit
             {
                 DeleteTransactionFromJsonFile(TXDataToDelete);
                 await SetupTransactionsList();
-                DrawPriceChart();
+                //DrawPriceChart();
                 panelWelcome.Visible = false;
                 panelRobotSpeakOuter.Visible = true;
                 InterruptAndStartNewRobotSpeak("Transaction deleted.");
@@ -1647,8 +1684,8 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            InitializeChart();
-            DrawPriceChart();
+            //InitializeChart();
+            //DrawPriceChart();
             panelWelcome.Visible = false;
             panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
@@ -1751,7 +1788,7 @@ namespace Cubit
             panelWelcome.Visible = false;
             panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Transaction added to list and saved.");
-            DrawPriceChart();
+            //DrawPriceChart();
         }
 
         #endregion
@@ -1806,8 +1843,6 @@ namespace Cubit
 
         #region set up listview
 
-
-
         private async Task SetupTransactionsList()
         {
             try
@@ -1835,6 +1870,8 @@ namespace Cubit
                 listSellBTCTransactionDate = new();
                 listSellBTCTransactionFiatAmount = new();
                 listSellBTCTransactionPrice = new();
+                listTransactionDate = new();
+                listCostBasisAmounts = new();
 
                 bool transactionFound = false;
                 var transactions = ReadTransactionsFromJsonFile();
@@ -1872,11 +1909,24 @@ namespace Cubit
                     {
                         lblTotalFiatAmount.Visible = false;
                     });
+                    lblTotalCurrentValue.Invoke((MethodInvoker)delegate
+                    {
+                        lblTotalCurrentValue.Visible = false;
+                    });
+                    lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                    {
+                        lblFinalChangeinValuePercentage.Visible = false;
+                    });
+                    lblFinalCostBasis.Invoke((MethodInvoker)delegate
+                    {
+                        lblFinalCostBasis.Visible = false;
+                    });
 
                     panelScrollbarContainer.Invoke((MethodInvoker)delegate
                     {
                         panelScrollbarContainer.Height = 25;
                     });
+                    DrawPriceChart(); // draw price chart before returning
                     return;
                 }
 
@@ -1892,7 +1942,18 @@ namespace Cubit
                 {
                     lblTotalFiatAmount.Visible = true;
                 });
-
+                lblTotalCurrentValue.Invoke((MethodInvoker)delegate
+                {
+                    lblTotalCurrentValue.Visible = true;
+                });
+                lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                {
+                    lblFinalChangeinValuePercentage.Visible = true;
+                });
+                lblFinalCostBasis.Invoke((MethodInvoker)delegate
+                {
+                    lblFinalCostBasis.Visible = true;
+                });
 
                 //LIST VIEW
                 listViewTransactions.Invoke((MethodInvoker)delegate
@@ -1986,21 +2047,21 @@ namespace Cubit
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("▲▼", 0);
+                        listViewTransactions.Columns.Add("Fiat total", 80);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 12)
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("P/L", 85);
+                        listViewTransactions.Columns.Add("BTC total", 85);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 13)
                 {
                     listViewTransactions.Invoke((MethodInvoker)delegate
                     {
-                        listViewTransactions.Columns.Add("P/L %", 75);
+                        listViewTransactions.Columns.Add("P/L %", 0);
                     });
                 }
                 if (listViewTransactions.Columns.Count == 14)
@@ -2049,6 +2110,7 @@ namespace Cubit
                 foreach (var transaction in transactions)
                 {
                     ListViewItem item = new(Convert.ToString(listViewTransactions.Items.Count + 1)); // create new row
+                    //add inputted data to listview
                     item.SubItems.Add(transaction.Year);
                     item.SubItems.Add(transaction.Month);
                     item.SubItems.Add(transaction.Day);
@@ -2096,6 +2158,7 @@ namespace Cubit
                         {
                             lowestPricePaid = Convert.ToDouble(transaction.Price);
                         }
+                        listTransactionDate.Add(oadate);
                         listBuyBTCTransactionDate.Add(oadate);
                         listBuyBTCTransactionFiatAmount.Add(transactionFiatAmount);
                         listBuyBTCTransactionPrice.Add(transactionPrice);
@@ -2121,6 +2184,7 @@ namespace Cubit
                         {
                             lowestPriceSold = Convert.ToDouble(transaction.Price);
                         }
+                        listTransactionDate.Add(oadate);
                         listSellBTCTransactionDate.Add(oadate);
                         listSellBTCTransactionFiatAmount.Add(transactionFiatAmount);
                         listSellBTCTransactionPrice.Add(transactionPrice);
@@ -2143,46 +2207,85 @@ namespace Cubit
                     item.SubItems.Add(transaction.FiatAmountEstimateFlag);
                     item.SubItems.Add(transaction.BTCAmount);
                     item.SubItems.Add(transaction.BTCAmountEstimateFlag);
-
-                    string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
-                        ? lblCurrentPrice.Text[1..]
-                        : lblCurrentPrice.Text;
-                    currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
-                    if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
-                    {
-                        item.SubItems.Add("▲");
-                    }
-                    else // loss
-                    {
-                        item.SubItems.Add("▼");
-                    }
-                    item.SubItems.Add(Convert.ToString(currentValue));
-                    rollingCurrentValue += currentValue;
-                    decimal ChangeInValuePercentage = 0;
-                    if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
-                    {
-                        decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
-
-                        ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
-                    }
-                    else // loss
-                    {
-                        decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
-                        ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
-                    }
-                    item.SubItems.Add(Convert.ToString(ChangeInValuePercentage));
-
-                    rollingBTCAmount = Math.Round(rollingBTCAmount + Convert.ToDecimal(transaction.BTCAmount), 8);
+                    // add rolling fiat total to listview
                     rollingOriginalFiatAmount = Math.Round(rollingOriginalFiatAmount + Convert.ToDecimal(transaction.FiatAmount), 2);
-                    if (rollingBTCAmount > 0)
+                    item.SubItems.Add(Convert.ToString(rollingOriginalFiatAmount));
+                    // add rolling btc total to listview
+                    rollingBTCAmount = Math.Round(rollingBTCAmount + Convert.ToDecimal(transaction.BTCAmount), 8);
+                    item.SubItems.Add(Convert.ToString(rollingBTCAmount));
+
+
+
+                    /*
+                                        string priceText = System.Text.RegularExpressions.Regex.IsMatch(lblCurrentPrice.Text, @"^[^0-9]")
+                                            ? lblCurrentPrice.Text[1..]
+                                            : lblCurrentPrice.Text;
+                                        currentValue = Math.Round(Convert.ToDecimal(transaction.BTCAmount) * Convert.ToDecimal(priceText), 2);
+                                        if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
+                                        {
+                                            item.SubItems.Add("▲");
+                                        }
+                                        else // loss
+                                        {
+                                            item.SubItems.Add("▼");
+                                        }
+                    */
+
+                    rollingCurrentValue += currentValue;
+
+                    decimal ChangeInValuePercentage = 0;
+                    //if (rollingBTCAmount == 0)
+                    //{
+                    //    ChangeInValuePercentage = -100;
+                    //    item.SubItems.Add(Convert.ToString(ChangeInValuePercentage));
+                    //}
+                    //else
+                    // {
+                    if (transaction.FiatAmount == "0" || transaction.FiatAmount == "-0")
                     {
-                        rollingCostBasis = Math.Abs(Math.Round(rollingOriginalFiatAmount / rollingBTCAmount, 2));
+                        ChangeInValuePercentage = 0;
                     }
                     else
                     {
+                        if (currentValue > Math.Round(Math.Abs(Convert.ToDecimal(transaction.FiatAmount)), 2)) // profit
+                        {
+                            decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
+
+                            ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
+                        }
+                        else // loss
+                        {
+                            decimal temp = 100 / (Math.Abs(Convert.ToDecimal(transaction.FiatAmount)));
+                            ChangeInValuePercentage = Math.Round(((currentValue - Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) / Math.Abs(Convert.ToDecimal(transaction.FiatAmount))) * 100, 2);
+                        }
+                    }
+                    item.SubItems.Add(Convert.ToString(ChangeInValuePercentage));
+
+                    // average purchase price
+
+                    if (rollingBTCAmount > 0)
+                    {
+                        //rollingCostBasis = Math.Abs(Math.Round(rollingOriginalFiatAmount / rollingBTCAmount, 2));
+                        rollingCostBasis = Math.Round(rollingOriginalFiatAmount / rollingBTCAmount, 2);
+                    }
+                    else
+                    {
+                        rollingOriginalFiatAmount = 0;
                         rollingCostBasis = 0;
                     }
-                    item.SubItems.Add(Convert.ToString(rollingCostBasis));
+
+                    decimal formattedCostBasis = 0;
+                    if (rollingCostBasis < 0)
+                    {
+                        formattedCostBasis = Math.Abs(rollingCostBasis);// turn the negative amounts to positive
+                    }
+                    else
+                    {
+                        formattedCostBasis = rollingCostBasis - (2 * rollingCostBasis); // turn the positive amounts to negative
+                    }
+
+
+                    item.SubItems.Add(Convert.ToString(formattedCostBasis));
                     lblTotalBTCAmount.Invoke((MethodInvoker)delegate
                     {
                         lblTotalBTCAmount.Text = "₿" + Convert.ToString(rollingBTCAmount);
@@ -2205,10 +2308,70 @@ namespace Cubit
                     {
                         lblTotalFiatAmount.Text = label54.Text + Convert.ToString(Math.Abs(rollingOriginalFiatAmount));
                     });
-                    lblFinalCostBasis.Invoke((MethodInvoker)delegate
+
+
+                    #region prepare list of cost basis elements for the graph (transaction date, cost basis)
+
+                    // cost basis amount (dates have already been assigned to listTransactionDate during listviewsetup)
+                    double costBasis = Convert.ToDouble(rollingCostBasis);
+                    
+                    if (costBasis < 0)
                     {
-                        lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(rollingCostBasis);
-                    });
+                        costBasis = Math.Abs(costBasis);// turn the negative amounts to positive
+                    }
+                    else
+                    {
+                        costBasis -= (2 * costBasis); // turn the positive amounts to negative
+                    }
+                    // set any negative outcomes to zero because graph doesn't show negatives
+                    if (costBasis < 0)
+                    {
+                        costBasis = 0.0001;
+                    }
+
+                    listCostBasisAmounts.Add(costBasis);
+
+                    #endregion
+
+
+
+                    if (rollingCostBasis <= currentValue)
+                    {
+                        // flip negative to positive and positive to negative
+                        decimal formattedRollingCostBasis;
+                        if (rollingCostBasis < 0)
+                        {
+                            formattedRollingCostBasis = Math.Abs(rollingCostBasis);
+                        }
+                        else
+                        {
+                            formattedRollingCostBasis = rollingCostBasis - (2 *  rollingCostBasis);
+                        }
+                        lblFinalCostBasis.Invoke((MethodInvoker)delegate
+                        {
+                            lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(formattedRollingCostBasis);
+                            lblFinalCostBasis.ForeColor = Color.OliveDrab;
+                        });
+                    }
+                    else
+                    {
+                        // flip negative to positive and positive to negative
+                        decimal formattedRollingCostBasis;
+                        if (rollingCostBasis < 0)
+                        {
+                            formattedRollingCostBasis = Math.Abs(rollingCostBasis);
+                        }
+                        else
+                        {
+                            formattedRollingCostBasis = rollingCostBasis - (2 * rollingCostBasis);
+                        }
+                        lblFinalCostBasis.Invoke((MethodInvoker)delegate
+                        {
+                            lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(formattedRollingCostBasis);
+                            lblFinalCostBasis.ForeColor = Color.IndianRed;
+                        });
+                    }
+
                     lblTotalCurrentValue.Invoke((MethodInvoker)delegate
                     {
                         lblTotalCurrentValue.Text = label54.Text + Convert.ToString(rollingCurrentValue);
@@ -2227,25 +2390,53 @@ namespace Cubit
                             lblTotalCurrentValue.ForeColor = Color.IndianRed;
                         });
                     }
-                    lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                    if (rollingBTCAmount == 0)
                     {
-                        lblFinalChangeinValuePercentage.Text = Convert.ToString(Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2)) + "%";
-                    });
-                    if (Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2) >= 100)
-                    {
-                        lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
-                        {
-                            lblFinalChangeinValuePercentage.ForeColor = Color.OliveDrab;
-                            lblFinalChangeinValuePercentage.Text = "▲ " + lblFinalChangeinValuePercentage.Text;
-                        });
+                        lblFinalChangeinValuePercentage.Text = "-100%";
                     }
                     else
                     {
-                        lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                        if (rollingOriginalFiatAmount == 0)
                         {
-                            lblFinalChangeinValuePercentage.ForeColor = Color.IndianRed;
-                            lblFinalChangeinValuePercentage.Text = "▼ " + lblFinalChangeinValuePercentage.Text;
-                        });
+                            //   lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                            // {
+                            //   lblFinalChangeinValuePercentage.Text = "0%";
+                            // });
+                        }
+                        else
+                        {
+                            lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                            {
+                                lblFinalChangeinValuePercentage.Text = Convert.ToString(Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2)) + "%";
+                            });
+                        }
+                    }
+                    if (rollingBTCAmount == 0)
+                    {
+                        lblFinalChangeinValuePercentage.ForeColor = Color.IndianRed;
+                        lblFinalChangeinValuePercentage.Text = "▼ " + lblFinalChangeinValuePercentage.Text;
+                    }
+                    else
+                    {
+                        if (rollingOriginalFiatAmount != 0)
+                        {
+                            if (Math.Round(((rollingCurrentValue - Math.Abs(rollingOriginalFiatAmount)) / Math.Abs(rollingOriginalFiatAmount)) * 100, 2) >= 100)
+                            {
+                                lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                                {
+                                    lblFinalChangeinValuePercentage.ForeColor = Color.OliveDrab;
+                                    lblFinalChangeinValuePercentage.Text = "▲ " + lblFinalChangeinValuePercentage.Text;
+                                });
+                            }
+                            else
+                            {
+                                lblFinalChangeinValuePercentage.Invoke((MethodInvoker)delegate
+                                {
+                                    lblFinalChangeinValuePercentage.ForeColor = Color.IndianRed;
+                                    lblFinalChangeinValuePercentage.Text = "▼ " + lblFinalChangeinValuePercentage.Text;
+                                });
+                            }
+                        }
                     }
                     if (transaction.LabelColor != "9")
                     {
@@ -2306,6 +2497,15 @@ namespace Cubit
                 {
                     btnListReverse.Text = "Oldest first";
                 });
+                if (rollingBTCAmount > 0)
+                {
+                    panelNoRefreshMessage.Visible = false;
+                    DrawPriceChart();
+                }
+                else
+                {
+                    panelNoRefreshMessage.Visible = true;
+                }
             }
             catch (Exception ex)
             {
@@ -2846,6 +3046,7 @@ namespace Cubit
 
         private void DrawPriceChart()
         {
+            InitializeChart();
             if (btnPriceChartScaleLinear.Enabled == false) //Linear chart selected
             {
                 DrawPriceChartLinear();
@@ -3063,18 +3264,55 @@ namespace Cubit
 
                 if (showCostBasis)
                 {
+                    #region horizontal cost basis line
                     if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
                     {
-                        var hline = formsPlot1.Plot.AddHorizontalLine(y: costBasis, color: Color.OliveDrab, width: 1, style: LineStyle.Dash);
-                        hline.PositionLabel = false;
-                        hline.DragEnabled = false;
+                        if (costBasis > 0)
+                        {
+                            var hline = formsPlot1.Plot.AddHorizontalLine(y: costBasis, color: Color.RoyalBlue, width: 1, style: LineStyle.Dot);
+                            hline.PositionLabel = false;
+                            hline.DragEnabled = false;
 
-                        var CBline = formsPlot1.Plot.AddText(Convert.ToString(costBasis), x: xValues.Min(), y: costBasis, color: Color.OliveDrab);
-                        CBline.Font.Color = Color.White; ;
-                        CBline.BackgroundColor = Color.OliveDrab;
-                        CBline.BackgroundFill = true;
-                        CBline.BorderSize = 0;
+                            var CBline = formsPlot1.Plot.AddText("Cost basis: " + Convert.ToString(costBasis), x: xValues.Min(), y: costBasis, color: Color.FromArgb(255, 224, 192));
+                            CBline.Font.Color = Color.LightSlateGray; 
+                            CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
+                            CBline.BackgroundFill = true;
+                            CBline.BorderSize = 0;
+                        }
+                        else
+                        {
+                            // don't draw the line because it's off the range (negative) of the chart.
+                        }
                     }
+                    #endregion
+
+                    #region cost basis history stepped line
+                    if (listCostBasisAmounts.Count > 0)
+                    {
+                        #region sort the dates array bubt keep the costbasis array in sync with it
+                        double[] xArrayCostBasisDate = listTransactionDate.ToArray(); //date
+                        double[] yArrayCostBasisPrice = listCostBasisAmounts.ToArray(); //cost basis
+
+                        // Create a list of pairs (date, price)
+                        var pairs = xArrayCostBasisDate
+                            .Select((x, index) => new KeyValuePair<double, double>(x, yArrayCostBasisPrice[index]))
+                            .ToList();
+
+                        // Sort the list by date (ascending order)
+                        pairs.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+
+                        // Update the arrays based on the sorted list of pairs
+                        for (int i = 0; i < pairs.Count; i++)
+                        {
+                            xArrayCostBasisDate[i] = pairs[i].Key;
+                            yArrayCostBasisPrice[i] = pairs[i].Value;
+                        }
+                        #endregion 
+                        scatter2 = formsPlot1.Plot.AddScatter(xArrayCostBasisDate, yArrayCostBasisPrice, color: Color.RoyalBlue, lineWidth: 2, markerSize: 1);
+                        scatter2.StepDisplay = true;
+                    }
+                    #endregion
+
                 }
 
                 #endregion
@@ -3205,22 +3443,66 @@ namespace Cubit
                 formsPlot1.Plot.XAxis.Ticks(true);
                 formsPlot1.Plot.XAxis.Label("");
 
-                #region cost basis horizontal line
+                #region cost basis horizontal line and stepped history line
 
                 if (showCostBasis)
                 {
+                    #region current cost basis - horizontal line
                     if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
                     {
-                        var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.OliveDrab, width: 1, style: LineStyle.Dash, label: "H");
-                        hline.PositionLabel = false;
-                        hline.DragEnabled = false;
+                        if (costBasis > 0)
+                        {
+                            var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.RoyalBlue, width: 1, style: LineStyle.Dot, label: "H");
+                            hline.PositionLabel = false;
+                            hline.DragEnabled = false;
 
-                        var CBline = formsPlot1.Plot.AddText(Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.OliveDrab);
-                        CBline.Font.Color = Color.White; ;
-                        CBline.BackgroundColor = Color.OliveDrab;
-                        CBline.BackgroundFill = true;
-                        CBline.BorderSize = 0;
+                            var CBline = formsPlot1.Plot.AddText ("Cost basis: " + Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.FromArgb(255, 224, 192));
+                            CBline.Font.Color = Color.LightSlateGray; ;
+                            CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
+                            CBline.BackgroundFill = true;
+                            CBline.BorderSize = 0;
+                        }
+                        else
+                        {
+                            // don't draw the line because it's off the range (negative) of the chart.
+                        }
+
                     }
+                    #endregion
+
+                    #region cost basis history stepped line
+                    if (listCostBasisAmounts.Count > 0)
+                    {
+                        #region sort the dates array bubt keep the costbasis array in sync with it
+                        double[] xArrayCostBasisDate = listTransactionDate.ToArray(); //date
+                        double[] yArrayCostBasisPrice = listCostBasisAmounts.ToArray(); //cost basis
+
+                        // Create a list of pairs (date, price)
+                        var pairs = xArrayCostBasisDate
+                            .Select((x, index) => new KeyValuePair<double, double>(x, yArrayCostBasisPrice[index]))
+                            .ToList();
+
+                        // Sort the list by date (ascending order)
+                        pairs.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+
+                        // Update the arrays based on the sorted list of pairs
+                        for (int i = 0; i < pairs.Count; i++)
+                        {
+                            xArrayCostBasisDate[i] = pairs[i].Key;
+                            if (pairs[i].Value == 0)
+                            {
+                                yArrayCostBasisPrice[i] = 0;
+                            }
+                            else
+                            {
+                                yArrayCostBasisPrice[i] = Math.Log10(pairs[i].Value);
+                            }
+                        }
+                        #endregion 
+                        scatter2 = formsPlot1.Plot.AddScatter(xArrayCostBasisDate, yArrayCostBasisPrice, color: Color.RoyalBlue, lineWidth: 2, markerSize: 1);
+                        scatter2.StepDisplay = true;
+                    }
+                    #endregion
                 }
 
                 #endregion
@@ -4371,7 +4653,7 @@ namespace Cubit
             });
         }
 
-        private void btnCloseSummaryButton_Click(object sender, EventArgs e)
+        private void BtnCloseSummaryButton_Click(object sender, EventArgs e)
         {
             BtnCloseSummary_Click(sender, e);
         }
@@ -4406,8 +4688,8 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            InitializeChart();
-            DrawPriceChart();
+            //InitializeChart();
+            //DrawPriceChart();
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "$" + lblCurrentPrice.Text;
@@ -4487,8 +4769,8 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            InitializeChart();
-            DrawPriceChart();
+            //InitializeChart();
+            //DrawPriceChart();
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "€" + lblCurrentPrice.Text;
@@ -4568,8 +4850,8 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            InitializeChart();
-            DrawPriceChart();
+            //InitializeChart();
+            //DrawPriceChart();
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "£" + lblCurrentPrice.Text;
@@ -4649,8 +4931,8 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            InitializeChart();
-            DrawPriceChart();
+            //InitializeChart();
+            //DrawPriceChart();
             lblCurrentPrice.Invoke((MethodInvoker)delegate
             {
                 lblCurrentPrice.Text = "Ꜷ" + lblCurrentPrice.Text;
