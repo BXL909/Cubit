@@ -4,7 +4,8 @@
 ╚═╝╚═╝╚═╝╩ ╩
 add second Y axis for value of holdings?
 check/test the rolling totals on the listview
-finish/fix summary screen
+check for 0 amount fiat transactions (gifted btc)
+finish/fix summary screen (done?)
 */
 
 #region Using
@@ -80,6 +81,8 @@ namespace Cubit
         private int SpeechBubblecurrentHeight = 0; // Robot - speech bubble size
         private int currentWidthExpandingPanel = 0; // Chart options panel animation
         private int currentWidthShrinkingPanel = 0; // Chart options panel animation
+        bool chartChangingSize = false;
+        bool listChangingSize = false;
         private bool expandRobotTimerRunning = false; // Robot - text is expanding
         bool robotIgnoreChanges = false; // Robot - suppress animation
         string priceEstimateType = "N"; // will hold the estimate type
@@ -221,8 +224,8 @@ namespace Cubit
             panel8.Paint += Panel_Paint;
             panelHelpTextContainer.Paint += Panel_Paint;
             panelAddTransaction.Paint += Panel_Paint;
-            panel13.Paint += Panel_Paint;
-            panel14.Paint += Panel_Paint;
+            panelTXListOuter.Paint += Panel_Paint;
+            panelChartOuter.Paint += Panel_Paint;
             panelChartContainer.Paint += Panel_Paint;
             panelHelp.Paint += Panel_Paint;
             panel18.Paint += Panel_Paint;
@@ -236,6 +239,8 @@ namespace Cubit
             panel29.Paint += Panel_Paint;
             panel30.Paint += Panel_Paint;
             panel32.Paint += Panel_Paint;
+            panel13.Paint += Panel_Paint;
+            panelTXListLowerRow.Paint += Panel_Paint;
             panelSummaryChangeInValue.Paint += Panel_Paint;
             panelSummaryBTCHeld.Paint += Panel_Paint;
             panelSummaryBuyTransactions.Paint += Panel_Paint;
@@ -350,8 +355,8 @@ namespace Cubit
             panel8.Invalidate();
             panelHelpTextContainer.Invalidate();
             panelAddTransaction.Invalidate();
-            panel13.Invalidate();
-            panel14.Invalidate();
+            panelTXListOuter.Invalidate();
+            panelChartOuter.Invalidate();
             panelChartContainer.Invalidate();
             panelHelp.Invalidate();
             panel18.Invalidate();
@@ -365,6 +370,8 @@ namespace Cubit
             panel29.Invalidate();
             panel30.Invalidate();
             panel32.Invalidate();
+            panel13.Invalidate();
+            panelTXListLowerRow.Invalidate();
             panelSummaryChangeInValue.Invalidate();
             panelSummaryBTCHeld.Invalidate();
             panelSummaryBuyTransactions.Invalidate();
@@ -1346,11 +1353,11 @@ namespace Cubit
             {
                 ListViewItem selectedItem = listViewTransactions.SelectedItems[0]; // Get selected row
 
-                string transactionNumber = selectedItem.SubItems[0].Text; // 1st column
-                string dateAdded = selectedItem.SubItems[17].Text; // 18th column
+                //string transactionNumber = selectedItem.SubItems[0].Text; // 1st column
+                //string dateAdded = selectedItem.SubItems[17].Text; // 18th column
                 TXDataToDelete = selectedItem.SubItems[18].Text;
-                string btcamount = selectedItem.SubItems[9].Text;
-                string txdate = selectedItem.SubItems[1].Text + "/" + selectedItem.SubItems[2].Text + "/" + selectedItem.SubItems[3].Text;
+                string btcamount = selectedItem.SubItems[10].Text;
+                string txdate = selectedItem.SubItems[2].Text + "/" + selectedItem.SubItems[3].Text + "/" + selectedItem.SubItems[4].Text;
                 robotConfirmation = "Are you sure you want to delete this transaction for " + btcamount + " bitcoin on " + txdate + "?";
             }
             panelWelcome.Visible = false;
@@ -2877,6 +2884,95 @@ namespace Cubit
 
         #endregion
 
+        #region expand and shrink listview section
+        private void BtnExpandShrinkList_Click(object sender, EventArgs e)
+        {
+            panelTransactionsContainer.AutoScroll = false;
+            listChangingSize = true;
+            panelTXListOuter.Invoke((MethodInvoker)delegate
+            {
+                panelTXListOuter.BringToFront();
+            });
+            panelScrollbarContainer.Invoke((MethodInvoker)delegate
+            {
+                panelScrollbarContainer.BringToFront();
+            });
+            panel13.Invoke((MethodInvoker)delegate
+            {
+                panel13.BringToFront();
+            });
+            panelTXListLowerRow.Invoke((MethodInvoker)delegate
+            {
+                panelTXListLowerRow.BringToFront();
+            });
+            panel10.Invoke((MethodInvoker)delegate
+            {
+                panel10.BringToFront();
+            });
+            if (btnExpandShrinkList.Text == "▲")
+            { //expand the panel
+                btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkList.Enabled = false;
+                    btnExpandShrinkList.Text = "▼";
+                });
+                btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkChart.Enabled = false;
+                });
+
+                currentHeightExpandingPanel = panelTXListOuter.Height;
+                StartExpandingPanelVert(panelTXListOuter);
+            }
+            else
+            { //shrink the panel
+
+                btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkList.Enabled = false;
+                    btnExpandShrinkList.Text = "▲";
+                });
+                btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkChart.Enabled = false;
+                });
+
+                currentHeightShrinkingPanel = panelTXListOuter.Height;
+                StartShrinkingPanelVert(panelTXListOuter);
+
+            }
+        }
+
+        private void panelTXListOuter_Paint(object sender, PaintEventArgs e)
+        {
+            if (listChangingSize)
+            {
+                panelTXListFooter.Invoke((MethodInvoker)delegate
+                {
+                    panelTXListFooter.Location = new Point(panelTXListFooter.Location.X, panelTXListOuter.Height - 49);
+                });
+                panelTransactionsContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelTransactionsContainer.Height = panelTXListOuter.Height - 57;
+                });
+                listViewTransactions.Invoke((MethodInvoker)delegate
+                {
+                    listViewTransactions.Height = panelTransactionsContainer.Height;
+                });
+                panelScrollbarContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelScrollbarContainer.Location = new Point(panelScrollbarContainer.Location.X, panelTXListOuter.Location.Y + 1);
+                    panelScrollbarContainer.Height = panelTransactionsContainer.Height + 29;
+                    panelScrollbarContainer.Invalidate();
+                });
+                vScrollBar1.Invoke((MethodInvoker)delegate
+                {
+                    vScrollBar1.Height = panelScrollbarContainer.Height - 29;
+                });
+            }
+        }
+        #endregion
+
         #endregion
 
         #region chart - price linear and log
@@ -3669,6 +3765,66 @@ namespace Cubit
                 HandleException(ex, "rendering mouse-over chart coordinates data");
             }
         }
+
+        #region expand and shrink chart area
+        private void BtnExpandShrinkChart_Click(object sender, EventArgs e)
+        {
+            chartChangingSize = true;
+            if (btnExpandShrinkChart.Text == "▼")
+            { //expand the panel
+                btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkChart.Enabled = false;
+                    btnExpandShrinkChart.Text = "▲";
+                });
+                btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkList.Enabled = false;
+                });
+                panelChartOuter.Invoke((MethodInvoker)delegate
+                {
+                    panelChartOuter.BringToFront();
+                });
+                currentHeightExpandingPanel = panelChartOuter.Height;
+                StartExpandingPanelVert(panelChartOuter);
+            }
+            else
+            { //shrink the panel
+                btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkChart.Enabled = false;
+                    btnExpandShrinkChart.Text = "▼";
+                });
+                btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                {
+                    btnExpandShrinkList.Enabled = false;
+                });
+                panelChartOuter.Invoke((MethodInvoker)delegate
+                {
+                    panelChartOuter.BringToFront();
+                });
+                currentHeightShrinkingPanel = panelChartOuter.Height;
+                StartShrinkingPanelVert(panelChartOuter);
+
+            }
+        }
+
+        private void PanelChartOuter_Paint(object sender, PaintEventArgs e)
+        {
+            if (chartChangingSize)
+            {
+                panelChartContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelChartContainer.Height = panelChartOuter.Height - 2;
+                    panelChartContainer.Invalidate();
+                });
+                formsPlot1.Invoke((MethodInvoker)delegate
+                {
+                    formsPlot1.Height = panelChartOuter.Height - 27;
+                });
+            }
+        }
+        #endregion
 
         #region expand and shrink chart panels
 
@@ -4571,8 +4727,8 @@ namespace Cubit
 
             panelAddTransactionContainer.Enabled = false;
             btnCurrency.Enabled = false;
-            panel14.Enabled = false;
-            panel13.Enabled = false;
+            panelChartOuter.Enabled = false;
+            panelTXListOuter.Enabled = false;
             panelTopControls.Enabled = false;
             panel9.Enabled = false;
             panelSummaryContainer.Invoke((MethodInvoker)delegate
@@ -4591,8 +4747,8 @@ namespace Cubit
         {
             panelAddTransactionContainer.Enabled = true;
             btnCurrency.Enabled = true;
-            panel14.Enabled = true;
-            panel13.Enabled = true;
+            panelChartOuter.Enabled = true;
+            panelTXListOuter.Enabled = true;
             panelTopControls.Enabled = true;
             panel9.Enabled = true;
             panelSummaryContainer.Invoke((MethodInvoker)delegate
@@ -4658,6 +4814,10 @@ namespace Cubit
             label26.Invoke((MethodInvoker)delegate
             {
                 label26.Text = "USD";
+            });
+            label31.Invoke((MethodInvoker)delegate
+            {
+                label31.Text = "USD total";
             });
             label11.Invoke((MethodInvoker)delegate
             {
@@ -4735,6 +4895,10 @@ namespace Cubit
             btnCurrency.Invoke((MethodInvoker)delegate
             {
                 btnCurrency.Text = "€ EUR";
+            });
+            label31.Invoke((MethodInvoker)delegate
+            {
+                label31.Text = "EUR total";
             });
             label26.Invoke((MethodInvoker)delegate
             {
@@ -4817,6 +4981,10 @@ namespace Cubit
             {
                 btnCurrency.Text = "£ GBP";
             });
+            label31.Invoke((MethodInvoker)delegate
+            {
+                label31.Text = "GBP total";
+            });
             label26.Invoke((MethodInvoker)delegate
             {
                 label26.Text = "GBP";
@@ -4897,6 +5065,10 @@ namespace Cubit
             btnCurrency.Invoke((MethodInvoker)delegate
             {
                 btnCurrency.Text = "Ꜷ XAU";
+            });
+            label31.Invoke((MethodInvoker)delegate
+            {
+                label31.Text = "XAU total";
             });
             label26.Invoke((MethodInvoker)delegate
             {
@@ -4994,6 +5166,16 @@ namespace Cubit
             }
         }
 
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            BtnAbout_Click(sender, e);
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
+        {
+            BtnAbout_Click(sender, e);
+        }
+
         #region move window
 
         private void BtnMoveWindow_MouseDown(object sender, MouseEventArgs e) // move the form when the move control is used
@@ -5033,8 +5215,8 @@ namespace Cubit
         {
             panelAddTransactionContainer.Enabled = true;
             btnCurrency.Enabled = true;
-            panel14.Enabled = true;
-            panel13.Enabled = true;
+            panelChartOuter.Enabled = true;
+            panelTXListOuter.Enabled = true;
             panelTopControls.Enabled = true;
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
@@ -5050,8 +5232,8 @@ namespace Cubit
         {
             panelAddTransactionContainer.Enabled = false;
             btnCurrency.Enabled = false;
-            panel14.Enabled = false;
-            panel13.Enabled = false;
+            panelChartOuter.Enabled = false;
+            panelTXListOuter.Enabled = false;
             panelTopControls.Enabled = false;
             label42.Invoke((MethodInvoker)delegate
             {
@@ -5076,8 +5258,8 @@ namespace Cubit
         {
             panelAddTransactionContainer.Enabled = false;
             btnCurrency.Enabled = false;
-            panel14.Enabled = false;
-            panel13.Enabled = false;
+            panelChartOuter.Enabled = false;
+            panelTXListOuter.Enabled = false;
             panelTopControls.Enabled = false;
             label42.Invoke((MethodInvoker)delegate
             {
@@ -5102,8 +5284,8 @@ namespace Cubit
         {
             panelAddTransactionContainer.Enabled = false;
             btnCurrency.Enabled = false;
-            panel14.Enabled = false;
-            panel13.Enabled = false;
+            panelChartOuter.Enabled = false;
+            panelTXListOuter.Enabled = false;
             panelTopControls.Enabled = false;
             label42.Invoke((MethodInvoker)delegate
             {
@@ -5554,7 +5736,7 @@ namespace Cubit
             ShrinkPanelTimerVert.Start();
         }
 
-        private void ExpandCurrencyTimer_Tick(object sender, EventArgs e)
+        private void ExpandPanelTimerVert_Tick(object sender, EventArgs e)
         {
             currentHeightExpandingPanel += 4;
             if (panelToExpandVert == panelCurrency)
@@ -5565,12 +5747,26 @@ namespace Cubit
             {
                 panelMaxHeight = 129;
             }
-            if (panelToExpandVert == panel14)
+            if (panelToExpandVert == panelChartOuter)
             {
                 panelMaxHeight = 692;
             }
+            if (panelToExpandVert == panelTXListOuter)
+            {
+                //panelScrollbarContainer.BringToFront();
+                panelMaxHeight = 686;
+                panelToExpandVert.Invoke((MethodInvoker)delegate
+                {
+                    panelTXListOuter.Location = new Point(panelChartOuter.Location.X, panelTXListOuter.Location.Y - 4);
+                });
+                ////////
+            }
             if (currentHeightExpandingPanel >= panelMaxHeight) // expanding is complete
             {
+                panelTransactionsContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelTransactionsContainer.AutoScroll = true;
+                });
                 panelToExpandVert.Invoke((MethodInvoker)delegate
                 {
                     panelToExpandVert.Height = panelMaxHeight;
@@ -5579,8 +5775,25 @@ namespace Cubit
                 if (chartChangingSize == true)
                 {
                     chartChangingSize = false;
-                    btnExpandChart.Enabled = true;
+                    btnExpandShrinkChart.Enabled = true;
+                    btnExpandShrinkList.Enabled = true;
                 }
+                if (listChangingSize == true)
+                {
+                    listChangingSize = false;
+                    btnExpandShrinkList.Enabled = true;
+                    btnExpandShrinkChart.Enabled = true;
+                }
+                panelScrollbarContainer.Invoke((MethodInvoker)delegate
+                {
+                    panelScrollbarContainer.Location = new Point(panelScrollbarContainer.Location.X, panelTXListOuter.Location.Y + 1);
+                    panelScrollbarContainer.Height = panelTransactionsContainer.Height + 29;
+                    panelScrollbarContainer.Invalidate();
+                });
+                vScrollBar1.Invoke((MethodInvoker)delegate
+                {
+                    vScrollBar1.Height = panelScrollbarContainer.Height - 27;
+                });
             }
             else // expand further
             {
@@ -5593,7 +5806,7 @@ namespace Cubit
             }
         }
 
-        private void ShrinkCurrencyTimer_Tick(object sender, EventArgs e)
+        private void ShrinkPanelTimerVert_Tick(object sender, EventArgs e)
         {
             currentHeightShrinkingPanel -= 4;
             if (panelToShrinkVert == panelCurrency || panelToShrink == panelColors)
@@ -5601,9 +5814,20 @@ namespace Cubit
                 panelMinHeight = 0;
             }
 
-            if (panelToShrinkVert == panel14)
+            if (panelToShrinkVert == panelChartOuter)
             {
                 panelMinHeight = 435;
+            }
+
+            if (panelToShrinkVert == panelTXListOuter)
+            {
+
+                panelMinHeight = 234;
+                panelTXListOuter.Invoke((MethodInvoker)delegate
+                {
+                    panelTXListOuter.Location = new Point(panelTXListOuter.Location.X, panelTXListOuter.Location.Y + 4);
+                });
+                ////////
             }
 
             if (currentHeightShrinkingPanel <= panelMinHeight) // shrinking is complete
@@ -5620,7 +5844,53 @@ namespace Cubit
                     {
                         panelChartContainer.Height = 433;
                     });
-                    btnExpandChart.Enabled = true;
+                    btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                    {
+                        btnExpandShrinkChart.Enabled = true;
+                    });
+                    btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                    {
+                        btnExpandShrinkList.Enabled = true;
+                    });
+                }
+                if (listChangingSize == true)
+                {
+                    listChangingSize = false;
+                    panelTransactionsContainer.Invoke((MethodInvoker)delegate
+                    {
+                        panelTransactionsContainer.AutoScroll = true;
+                    });
+                    panelTXListOuter.Height = 234;
+                    btnExpandShrinkChart.Invoke((MethodInvoker)delegate
+                    {
+                        btnExpandShrinkChart.Enabled = true;
+                    });
+                    btnExpandShrinkList.Invoke((MethodInvoker)delegate
+                    {
+                        btnExpandShrinkList.Enabled = true;
+                    });
+                    panelTXListFooter.Invoke((MethodInvoker)delegate
+                    {
+                        panelTXListFooter.Location = new Point(panelTXListFooter.Location.X, panelTXListOuter.Height - 49);
+                    });
+                    panelTransactionsContainer.Invoke((MethodInvoker)delegate
+                    {
+                        panelTransactionsContainer.Height = panelTXListOuter.Height - 57;
+                    });
+                    listViewTransactions.Invoke((MethodInvoker)delegate
+                    {
+                        listViewTransactions.Height = panelTransactionsContainer.Height;
+                    });
+                    panelScrollbarContainer.Invoke((MethodInvoker)delegate
+                    {
+                        panelScrollbarContainer.Location = new Point(panelScrollbarContainer.Location.X, panelTXListOuter.Location.Y + 1);
+                        panelScrollbarContainer.Height = panelTransactionsContainer.Height + 29;
+                        panelScrollbarContainer.Invalidate();
+                    });
+                    vScrollBar1.Invoke((MethodInvoker)delegate
+                    {
+                        vScrollBar1.Height = panelScrollbarContainer.Height - 29;
+                    });
                 }
             }
 
@@ -5746,79 +6016,5 @@ namespace Cubit
         }
 
         #endregion
-
-
-
-        private void btnExpandChart_Click(object sender, EventArgs e)
-        {
-
-            chartChangingSize = true;
-            if (btnExpandChart.Text == "▼")
-            { //expand the panel
-                btnExpandChart.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandChart.Enabled = false;
-                    btnExpandChart.Text = "▲";
-                });
-                panel14.Invoke((MethodInvoker)delegate
-                {
-                    panel14.BringToFront();
-                });
-                currentHeightExpandingPanel = panel14.Height;
-                StartExpandingPanelVert(panel14);
-            }
-            else
-            { //shrink the panel
-                btnExpandChart.Invoke((MethodInvoker)delegate
-                {
-                    btnExpandChart.Enabled = false;
-                    btnExpandChart.Text = "▼";
-                });
-                panel14.Invoke((MethodInvoker)delegate
-                {
-                    panel14.BringToFront();
-                });
-                currentHeightShrinkingPanel = panel14.Height;
-                StartShrinkingPanelVert(panel14);
-
-            }
-
-
-            /*
-            panel14.Invoke((MethodInvoker)delegate
-            {
-                panel14.BringToFront(); 
-                panel14.Height = 690;
-                panel14.Invalidate();
-            });
-            panelChartContainer.Invoke((MethodInvoker)delegate
-            {
-                panelChartContainer.Height = 688;
-                panelChartContainer.Invalidate();
-            });
-            panelChartContainer.Invoke((MethodInvoker)delegate
-            {
-                formsPlot1.Height = 663;
-            });
-            */
-        }
-
-        bool chartChangingSize = false;
-
-        private void panel14_Paint(object sender, PaintEventArgs e)
-        {
-            if (chartChangingSize)
-            {
-                panelChartContainer.Invoke((MethodInvoker)delegate
-                {
-                    panelChartContainer.Height = panel14.Height - 2;
-                    panelChartContainer.Invalidate();
-                });
-                formsPlot1.Invoke((MethodInvoker)delegate
-                {
-                    formsPlot1.Height = panel14.Height - 27;
-                });
-            }
-        }
     }
 }

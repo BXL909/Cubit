@@ -125,27 +125,14 @@
             btnRed1 = new CustomControls.RJControls.RJButton();
             panelAddTransactionContainer = new Panel();
             listViewTransactions = new ListView();
-            panel13 = new Panel();
+            panelTXListOuter = new Panel();
             panelTransactionsContainer = new Panel();
             panelTXListFooter = new Panel();
-            panelTransactionLabel = new Panel();
-            btnShowHideLabel = new CustomControls.RJControls.RJButton();
-            lblShowHideLabel = new Label();
-            lblTransactionLabel = new Label();
-            lblFinalCostBasis = new Label();
-            panel10 = new Panel();
-            btnListReverse = new CustomControls.RJControls.RJButton();
-            btnCancelDelete = new CustomControls.RJControls.RJButton();
-            btnConfirmDelete = new CustomControls.RJControls.RJButton();
-            lblDisabledDeleteButtonText = new Label();
-            btnDeleteTransaction = new CustomControls.RJControls.RJButton();
-            lblTotalFiatAmount = new Label();
-            lblTotalBTCAmount = new Label();
             panel11 = new Panel();
+            btnExpandShrinkList = new CustomControls.RJControls.RJButton();
             label89 = new Label();
             label30 = new Label();
             label22 = new Label();
-            label51 = new Label();
             label34 = new Label();
             label33 = new Label();
             label32 = new Label();
@@ -158,12 +145,26 @@
             label24 = new Label();
             label23 = new Label();
             label16 = new Label();
+            panel10 = new Panel();
+            panelTransactionLabel = new Panel();
+            btnShowHideLabel = new CustomControls.RJControls.RJButton();
+            lblShowHideLabel = new Label();
+            lblTransactionLabel = new Label();
+            lblFinalCostBasis = new Label();
+            btnListReverse = new CustomControls.RJControls.RJButton();
+            btnCancelDelete = new CustomControls.RJControls.RJButton();
+            btnConfirmDelete = new CustomControls.RJControls.RJButton();
+            lblDisabledDeleteButtonText = new Label();
+            btnDeleteTransaction = new CustomControls.RJControls.RJButton();
+            lblTotalFiatAmount = new Label();
+            lblTotalBTCAmount = new Label();
             btnHelpTransactionList = new CustomControls.RJControls.RJButton();
             panelScrollbarContainer = new Panel();
             vScrollBar1 = new VScrollBar();
+            panel14 = new Panel();
             panel12 = new Panel();
             btnMoveWindow = new CustomControls.RJControls.RJButton();
-            panel14 = new Panel();
+            panelChartOuter = new Panel();
             panelChartContainer = new Panel();
             panelNoRefreshMessage = new Panel();
             label78 = new Label();
@@ -203,7 +204,7 @@
             btnShowDateGridlines = new CustomControls.RJControls.RJButton();
             label36 = new Label();
             panel17 = new Panel();
-            btnExpandChart = new CustomControls.RJControls.RJButton();
+            btnExpandShrinkChart = new CustomControls.RJControls.RJButton();
             btnHelpChart = new CustomControls.RJControls.RJButton();
             label39 = new Label();
             btnPriceChartScaleLinear = new CustomControls.RJControls.RJButton();
@@ -315,6 +316,8 @@
             btnGBP = new CustomControls.RJControls.RJButton();
             btnEUR = new CustomControls.RJControls.RJButton();
             btnUSD = new CustomControls.RJControls.RJButton();
+            panelTXListLowerRow = new Panel();
+            panel13 = new Panel();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             panel3.SuspendLayout();
@@ -337,14 +340,13 @@
             panelColors.SuspendLayout();
             panelColorMenu.SuspendLayout();
             panelAddTransactionContainer.SuspendLayout();
-            panel13.SuspendLayout();
+            panelTXListOuter.SuspendLayout();
             panelTransactionsContainer.SuspendLayout();
-            panelTXListFooter.SuspendLayout();
-            panelTransactionLabel.SuspendLayout();
             panel11.SuspendLayout();
+            panelTransactionLabel.SuspendLayout();
             panelScrollbarContainer.SuspendLayout();
             panel12.SuspendLayout();
-            panel14.SuspendLayout();
+            panelChartOuter.SuspendLayout();
             panelChartContainer.SuspendLayout();
             panelNoRefreshMessage.SuspendLayout();
             panel23.SuspendLayout();
@@ -378,6 +380,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).BeginInit();
             panelCurrency.SuspendLayout();
             panelCurrencyMenu.SuspendLayout();
+            panelTXListLowerRow.SuspendLayout();
             SuspendLayout();
             // 
             // comboBoxYearInput
@@ -1647,7 +1650,7 @@
             // 
             panelAddTransactionContainer.BackColor = Color.FromArgb(255, 224, 192);
             panelAddTransactionContainer.Controls.Add(panelAddTransaction);
-            panelAddTransactionContainer.Location = new Point(882, 56);
+            panelAddTransactionContainer.Location = new Point(882, 55);
             panelAddTransactionContainer.Name = "panelAddTransactionContainer";
             panelAddTransactionContainer.Size = new Size(284, 434);
             panelAddTransactionContainer.TabIndex = 75;
@@ -1678,23 +1681,24 @@
             listViewTransactions.ItemSelectionChanged += ListViewTransactions_ItemSelectionChanged;
             listViewTransactions.SelectedIndexChanged += ListViewTransactions_SelectedIndexChanged;
             // 
-            // panel13
+            // panelTXListOuter
             // 
-            panel13.BackColor = Color.FromArgb(255, 224, 192);
-            panel13.Controls.Add(panelTransactionsContainer);
-            panel13.Controls.Add(panelTXListFooter);
-            panel13.Controls.Add(panel11);
-            panel13.Location = new Point(12, 510);
-            panel13.Name = "panel13";
-            panel13.Size = new Size(861, 234);
-            panel13.TabIndex = 81;
+            panelTXListOuter.BackColor = Color.FromArgb(255, 224, 192);
+            panelTXListOuter.Controls.Add(panelTransactionsContainer);
+            panelTXListOuter.Controls.Add(panelTXListFooter);
+            panelTXListOuter.Controls.Add(panel11);
+            panelTXListOuter.Location = new Point(12, 510);
+            panelTXListOuter.Name = "panelTXListOuter";
+            panelTXListOuter.Size = new Size(861, 234);
+            panelTXListOuter.TabIndex = 81;
+            panelTXListOuter.Paint += panelTXListOuter_Paint;
             // 
             // panelTransactionsContainer
             // 
             panelTransactionsContainer.AutoScroll = true;
             panelTransactionsContainer.BackColor = Color.White;
             panelTransactionsContainer.BackgroundImage = Properties.Resources.NoTransactions2;
-            panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Stretch;
+            panelTransactionsContainer.BackgroundImageLayout = ImageLayout.Center;
             panelTransactionsContainer.Controls.Add(listViewTransactions);
             panelTransactionsContainer.Location = new Point(1, 25);
             panelTransactionsContainer.Name = "panelTransactionsContainer";
@@ -1704,227 +1708,18 @@
             // panelTXListFooter
             // 
             panelTXListFooter.BackColor = Color.White;
-            panelTXListFooter.Controls.Add(panelTransactionLabel);
-            panelTXListFooter.Controls.Add(lblFinalCostBasis);
-            panelTXListFooter.Controls.Add(panel10);
-            panelTXListFooter.Controls.Add(btnListReverse);
-            panelTXListFooter.Controls.Add(btnCancelDelete);
-            panelTXListFooter.Controls.Add(btnConfirmDelete);
-            panelTXListFooter.Controls.Add(lblDisabledDeleteButtonText);
-            panelTXListFooter.Controls.Add(btnDeleteTransaction);
-            panelTXListFooter.Controls.Add(lblTotalFiatAmount);
-            panelTXListFooter.Controls.Add(lblTotalBTCAmount);
             panelTXListFooter.Location = new Point(1, 185);
             panelTXListFooter.Name = "panelTXListFooter";
             panelTXListFooter.Size = new Size(859, 48);
             panelTXListFooter.TabIndex = 78;
             // 
-            // panelTransactionLabel
-            // 
-            panelTransactionLabel.BackColor = SystemColors.ButtonFace;
-            panelTransactionLabel.Controls.Add(btnShowHideLabel);
-            panelTransactionLabel.Controls.Add(lblShowHideLabel);
-            panelTransactionLabel.Controls.Add(lblTransactionLabel);
-            panelTransactionLabel.Location = new Point(94, 22);
-            panelTransactionLabel.Name = "panelTransactionLabel";
-            panelTransactionLabel.Size = new Size(105, 23);
-            panelTransactionLabel.TabIndex = 101;
-            // 
-            // btnShowHideLabel
-            // 
-            btnShowHideLabel.BackColor = Color.FromArgb(255, 192, 128);
-            btnShowHideLabel.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnShowHideLabel.BorderColor = Color.PaleVioletRed;
-            btnShowHideLabel.BorderRadius = 11;
-            btnShowHideLabel.BorderSize = 0;
-            btnShowHideLabel.FlatAppearance.BorderSize = 0;
-            btnShowHideLabel.FlatStyle = FlatStyle.Flat;
-            btnShowHideLabel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnShowHideLabel.ForeColor = Color.White;
-            btnShowHideLabel.Location = new Point(76, 0);
-            btnShowHideLabel.Name = "btnShowHideLabel";
-            btnShowHideLabel.Padding = new Padding(1, 0, 0, 0);
-            btnShowHideLabel.Size = new Size(23, 23);
-            btnShowHideLabel.TabIndex = 92;
-            btnShowHideLabel.TabStop = false;
-            btnShowHideLabel.Text = "▶";
-            btnShowHideLabel.TextColor = Color.White;
-            btnShowHideLabel.UseVisualStyleBackColor = false;
-            btnShowHideLabel.Click += BtnShowHideLabel_Click;
-            // 
-            // lblShowHideLabel
-            // 
-            lblShowHideLabel.AutoSize = true;
-            lblShowHideLabel.BackColor = Color.Transparent;
-            lblShowHideLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblShowHideLabel.ForeColor = Color.Gray;
-            lblShowHideLabel.Location = new Point(3, 3);
-            lblShowHideLabel.Name = "lblShowHideLabel";
-            lblShowHideLabel.Size = new Size(71, 17);
-            lblShowHideLabel.TabIndex = 91;
-            lblShowHideLabel.Text = "Show label";
-            // 
-            // lblTransactionLabel
-            // 
-            lblTransactionLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTransactionLabel.ForeColor = Color.Gray;
-            lblTransactionLabel.Location = new Point(104, 3);
-            lblTransactionLabel.Name = "lblTransactionLabel";
-            lblTransactionLabel.Size = new Size(557, 22);
-            lblTransactionLabel.TabIndex = 112;
-            lblTransactionLabel.Text = "No transaction selected";
-            // 
-            // lblFinalCostBasis
-            // 
-            lblFinalCostBasis.AutoSize = true;
-            lblFinalCostBasis.ForeColor = Color.Gray;
-            lblFinalCostBasis.Location = new Point(706, 25);
-            lblFinalCostBasis.Name = "lblFinalCostBasis";
-            lblFinalCostBasis.Size = new Size(60, 15);
-            lblFinalCostBasis.TabIndex = 113;
-            lblFinalCostBasis.Text = "Cost basis";
-            toolTip1.SetToolTip(lblFinalCostBasis, "BTC total");
-            // 
-            // panel10
-            // 
-            panel10.BackColor = Color.FromArgb(255, 224, 192);
-            panel10.Location = new Point(1, 17);
-            panel10.Name = "panel10";
-            panel10.Size = new Size(857, 1);
-            panel10.TabIndex = 87;
-            // 
-            // btnListReverse
-            // 
-            btnListReverse.BackColor = Color.FromArgb(255, 192, 128);
-            btnListReverse.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnListReverse.BorderColor = Color.PaleVioletRed;
-            btnListReverse.BorderRadius = 11;
-            btnListReverse.BorderSize = 0;
-            btnListReverse.FlatAppearance.BorderSize = 0;
-            btnListReverse.FlatStyle = FlatStyle.Flat;
-            btnListReverse.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnListReverse.ForeColor = Color.White;
-            btnListReverse.Location = new Point(2, 21);
-            btnListReverse.Name = "btnListReverse";
-            btnListReverse.Padding = new Padding(1, 0, 0, 0);
-            btnListReverse.Size = new Size(86, 24);
-            btnListReverse.TabIndex = 75;
-            btnListReverse.TabStop = false;
-            btnListReverse.Text = "Oldest first";
-            btnListReverse.TextColor = Color.White;
-            btnListReverse.UseVisualStyleBackColor = false;
-            btnListReverse.Click += BtnListReverse_Click;
-            // 
-            // btnCancelDelete
-            // 
-            btnCancelDelete.BackColor = Color.FromArgb(255, 192, 128);
-            btnCancelDelete.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnCancelDelete.BorderColor = Color.PaleVioletRed;
-            btnCancelDelete.BorderRadius = 11;
-            btnCancelDelete.BorderSize = 0;
-            btnCancelDelete.FlatAppearance.BorderSize = 0;
-            btnCancelDelete.FlatStyle = FlatStyle.Flat;
-            btnCancelDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnCancelDelete.ForeColor = Color.White;
-            btnCancelDelete.Location = new Point(832, 22);
-            btnCancelDelete.Name = "btnCancelDelete";
-            btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
-            btnCancelDelete.Size = new Size(24, 24);
-            btnCancelDelete.TabIndex = 94;
-            btnCancelDelete.TabStop = false;
-            btnCancelDelete.Text = "✖️";
-            btnCancelDelete.TextColor = Color.White;
-            btnCancelDelete.UseVisualStyleBackColor = false;
-            btnCancelDelete.Visible = false;
-            btnCancelDelete.Click += BtnCancelDelete_Click;
-            // 
-            // btnConfirmDelete
-            // 
-            btnConfirmDelete.BackColor = Color.FromArgb(255, 192, 128);
-            btnConfirmDelete.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnConfirmDelete.BorderColor = Color.PaleVioletRed;
-            btnConfirmDelete.BorderRadius = 11;
-            btnConfirmDelete.BorderSize = 0;
-            btnConfirmDelete.FlatAppearance.BorderSize = 0;
-            btnConfirmDelete.FlatStyle = FlatStyle.Flat;
-            btnConfirmDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnConfirmDelete.ForeColor = Color.White;
-            btnConfirmDelete.Location = new Point(800, 22);
-            btnConfirmDelete.Name = "btnConfirmDelete";
-            btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
-            btnConfirmDelete.Size = new Size(24, 24);
-            btnConfirmDelete.TabIndex = 93;
-            btnConfirmDelete.TabStop = false;
-            btnConfirmDelete.Text = "✔️";
-            btnConfirmDelete.TextColor = Color.White;
-            btnConfirmDelete.UseVisualStyleBackColor = false;
-            btnConfirmDelete.Visible = false;
-            btnConfirmDelete.Click += BtnConfirmDelete_Click;
-            // 
-            // lblDisabledDeleteButtonText
-            // 
-            lblDisabledDeleteButtonText.AutoSize = true;
-            lblDisabledDeleteButtonText.BackColor = Color.FromArgb(234, 234, 234);
-            lblDisabledDeleteButtonText.Enabled = false;
-            lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblDisabledDeleteButtonText.ForeColor = Color.Gray;
-            lblDisabledDeleteButtonText.Location = new Point(807, 25);
-            lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
-            lblDisabledDeleteButtonText.Size = new Size(45, 17);
-            lblDisabledDeleteButtonText.TabIndex = 92;
-            lblDisabledDeleteButtonText.Text = "Delete";
-            // 
-            // btnDeleteTransaction
-            // 
-            btnDeleteTransaction.BackColor = Color.FromArgb(234, 234, 234);
-            btnDeleteTransaction.BackgroundColor = Color.FromArgb(234, 234, 234);
-            btnDeleteTransaction.BorderColor = Color.PaleVioletRed;
-            btnDeleteTransaction.BorderRadius = 11;
-            btnDeleteTransaction.BorderSize = 0;
-            btnDeleteTransaction.Enabled = false;
-            btnDeleteTransaction.FlatAppearance.BorderSize = 0;
-            btnDeleteTransaction.FlatStyle = FlatStyle.Flat;
-            btnDeleteTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            btnDeleteTransaction.ForeColor = Color.White;
-            btnDeleteTransaction.Location = new Point(799, 21);
-            btnDeleteTransaction.Name = "btnDeleteTransaction";
-            btnDeleteTransaction.Padding = new Padding(1, 0, 0, 0);
-            btnDeleteTransaction.Size = new Size(57, 24);
-            btnDeleteTransaction.TabIndex = 87;
-            btnDeleteTransaction.Text = "Delete";
-            btnDeleteTransaction.TextColor = Color.White;
-            btnDeleteTransaction.UseVisualStyleBackColor = false;
-            btnDeleteTransaction.Click += BtnDeleteTransaction_Click;
-            // 
-            // lblTotalFiatAmount
-            // 
-            lblTotalFiatAmount.AutoSize = true;
-            lblTotalFiatAmount.ForeColor = Color.Gray;
-            lblTotalFiatAmount.Location = new Point(306, 25);
-            lblTotalFiatAmount.Name = "lblTotalFiatAmount";
-            lblTotalFiatAmount.Size = new Size(53, 15);
-            lblTotalFiatAmount.TabIndex = 83;
-            lblTotalFiatAmount.Text = "Fiat total";
-            toolTip1.SetToolTip(lblTotalFiatAmount, "Fiat total");
-            // 
-            // lblTotalBTCAmount
-            // 
-            lblTotalBTCAmount.AutoSize = true;
-            lblTotalBTCAmount.ForeColor = Color.Gray;
-            lblTotalBTCAmount.Location = new Point(406, 25);
-            lblTotalBTCAmount.Name = "lblTotalBTCAmount";
-            lblTotalBTCAmount.Size = new Size(53, 15);
-            lblTotalBTCAmount.TabIndex = 82;
-            lblTotalBTCAmount.Text = "BTC total";
-            toolTip1.SetToolTip(lblTotalBTCAmount, "BTC total");
-            // 
             // panel11
             // 
             panel11.BackColor = Color.FromArgb(255, 224, 192);
+            panel11.Controls.Add(btnExpandShrinkList);
             panel11.Controls.Add(label89);
             panel11.Controls.Add(label30);
             panel11.Controls.Add(label22);
-            panel11.Controls.Add(label51);
             panel11.Controls.Add(label34);
             panel11.Controls.Add(label33);
             panel11.Controls.Add(label32);
@@ -1942,6 +1737,28 @@
             panel11.Name = "panel11";
             panel11.Size = new Size(860, 25);
             panel11.TabIndex = 77;
+            // 
+            // btnExpandShrinkList
+            // 
+            btnExpandShrinkList.BackColor = Color.FromArgb(255, 192, 128);
+            btnExpandShrinkList.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnExpandShrinkList.BorderColor = Color.PaleVioletRed;
+            btnExpandShrinkList.BorderRadius = 12;
+            btnExpandShrinkList.BorderSize = 0;
+            btnExpandShrinkList.FlatAppearance.BorderSize = 0;
+            btnExpandShrinkList.FlatStyle = FlatStyle.Flat;
+            btnExpandShrinkList.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnExpandShrinkList.ForeColor = Color.White;
+            btnExpandShrinkList.Location = new Point(2, 0);
+            btnExpandShrinkList.Name = "btnExpandShrinkList";
+            btnExpandShrinkList.Padding = new Padding(2, 0, 0, 0);
+            btnExpandShrinkList.Size = new Size(24, 24);
+            btnExpandShrinkList.TabIndex = 88;
+            btnExpandShrinkList.TabStop = false;
+            btnExpandShrinkList.Text = "▲";
+            btnExpandShrinkList.TextColor = Color.White;
+            btnExpandShrinkList.UseVisualStyleBackColor = false;
+            btnExpandShrinkList.Click += BtnExpandShrinkList_Click;
             // 
             // label89
             // 
@@ -1982,19 +1799,6 @@
             label22.TabIndex = 16;
             label22.Text = "CC";
             toolTip1.SetToolTip(label22, "Optional colour code");
-            // 
-            // label51
-            // 
-            label51.AutoSize = true;
-            label51.BackColor = Color.Transparent;
-            label51.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label51.ForeColor = Color.LightSlateGray;
-            label51.Location = new Point(2, 0);
-            label51.Name = "label51";
-            label51.Padding = new Padding(0, 2, 0, 0);
-            label51.Size = new Size(23, 19);
-            label51.TabIndex = 15;
-            label51.Text = "TX";
             // 
             // label34
             // 
@@ -2047,9 +1851,9 @@
             label31.Location = new Point(532, 0);
             label31.Name = "label31";
             label31.Padding = new Padding(0, 2, 0, 0);
-            label31.Size = new Size(58, 19);
+            label31.Size = new Size(63, 19);
             label31.TabIndex = 11;
-            label31.Text = "Fiat total";
+            label31.Text = "USD total";
             toolTip1.SetToolTip(label31, "The fiat value change of the BTC amount now compared to at the time of transaction");
             // 
             // label29
@@ -2164,6 +1968,205 @@
             label16.Text = "YYYY/MM/DD";
             toolTip1.SetToolTip(label16, "Date of transaction");
             // 
+            // panel10
+            // 
+            panel10.BackColor = Color.FromArgb(255, 224, 192);
+            panel10.Location = new Point(12, 712);
+            panel10.Name = "panel10";
+            panel10.Size = new Size(859, 1);
+            panel10.TabIndex = 87;
+            // 
+            // panelTransactionLabel
+            // 
+            panelTransactionLabel.BackColor = SystemColors.ButtonFace;
+            panelTransactionLabel.Controls.Add(btnShowHideLabel);
+            panelTransactionLabel.Controls.Add(lblShowHideLabel);
+            panelTransactionLabel.Controls.Add(lblTransactionLabel);
+            panelTransactionLabel.Location = new Point(96, 4);
+            panelTransactionLabel.Name = "panelTransactionLabel";
+            panelTransactionLabel.Size = new Size(105, 23);
+            panelTransactionLabel.TabIndex = 101;
+            // 
+            // btnShowHideLabel
+            // 
+            btnShowHideLabel.BackColor = Color.FromArgb(255, 192, 128);
+            btnShowHideLabel.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnShowHideLabel.BorderColor = Color.PaleVioletRed;
+            btnShowHideLabel.BorderRadius = 11;
+            btnShowHideLabel.BorderSize = 0;
+            btnShowHideLabel.FlatAppearance.BorderSize = 0;
+            btnShowHideLabel.FlatStyle = FlatStyle.Flat;
+            btnShowHideLabel.Font = new Font("Century Gothic", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnShowHideLabel.ForeColor = Color.White;
+            btnShowHideLabel.Location = new Point(76, 0);
+            btnShowHideLabel.Name = "btnShowHideLabel";
+            btnShowHideLabel.Padding = new Padding(1, 0, 0, 0);
+            btnShowHideLabel.Size = new Size(23, 23);
+            btnShowHideLabel.TabIndex = 92;
+            btnShowHideLabel.TabStop = false;
+            btnShowHideLabel.Text = "▶";
+            btnShowHideLabel.TextColor = Color.White;
+            btnShowHideLabel.UseVisualStyleBackColor = false;
+            btnShowHideLabel.Click += BtnShowHideLabel_Click;
+            // 
+            // lblShowHideLabel
+            // 
+            lblShowHideLabel.AutoSize = true;
+            lblShowHideLabel.BackColor = Color.Transparent;
+            lblShowHideLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblShowHideLabel.ForeColor = Color.Gray;
+            lblShowHideLabel.Location = new Point(3, 3);
+            lblShowHideLabel.Name = "lblShowHideLabel";
+            lblShowHideLabel.Size = new Size(71, 17);
+            lblShowHideLabel.TabIndex = 91;
+            lblShowHideLabel.Text = "Show label";
+            // 
+            // lblTransactionLabel
+            // 
+            lblTransactionLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblTransactionLabel.ForeColor = Color.Gray;
+            lblTransactionLabel.Location = new Point(104, 3);
+            lblTransactionLabel.Name = "lblTransactionLabel";
+            lblTransactionLabel.Size = new Size(557, 22);
+            lblTransactionLabel.TabIndex = 112;
+            lblTransactionLabel.Text = "No transaction selected";
+            // 
+            // lblFinalCostBasis
+            // 
+            lblFinalCostBasis.AutoSize = true;
+            lblFinalCostBasis.ForeColor = Color.Gray;
+            lblFinalCostBasis.Location = new Point(708, 8);
+            lblFinalCostBasis.Name = "lblFinalCostBasis";
+            lblFinalCostBasis.Size = new Size(60, 15);
+            lblFinalCostBasis.TabIndex = 113;
+            lblFinalCostBasis.Text = "Cost basis";
+            toolTip1.SetToolTip(lblFinalCostBasis, "BTC total");
+            // 
+            // btnListReverse
+            // 
+            btnListReverse.BackColor = Color.FromArgb(255, 192, 128);
+            btnListReverse.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnListReverse.BorderColor = Color.PaleVioletRed;
+            btnListReverse.BorderRadius = 11;
+            btnListReverse.BorderSize = 0;
+            btnListReverse.FlatAppearance.BorderSize = 0;
+            btnListReverse.FlatStyle = FlatStyle.Flat;
+            btnListReverse.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnListReverse.ForeColor = Color.White;
+            btnListReverse.Location = new Point(4, 3);
+            btnListReverse.Name = "btnListReverse";
+            btnListReverse.Padding = new Padding(1, 0, 0, 0);
+            btnListReverse.Size = new Size(86, 24);
+            btnListReverse.TabIndex = 75;
+            btnListReverse.TabStop = false;
+            btnListReverse.Text = "Oldest first";
+            btnListReverse.TextColor = Color.White;
+            btnListReverse.UseVisualStyleBackColor = false;
+            btnListReverse.Click += BtnListReverse_Click;
+            // 
+            // btnCancelDelete
+            // 
+            btnCancelDelete.BackColor = Color.FromArgb(255, 192, 128);
+            btnCancelDelete.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnCancelDelete.BorderColor = Color.PaleVioletRed;
+            btnCancelDelete.BorderRadius = 11;
+            btnCancelDelete.BorderSize = 0;
+            btnCancelDelete.FlatAppearance.BorderSize = 0;
+            btnCancelDelete.FlatStyle = FlatStyle.Flat;
+            btnCancelDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnCancelDelete.ForeColor = Color.White;
+            btnCancelDelete.Location = new Point(828, 2);
+            btnCancelDelete.Name = "btnCancelDelete";
+            btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
+            btnCancelDelete.Size = new Size(24, 24);
+            btnCancelDelete.TabIndex = 94;
+            btnCancelDelete.TabStop = false;
+            btnCancelDelete.Text = "✖️";
+            btnCancelDelete.TextColor = Color.White;
+            btnCancelDelete.UseVisualStyleBackColor = false;
+            btnCancelDelete.Visible = false;
+            btnCancelDelete.Click += BtnCancelDelete_Click;
+            // 
+            // btnConfirmDelete
+            // 
+            btnConfirmDelete.BackColor = Color.FromArgb(255, 192, 128);
+            btnConfirmDelete.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnConfirmDelete.BorderColor = Color.PaleVioletRed;
+            btnConfirmDelete.BorderRadius = 11;
+            btnConfirmDelete.BorderSize = 0;
+            btnConfirmDelete.FlatAppearance.BorderSize = 0;
+            btnConfirmDelete.FlatStyle = FlatStyle.Flat;
+            btnConfirmDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnConfirmDelete.ForeColor = Color.White;
+            btnConfirmDelete.Location = new Point(796, 2);
+            btnConfirmDelete.Name = "btnConfirmDelete";
+            btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
+            btnConfirmDelete.Size = new Size(24, 24);
+            btnConfirmDelete.TabIndex = 93;
+            btnConfirmDelete.TabStop = false;
+            btnConfirmDelete.Text = "✔️";
+            btnConfirmDelete.TextColor = Color.White;
+            btnConfirmDelete.UseVisualStyleBackColor = false;
+            btnConfirmDelete.Visible = false;
+            btnConfirmDelete.Click += BtnConfirmDelete_Click;
+            // 
+            // lblDisabledDeleteButtonText
+            // 
+            lblDisabledDeleteButtonText.AutoSize = true;
+            lblDisabledDeleteButtonText.BackColor = Color.FromArgb(234, 234, 234);
+            lblDisabledDeleteButtonText.Enabled = false;
+            lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            lblDisabledDeleteButtonText.ForeColor = Color.Gray;
+            lblDisabledDeleteButtonText.Location = new Point(803, 6);
+            lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
+            lblDisabledDeleteButtonText.Size = new Size(45, 17);
+            lblDisabledDeleteButtonText.TabIndex = 92;
+            lblDisabledDeleteButtonText.Text = "Delete";
+            // 
+            // btnDeleteTransaction
+            // 
+            btnDeleteTransaction.BackColor = Color.FromArgb(234, 234, 234);
+            btnDeleteTransaction.BackgroundColor = Color.FromArgb(234, 234, 234);
+            btnDeleteTransaction.BorderColor = Color.PaleVioletRed;
+            btnDeleteTransaction.BorderRadius = 11;
+            btnDeleteTransaction.BorderSize = 0;
+            btnDeleteTransaction.Enabled = false;
+            btnDeleteTransaction.FlatAppearance.BorderSize = 0;
+            btnDeleteTransaction.FlatStyle = FlatStyle.Flat;
+            btnDeleteTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            btnDeleteTransaction.ForeColor = Color.White;
+            btnDeleteTransaction.Location = new Point(795, 3);
+            btnDeleteTransaction.Name = "btnDeleteTransaction";
+            btnDeleteTransaction.Padding = new Padding(1, 0, 0, 0);
+            btnDeleteTransaction.Size = new Size(57, 24);
+            btnDeleteTransaction.TabIndex = 87;
+            btnDeleteTransaction.Text = "Delete";
+            btnDeleteTransaction.TextColor = Color.White;
+            btnDeleteTransaction.UseVisualStyleBackColor = false;
+            btnDeleteTransaction.Click += BtnDeleteTransaction_Click;
+            // 
+            // lblTotalFiatAmount
+            // 
+            lblTotalFiatAmount.AutoSize = true;
+            lblTotalFiatAmount.ForeColor = Color.Gray;
+            lblTotalFiatAmount.Location = new Point(308, 8);
+            lblTotalFiatAmount.Name = "lblTotalFiatAmount";
+            lblTotalFiatAmount.Size = new Size(53, 15);
+            lblTotalFiatAmount.TabIndex = 83;
+            lblTotalFiatAmount.Text = "Fiat total";
+            toolTip1.SetToolTip(lblTotalFiatAmount, "Fiat total");
+            // 
+            // lblTotalBTCAmount
+            // 
+            lblTotalBTCAmount.AutoSize = true;
+            lblTotalBTCAmount.ForeColor = Color.Gray;
+            lblTotalBTCAmount.Location = new Point(408, 8);
+            lblTotalBTCAmount.Name = "lblTotalBTCAmount";
+            lblTotalBTCAmount.Size = new Size(53, 15);
+            lblTotalBTCAmount.TabIndex = 82;
+            lblTotalBTCAmount.Text = "BTC total";
+            toolTip1.SetToolTip(lblTotalBTCAmount, "BTC total");
+            // 
             // btnHelpTransactionList
             // 
             btnHelpTransactionList.BackColor = Color.FromArgb(255, 192, 128);
@@ -2190,6 +2193,7 @@
             // 
             panelScrollbarContainer.BackColor = Color.White;
             panelScrollbarContainer.Controls.Add(vScrollBar1);
+            panelScrollbarContainer.Controls.Add(panel14);
             panelScrollbarContainer.Controls.Add(panel12);
             panelScrollbarContainer.Location = new Point(847, 511);
             panelScrollbarContainer.Name = "panelScrollbarContainer";
@@ -2203,6 +2207,14 @@
             vScrollBar1.Size = new Size(23, 177);
             vScrollBar1.TabIndex = 71;
             vScrollBar1.Scroll += VScrollBar1_Scroll;
+            // 
+            // panel14
+            // 
+            panel14.BackColor = SystemColors.ButtonFace;
+            panel14.Location = new Point(2, 135);
+            panel14.Name = "panel14";
+            panel14.Size = new Size(23, 65);
+            panel14.TabIndex = 79;
             // 
             // panel12
             // 
@@ -2237,15 +2249,15 @@
             btnMoveWindow.MouseDown += BtnMoveWindow_MouseDown;
             btnMoveWindow.MouseUp += BtnMoveWindow_MouseUp;
             // 
-            // panel14
+            // panelChartOuter
             // 
-            panel14.BackColor = Color.FromArgb(255, 224, 192);
-            panel14.Controls.Add(panelChartContainer);
-            panel14.Location = new Point(12, 55);
-            panel14.Name = "panel14";
-            panel14.Size = new Size(861, 435);
-            panel14.TabIndex = 85;
-            panel14.Paint += panel14_Paint;
+            panelChartOuter.BackColor = Color.FromArgb(255, 224, 192);
+            panelChartOuter.Controls.Add(panelChartContainer);
+            panelChartOuter.Location = new Point(12, 55);
+            panelChartOuter.Name = "panelChartOuter";
+            panelChartOuter.Size = new Size(861, 434);
+            panelChartOuter.TabIndex = 85;
+            panelChartOuter.Paint += PanelChartOuter_Paint;
             // 
             // panelChartContainer
             // 
@@ -2261,7 +2273,7 @@
             panelChartContainer.Controls.Add(panel8);
             panelChartContainer.Location = new Point(1, 1);
             panelChartContainer.Name = "panelChartContainer";
-            panelChartContainer.Size = new Size(859, 433);
+            panelChartContainer.Size = new Size(859, 432);
             panelChartContainer.TabIndex = 0;
             // 
             // panelNoRefreshMessage
@@ -2864,7 +2876,7 @@
             // panel17
             // 
             panel17.BackColor = Color.FromArgb(255, 224, 192);
-            panel17.Controls.Add(btnExpandChart);
+            panel17.Controls.Add(btnExpandShrinkChart);
             panel17.Controls.Add(btnHelpChart);
             panel17.Controls.Add(label39);
             panel17.Controls.Add(btnPriceChartScaleLinear);
@@ -2875,27 +2887,27 @@
             panel17.Size = new Size(860, 25);
             panel17.TabIndex = 79;
             // 
-            // btnExpandChart
+            // btnExpandShrinkChart
             // 
-            btnExpandChart.BackColor = Color.FromArgb(255, 192, 128);
-            btnExpandChart.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnExpandChart.BorderColor = Color.PaleVioletRed;
-            btnExpandChart.BorderRadius = 12;
-            btnExpandChart.BorderSize = 0;
-            btnExpandChart.FlatAppearance.BorderSize = 0;
-            btnExpandChart.FlatStyle = FlatStyle.Flat;
-            btnExpandChart.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            btnExpandChart.ForeColor = Color.White;
-            btnExpandChart.Location = new Point(418, 0);
-            btnExpandChart.Name = "btnExpandChart";
-            btnExpandChart.Padding = new Padding(2, 0, 0, 0);
-            btnExpandChart.Size = new Size(24, 24);
-            btnExpandChart.TabIndex = 87;
-            btnExpandChart.TabStop = false;
-            btnExpandChart.Text = "▼";
-            btnExpandChart.TextColor = Color.White;
-            btnExpandChart.UseVisualStyleBackColor = false;
-            btnExpandChart.Click += btnExpandChart_Click;
+            btnExpandShrinkChart.BackColor = Color.FromArgb(255, 192, 128);
+            btnExpandShrinkChart.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnExpandShrinkChart.BorderColor = Color.PaleVioletRed;
+            btnExpandShrinkChart.BorderRadius = 12;
+            btnExpandShrinkChart.BorderSize = 0;
+            btnExpandShrinkChart.FlatAppearance.BorderSize = 0;
+            btnExpandShrinkChart.FlatStyle = FlatStyle.Flat;
+            btnExpandShrinkChart.Font = new Font("Century Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            btnExpandShrinkChart.ForeColor = Color.White;
+            btnExpandShrinkChart.Location = new Point(0, 0);
+            btnExpandShrinkChart.Name = "btnExpandShrinkChart";
+            btnExpandShrinkChart.Padding = new Padding(2, 0, 0, 0);
+            btnExpandShrinkChart.Size = new Size(24, 24);
+            btnExpandShrinkChart.TabIndex = 87;
+            btnExpandShrinkChart.TabStop = false;
+            btnExpandShrinkChart.Text = "▼";
+            btnExpandShrinkChart.TextColor = Color.White;
+            btnExpandShrinkChart.UseVisualStyleBackColor = false;
+            btnExpandShrinkChart.Click += BtnExpandShrinkChart_Click;
             // 
             // btnHelpChart
             // 
@@ -2925,7 +2937,7 @@
             label39.BackColor = Color.Transparent;
             label39.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             label39.ForeColor = Color.LightSlateGray;
-            label39.Location = new Point(2, 0);
+            label39.Location = new Point(26, 0);
             label39.Name = "label39";
             label39.Padding = new Padding(0, 2, 0, 0);
             label39.Size = new Size(234, 19);
@@ -3099,6 +3111,7 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 103;
             pictureBox1.TabStop = false;
+            pictureBox1.Click += pictureBox1_Click;
             // 
             // pictureBox2
             // 
@@ -3109,16 +3122,17 @@
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 104;
             pictureBox2.TabStop = false;
+            pictureBox2.Click += pictureBox2_Click;
             // 
             // ExpandPanelTimerVert
             // 
             ExpandPanelTimerVert.Interval = 1;
-            ExpandPanelTimerVert.Tick += ExpandCurrencyTimer_Tick;
+            ExpandPanelTimerVert.Tick += ExpandPanelTimerVert_Tick;
             // 
             // ShrinkPanelTimerVert
             // 
             ShrinkPanelTimerVert.Interval = 1;
-            ShrinkPanelTimerVert.Tick += ShrinkCurrencyTimer_Tick;
+            ShrinkPanelTimerVert.Tick += ShrinkPanelTimerVert_Tick;
             // 
             // btnPriceRefresh
             // 
@@ -4246,6 +4260,31 @@
             btnUSD.UseVisualStyleBackColor = false;
             btnUSD.Click += BtnUSD_Click;
             // 
+            // panelTXListLowerRow
+            // 
+            panelTXListLowerRow.BackColor = Color.White;
+            panelTXListLowerRow.Controls.Add(panelTransactionLabel);
+            panelTXListLowerRow.Controls.Add(btnListReverse);
+            panelTXListLowerRow.Controls.Add(lblFinalCostBasis);
+            panelTXListLowerRow.Controls.Add(lblTotalBTCAmount);
+            panelTXListLowerRow.Controls.Add(lblTotalFiatAmount);
+            panelTXListLowerRow.Controls.Add(btnDeleteTransaction);
+            panelTXListLowerRow.Controls.Add(btnCancelDelete);
+            panelTXListLowerRow.Controls.Add(lblDisabledDeleteButtonText);
+            panelTXListLowerRow.Controls.Add(btnConfirmDelete);
+            panelTXListLowerRow.Location = new Point(13, 713);
+            panelTXListLowerRow.Name = "panelTXListLowerRow";
+            panelTXListLowerRow.Size = new Size(859, 31);
+            panelTXListLowerRow.TabIndex = 145;
+            // 
+            // panel13
+            // 
+            panel13.BackColor = Color.FromArgb(255, 224, 192);
+            panel13.Location = new Point(12, 722);
+            panel13.Name = "panel13";
+            panel13.Size = new Size(861, 23);
+            panel13.TabIndex = 146;
+            // 
             // Cubit
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -4254,6 +4293,9 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
+            Controls.Add(panel10);
+            Controls.Add(panelTXListLowerRow);
+            Controls.Add(panel13);
             Controls.Add(btnCurrency);
             Controls.Add(panelCurrency);
             Controls.Add(panelTopControls);
@@ -4263,8 +4305,8 @@
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(panel16);
-            Controls.Add(panel14);
-            Controls.Add(panel13);
+            Controls.Add(panelChartOuter);
+            Controls.Add(panelTXListOuter);
             Controls.Add(btnMoveWindow);
             Controls.Add(panelAddTransactionContainer);
             Controls.Add(panelHelpTextContainer);
@@ -4311,17 +4353,15 @@
             panelColors.ResumeLayout(false);
             panelColorMenu.ResumeLayout(false);
             panelAddTransactionContainer.ResumeLayout(false);
-            panel13.ResumeLayout(false);
+            panelTXListOuter.ResumeLayout(false);
             panelTransactionsContainer.ResumeLayout(false);
-            panelTXListFooter.ResumeLayout(false);
-            panelTXListFooter.PerformLayout();
-            panelTransactionLabel.ResumeLayout(false);
-            panelTransactionLabel.PerformLayout();
             panel11.ResumeLayout(false);
             panel11.PerformLayout();
+            panelTransactionLabel.ResumeLayout(false);
+            panelTransactionLabel.PerformLayout();
             panelScrollbarContainer.ResumeLayout(false);
             panel12.ResumeLayout(false);
-            panel14.ResumeLayout(false);
+            panelChartOuter.ResumeLayout(false);
             panelChartContainer.ResumeLayout(false);
             panelNoRefreshMessage.ResumeLayout(false);
             panel23.ResumeLayout(false);
@@ -4371,6 +4411,8 @@
             ((System.ComponentModel.ISupportInitialize)pictureBoxBTCLogo).EndInit();
             panelCurrency.ResumeLayout(false);
             panelCurrencyMenu.ResumeLayout(false);
+            panelTXListLowerRow.ResumeLayout(false);
+            panelTXListLowerRow.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -4439,7 +4481,7 @@
         private Label label15;
         private Label lblAddDataPriceEstimateType;
         private ListView listViewTransactions;
-        private Panel panel13;
+        private Panel panelTXListOuter;
         private Panel panelTransactionsContainer;
         private CustomControls.RJControls.RJButton btnMoveWindow;
         private Panel panelScrollbarContainer;
@@ -4449,7 +4491,7 @@
         private Panel panel11;
         private Panel panel12;
         private Label label34;
-        private Panel panel14;
+        private Panel panelChartOuter;
         private Panel panelChartContainer;
         private ScottPlot.FormsPlot formsPlot1;
         private CustomControls.RJControls.RJButton btnPriceChartScaleLinear;
@@ -4531,7 +4573,6 @@
         private Panel panel29;
         private Panel panel30;
         private Panel panel32;
-        private Label label51;
         private Label label33;
         private Label label32;
         private Label label31;
@@ -4659,6 +4700,10 @@
         private Panel panelNoRefreshMessage;
         private Label label78;
         private Label label89;
-        private CustomControls.RJControls.RJButton btnExpandChart;
+        private CustomControls.RJControls.RJButton btnExpandShrinkChart;
+        private CustomControls.RJControls.RJButton btnExpandShrinkList;
+        private Panel panelTXListLowerRow;
+        private Panel panel13;
+        private Panel panel14;
     }
 }
