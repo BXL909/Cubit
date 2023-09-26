@@ -227,6 +227,7 @@
             ShrinkPanelTimerVert = new System.Windows.Forms.Timer(components);
             toolTip1 = new ToolTip(components);
             btnPriceRefresh = new CustomControls.RJControls.RJButton();
+            btnSummary = new CustomControls.RJControls.RJButton();
             panel9 = new Panel();
             panelSummaryContainer = new Panel();
             panel31 = new Panel();
@@ -303,7 +304,6 @@
             lblSummaryTotalFiatSpentOnBuyTransactions = new Label();
             lblSummaryTotalBTCRecdFromBuyTransactions = new Label();
             panelTopControls = new Panel();
-            btnSummary = new CustomControls.RJControls.RJButton();
             btnAbout = new CustomControls.RJControls.RJButton();
             pictureBoxBTCLogo = new PictureBox();
             lblCurrentPrice = new Label();
@@ -553,9 +553,9 @@
             label1.ForeColor = Color.Gray;
             label1.Location = new Point(7, 8);
             label1.Name = "label1";
-            label1.Size = new Size(73, 17);
+            label1.Size = new Size(103, 17);
             label1.TabIndex = 27;
-            label1.Text = "Price (USD)";
+            label1.Text = "Price paid (USD)";
             toolTip1.SetToolTip(label1, "The price you paid/received for the bitcoin.");
             // 
             // textBoxPriceInput
@@ -1409,6 +1409,7 @@
             btnHelpAddTransaction.TabStop = false;
             btnHelpAddTransaction.Text = "❔";
             btnHelpAddTransaction.TextColor = Color.White;
+            toolTip1.SetToolTip(btnHelpAddTransaction, "More info about adding transactions");
             btnHelpAddTransaction.UseVisualStyleBackColor = false;
             btnHelpAddTransaction.Click += BtnHelpAddTransaction_Click;
             // 
@@ -1689,9 +1690,9 @@
             panelTXListOuter.Controls.Add(panel11);
             panelTXListOuter.Location = new Point(12, 510);
             panelTXListOuter.Name = "panelTXListOuter";
-            panelTXListOuter.Size = new Size(861, 234);
+            panelTXListOuter.Size = new Size(861, 235);
             panelTXListOuter.TabIndex = 81;
-            panelTXListOuter.Paint += panelTXListOuter_Paint;
+            panelTXListOuter.Paint += PanelTXListOuter_Paint;
             // 
             // panelTransactionsContainer
             // 
@@ -1708,9 +1709,9 @@
             // panelTXListFooter
             // 
             panelTXListFooter.BackColor = Color.White;
-            panelTXListFooter.Location = new Point(1, 185);
+            panelTXListFooter.Location = new Point(1, 192);
             panelTXListFooter.Name = "panelTXListFooter";
-            panelTXListFooter.Size = new Size(859, 48);
+            panelTXListFooter.Size = new Size(859, 55);
             panelTXListFooter.TabIndex = 78;
             // 
             // panel11
@@ -1757,6 +1758,7 @@
             btnExpandShrinkList.TabStop = false;
             btnExpandShrinkList.Text = "▲";
             btnExpandShrinkList.TextColor = Color.White;
+            toolTip1.SetToolTip(btnExpandShrinkList, "Expand or shrink transaction table");
             btnExpandShrinkList.UseVisualStyleBackColor = false;
             btnExpandShrinkList.Click += BtnExpandShrinkList_Click;
             // 
@@ -1769,10 +1771,10 @@
             label89.Location = new Point(30, 0);
             label89.Name = "label89";
             label89.Padding = new Padding(0, 2, 0, 0);
-            label89.Size = new Size(27, 19);
+            label89.Size = new Size(28, 19);
             label89.TabIndex = 19;
-            label89.Text = "B/S";
-            toolTip1.SetToolTip(label89, "Buy/Sell");
+            label89.Text = "R/S";
+            toolTip1.SetToolTip(label89, "Receive/Spend BTC");
             // 
             // label30
             // 
@@ -1840,7 +1842,7 @@
             label32.Size = new Size(58, 19);
             label32.TabIndex = 12;
             label32.Text = "BTC total";
-            toolTip1.SetToolTip(label32, "The fiat value change of the BTC amount now compared to at the time of transaction, expressed as a percentage");
+            toolTip1.SetToolTip(label32, "Bitcoin running total");
             // 
             // label31
             // 
@@ -1854,7 +1856,7 @@
             label31.Size = new Size(63, 19);
             label31.TabIndex = 11;
             label31.Text = "USD total";
-            toolTip1.SetToolTip(label31, "The fiat value change of the BTC amount now compared to at the time of transaction");
+            toolTip1.SetToolTip(label31, "Fiat running total");
             // 
             // label29
             // 
@@ -1952,7 +1954,7 @@
             label23.Size = new Size(73, 19);
             label23.TabIndex = 3;
             label23.Text = "Price (USD)";
-            toolTip1.SetToolTip(label23, "Price at time of transaction (in selected currency)");
+            toolTip1.SetToolTip(label23, "Price paid (in selected currency)");
             // 
             // label16
             // 
@@ -2186,6 +2188,7 @@
             btnHelpTransactionList.TabStop = false;
             btnHelpTransactionList.Text = "❔";
             btnHelpTransactionList.TextColor = Color.White;
+            toolTip1.SetToolTip(btnHelpTransactionList, "More info about transaction table");
             btnHelpTransactionList.UseVisualStyleBackColor = false;
             btnHelpTransactionList.Click += BtnHelpTransactionList_Click;
             // 
@@ -2213,7 +2216,7 @@
             panel14.BackColor = SystemColors.ButtonFace;
             panel14.Location = new Point(2, 135);
             panel14.Name = "panel14";
-            panel14.Size = new Size(23, 65);
+            panel14.Size = new Size(23, 79);
             panel14.TabIndex = 79;
             // 
             // panel12
@@ -2906,6 +2909,7 @@
             btnExpandShrinkChart.TabStop = false;
             btnExpandShrinkChart.Text = "▼";
             btnExpandShrinkChart.TextColor = Color.White;
+            toolTip1.SetToolTip(btnExpandShrinkChart, "Expand or shrink chart");
             btnExpandShrinkChart.UseVisualStyleBackColor = false;
             btnExpandShrinkChart.Click += BtnExpandShrinkChart_Click;
             // 
@@ -2928,6 +2932,7 @@
             btnHelpChart.TabStop = false;
             btnHelpChart.Text = "❔";
             btnHelpChart.TextColor = Color.White;
+            toolTip1.SetToolTip(btnHelpChart, "More info about chart");
             btnHelpChart.UseVisualStyleBackColor = false;
             btnHelpChart.Click += BtnHelpChart_Click;
             // 
@@ -3111,7 +3116,7 @@
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox1.TabIndex = 103;
             pictureBox1.TabStop = false;
-            pictureBox1.Click += pictureBox1_Click;
+            pictureBox1.Click += PictureBox1_Click;
             // 
             // pictureBox2
             // 
@@ -3122,7 +3127,7 @@
             pictureBox2.SizeMode = PictureBoxSizeMode.StretchImage;
             pictureBox2.TabIndex = 104;
             pictureBox2.TabStop = false;
-            pictureBox2.Click += pictureBox2_Click;
+            pictureBox2.Click += PictureBox2_Click;
             // 
             // ExpandPanelTimerVert
             // 
@@ -3158,6 +3163,28 @@
             toolTip1.SetToolTip(btnPriceRefresh, "Refresh the current price");
             btnPriceRefresh.UseVisualStyleBackColor = false;
             btnPriceRefresh.Click += BtnPriceRefresh_Click;
+            // 
+            // btnSummary
+            // 
+            btnSummary.BackColor = Color.FromArgb(255, 192, 128);
+            btnSummary.BackgroundColor = Color.FromArgb(255, 192, 128);
+            btnSummary.BorderColor = Color.PaleVioletRed;
+            btnSummary.BorderRadius = 11;
+            btnSummary.BorderSize = 0;
+            btnSummary.FlatAppearance.BorderSize = 0;
+            btnSummary.FlatStyle = FlatStyle.Flat;
+            btnSummary.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            btnSummary.ForeColor = Color.White;
+            btnSummary.Location = new Point(224, 7);
+            btnSummary.Name = "btnSummary";
+            btnSummary.Padding = new Padding(1, 0, 0, 0);
+            btnSummary.Size = new Size(78, 24);
+            btnSummary.TabIndex = 145;
+            btnSummary.Text = "Summary";
+            btnSummary.TextColor = Color.White;
+            toolTip1.SetToolTip(btnSummary, "View Cubit's summary");
+            btnSummary.UseVisualStyleBackColor = false;
+            btnSummary.Click += BtnSummary_Click;
             // 
             // panel9
             // 
@@ -4024,27 +4051,6 @@
             panelTopControls.Size = new Size(392, 39);
             panelTopControls.TabIndex = 120;
             // 
-            // btnSummary
-            // 
-            btnSummary.BackColor = Color.FromArgb(255, 192, 128);
-            btnSummary.BackgroundColor = Color.FromArgb(255, 192, 128);
-            btnSummary.BorderColor = Color.PaleVioletRed;
-            btnSummary.BorderRadius = 11;
-            btnSummary.BorderSize = 0;
-            btnSummary.FlatAppearance.BorderSize = 0;
-            btnSummary.FlatStyle = FlatStyle.Flat;
-            btnSummary.Font = new Font("Century Gothic", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            btnSummary.ForeColor = Color.White;
-            btnSummary.Location = new Point(224, 7);
-            btnSummary.Name = "btnSummary";
-            btnSummary.Padding = new Padding(1, 0, 0, 0);
-            btnSummary.Size = new Size(78, 24);
-            btnSummary.TabIndex = 145;
-            btnSummary.Text = "Summary";
-            btnSummary.TextColor = Color.White;
-            btnSummary.UseVisualStyleBackColor = false;
-            btnSummary.Click += BtnSummary_Click;
-            // 
             // btnAbout
             // 
             btnAbout.BackColor = Color.FromArgb(255, 192, 128);
@@ -4293,15 +4299,15 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
-            Controls.Add(panel10);
             Controls.Add(panelTXListLowerRow);
             Controls.Add(panel13);
+            Controls.Add(panel10);
+            Controls.Add(panelScrollbarContainer);
             Controls.Add(btnCurrency);
             Controls.Add(panelCurrency);
             Controls.Add(panelTopControls);
             Controls.Add(panel9);
             Controls.Add(panelColors);
-            Controls.Add(panelScrollbarContainer);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(panel16);
