@@ -137,11 +137,12 @@ namespace Cubit
             }
         }
 
-        private void About_Load(object sender, EventArgs e)
+        private async void About_Load(object sender, EventArgs e)
         {
-            CheckForUpdates();
+            await CheckForUpdatesAsync();
         }
 
+        /*
         private void CheckForUpdates()
         {
             try
@@ -164,6 +165,44 @@ namespace Cubit
                         linkLabelDownloadUpdate.Visible = true;
                     });
 
+                }
+                else
+                {
+                    lblLatestVersion.Invoke((MethodInvoker)delegate
+                    {
+                        lblLatestVersion.Text = "(up to date)";
+                    });
+                    linkLabelDownloadUpdate.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                HandleException(ex);
+            }
+        }
+        */
+        private async Task CheckForUpdatesAsync()
+        {
+            try
+            {
+                CurrentVersion ??= "xx";
+                lblCurrentVersion.Text = "Cubit v" + CurrentVersion.ToString();
+
+                using HttpClient httpClient = new();
+                string VersionURL = "https://cubit.btcdir.org/CubitVersion.txt";
+                string LatestVersion = await httpClient.GetStringAsync(VersionURL);
+
+                if (LatestVersion != CurrentVersion)
+                {
+                    lblLatestVersion.Invoke((MethodInvoker)delegate
+                    {
+                        lblLatestVersion.Text = "v" + LatestVersion + " is available";
+                    });
+                    linkLabelDownloadUpdate.Invoke((MethodInvoker)delegate
+                    {
+                        linkLabelDownloadUpdate.Text = "Download " + LatestVersion;
+                        linkLabelDownloadUpdate.Visible = true;
+                    });
                 }
                 else
                 {

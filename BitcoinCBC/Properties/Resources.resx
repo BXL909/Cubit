@@ -181,6 +181,9 @@
   <data name="BitcoinLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BitcoinLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BG" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="comboBackgroundSmaller" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\comboBackgroundSmaller.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -214,10 +217,13 @@
   <data name="halving" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\halving.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Satsuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Satsuma.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Rick" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Rick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Satsuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Satsuma.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="BigBTC" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BigBTC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
