@@ -23,6 +23,7 @@
 	<ItemGroup>
 		<None Remove="BitcoinCBC.Designer.csOLD" />
 		<None Remove="Resources\BG.png" />
+		<None Remove="Resources\BigBTC.png" />
 		<None Remove="Resources\BitcoinCBCRobotActive5.png" />
 		<None Remove="Resources\SpeechBubble.png" />
 	</ItemGroup>
