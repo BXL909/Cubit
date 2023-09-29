@@ -146,6 +146,11 @@
             label16 = new Label();
             panel13 = new Panel();
             panelTXListLowerRow = new Panel();
+            label93 = new Label();
+            lblBTCTotalValue = new Label();
+            label91 = new Label();
+            label51 = new Label();
+            lblROI = new Label();
             panelTransactionLabel = new Panel();
             btnShowHideLabel = new CustomControls.RJControls.RJButton();
             lblShowHideLabel = new Label();
@@ -257,6 +262,7 @@
             label73 = new Label();
             lblFirstTXDate = new Label();
             panelSummaryBTCHeld = new Panel();
+            label92 = new Label();
             label86 = new Label();
             panel26 = new Panel();
             label72 = new Label();
@@ -1761,7 +1767,7 @@
             btnExpandShrinkList.TabStop = false;
             btnExpandShrinkList.Text = "▲";
             btnExpandShrinkList.TextColor = Color.White;
-            toolTip1.SetToolTip(btnExpandShrinkList, "Expand or shrink transaction table");
+            toolTip1.SetToolTip(btnExpandShrinkList, "Expand or shrink transaction list");
             btnExpandShrinkList.UseVisualStyleBackColor = false;
             btnExpandShrinkList.Click += BtnExpandShrinkList_Click;
             // 
@@ -1831,7 +1837,7 @@
             label33.Size = new Size(68, 19);
             label33.TabIndex = 13;
             label33.Text = "Cost basis";
-            toolTip1.SetToolTip(label33, "Rolling cost basis of your bitcoin up to and including this transaction");
+            toolTip1.SetToolTip(label33, "Rolling cost basis of your bitcoin up to and including this transaction.\r\nGreen if your cost basis is lower than the current price.\r\nRed if your cost basis is greater than the current price.");
             // 
             // label32
             // 
@@ -1887,7 +1893,7 @@
             label28.Size = new Size(28, 19);
             label28.TabIndex = 8;
             label28.Text = "BTC";
-            toolTip1.SetToolTip(label28, "BTC part of transaction");
+            toolTip1.SetToolTip(label28, "BTC amount exchanged in the transaction.\r\nGreen is incoming BTC, such as when buying bitcoin.\r\nRed is outgoing BTC, such as when selling bitcoin.");
             // 
             // label27
             // 
@@ -1901,7 +1907,7 @@
             label27.Size = new Size(28, 19);
             label27.TabIndex = 7;
             label27.Text = "Est.";
-            toolTip1.SetToolTip(label27, "Y - Estimate used, N - Not an estimate");
+            toolTip1.SetToolTip(label27, "Y - Estimate used\r\nN - Not an estimate");
             // 
             // label26
             // 
@@ -1915,7 +1921,7 @@
             label26.Size = new Size(33, 19);
             label26.TabIndex = 6;
             label26.Text = "USD";
-            toolTip1.SetToolTip(label26, "Fiat value of transaction");
+            toolTip1.SetToolTip(label26, "Fiat value exchanged in the transaction.\r\nRed is outgoing fiat money, such as when buying bitcoin.\r\nGreen is incoming fiat money, such as when selling bitcoin.");
             // 
             // label25
             // 
@@ -1943,7 +1949,7 @@
             label24.Size = new Size(28, 19);
             label24.TabIndex = 4;
             label24.Text = "Est.";
-            toolTip1.SetToolTip(label24, "Estimate type: AM - Annual Median, MM - Monthly Median, - DA - Daily average, N - not an estimate");
+            toolTip1.SetToolTip(label24, "Estimate type: \r\nAM - Annual Median\r\nMM - Monthly Median\r\nDA - Daily average\r\nN - not an estimate");
             // 
             // label23
             // 
@@ -1985,6 +1991,11 @@
             // panelTXListLowerRow
             // 
             panelTXListLowerRow.BackColor = Color.White;
+            panelTXListLowerRow.Controls.Add(label93);
+            panelTXListLowerRow.Controls.Add(lblBTCTotalValue);
+            panelTXListLowerRow.Controls.Add(label91);
+            panelTXListLowerRow.Controls.Add(label51);
+            panelTXListLowerRow.Controls.Add(lblROI);
             panelTXListLowerRow.Controls.Add(panelTransactionLabel);
             panelTXListLowerRow.Controls.Add(btnListReverse);
             panelTXListLowerRow.Controls.Add(lblFinalCostBasis);
@@ -1998,6 +2009,68 @@
             panelTXListLowerRow.Name = "panelTXListLowerRow";
             panelTXListLowerRow.Size = new Size(859, 31);
             panelTXListLowerRow.TabIndex = 145;
+            // 
+            // label93
+            // 
+            label93.AutoSize = true;
+            label93.BackColor = Color.FromArgb(255, 240, 240);
+            label93.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label93.ForeColor = Color.Gray;
+            label93.Location = new Point(308, 8);
+            label93.Name = "label93";
+            label93.Size = new Size(12, 15);
+            label93.TabIndex = 118;
+            label93.Text = "-";
+            toolTip1.SetToolTip(label93, "Fiat total");
+            label93.Visible = false;
+            // 
+            // lblBTCTotalValue
+            // 
+            lblBTCTotalValue.AutoSize = true;
+            lblBTCTotalValue.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            lblBTCTotalValue.ForeColor = Color.Gray;
+            lblBTCTotalValue.Location = new Point(482, 9);
+            lblBTCTotalValue.Name = "lblBTCTotalValue";
+            lblBTCTotalValue.Size = new Size(56, 13);
+            lblBTCTotalValue.TabIndex = 114;
+            lblBTCTotalValue.Text = "Fiat value";
+            toolTip1.SetToolTip(lblBTCTotalValue, "Fiat value");
+            // 
+            // label91
+            // 
+            label91.AutoSize = true;
+            label91.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            label91.ForeColor = Color.Gray;
+            label91.Location = new Point(566, 9);
+            label91.Name = "label91";
+            label91.Size = new Size(10, 13);
+            label91.TabIndex = 117;
+            label91.Text = ")";
+            toolTip1.SetToolTip(label91, "BTC total");
+            // 
+            // label51
+            // 
+            label51.AutoSize = true;
+            label51.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            label51.ForeColor = Color.Gray;
+            label51.Location = new Point(468, 9);
+            label51.Name = "label51";
+            label51.Size = new Size(10, 13);
+            label51.TabIndex = 116;
+            label51.Text = "(";
+            toolTip1.SetToolTip(label51, "BTC total");
+            // 
+            // lblROI
+            // 
+            lblROI.AutoSize = true;
+            lblROI.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            lblROI.ForeColor = Color.Gray;
+            lblROI.Location = new Point(543, 9);
+            lblROI.Name = "lblROI";
+            lblROI.Size = new Size(22, 13);
+            lblROI.TabIndex = 115;
+            lblROI.Text = "0%";
+            toolTip1.SetToolTip(lblROI, "BTC total");
             // 
             // panelTransactionLabel
             // 
@@ -2082,6 +2155,8 @@
             // lblFinalCostBasis
             // 
             lblFinalCostBasis.AutoSize = true;
+            lblFinalCostBasis.BackColor = Color.Honeydew;
+            lblFinalCostBasis.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblFinalCostBasis.ForeColor = Color.Gray;
             lblFinalCostBasis.Location = new Point(708, 8);
             lblFinalCostBasis.Name = "lblFinalCostBasis";
@@ -2093,8 +2168,10 @@
             // lblTotalBTCAmount
             // 
             lblTotalBTCAmount.AutoSize = true;
-            lblTotalBTCAmount.ForeColor = Color.Gray;
-            lblTotalBTCAmount.Location = new Point(408, 8);
+            lblTotalBTCAmount.BackColor = Color.FromArgb(255, 246, 232);
+            lblTotalBTCAmount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            lblTotalBTCAmount.ForeColor = Color.DarkOrange;
+            lblTotalBTCAmount.Location = new Point(407, 8);
             lblTotalBTCAmount.Name = "lblTotalBTCAmount";
             lblTotalBTCAmount.Size = new Size(53, 15);
             lblTotalBTCAmount.TabIndex = 82;
@@ -2104,6 +2181,8 @@
             // lblTotalFiatAmount
             // 
             lblTotalFiatAmount.AutoSize = true;
+            lblTotalFiatAmount.BackColor = Color.FromArgb(255, 240, 240);
+            lblTotalFiatAmount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
             lblTotalFiatAmount.ForeColor = Color.Gray;
             lblTotalFiatAmount.Location = new Point(308, 8);
             lblTotalFiatAmount.Name = "lblTotalFiatAmount";
@@ -2124,7 +2203,7 @@
             btnDeleteTransaction.FlatStyle = FlatStyle.Flat;
             btnDeleteTransaction.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnDeleteTransaction.ForeColor = Color.White;
-            btnDeleteTransaction.Location = new Point(795, 3);
+            btnDeleteTransaction.Location = new Point(797, 3);
             btnDeleteTransaction.Name = "btnDeleteTransaction";
             btnDeleteTransaction.Padding = new Padding(1, 0, 0, 0);
             btnDeleteTransaction.Size = new Size(57, 24);
@@ -2146,7 +2225,7 @@
             btnCancelDelete.FlatStyle = FlatStyle.Flat;
             btnCancelDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnCancelDelete.ForeColor = Color.White;
-            btnCancelDelete.Location = new Point(828, 2);
+            btnCancelDelete.Location = new Point(830, 2);
             btnCancelDelete.Name = "btnCancelDelete";
             btnCancelDelete.Padding = new Padding(1, 0, 0, 0);
             btnCancelDelete.Size = new Size(24, 24);
@@ -2165,7 +2244,7 @@
             lblDisabledDeleteButtonText.Enabled = false;
             lblDisabledDeleteButtonText.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblDisabledDeleteButtonText.ForeColor = Color.Gray;
-            lblDisabledDeleteButtonText.Location = new Point(803, 6);
+            lblDisabledDeleteButtonText.Location = new Point(805, 6);
             lblDisabledDeleteButtonText.Name = "lblDisabledDeleteButtonText";
             lblDisabledDeleteButtonText.Size = new Size(45, 17);
             lblDisabledDeleteButtonText.TabIndex = 92;
@@ -2182,7 +2261,7 @@
             btnConfirmDelete.FlatStyle = FlatStyle.Flat;
             btnConfirmDelete.Font = new Font("Segoe UI", 6.75F, FontStyle.Regular, GraphicsUnit.Point);
             btnConfirmDelete.ForeColor = Color.White;
-            btnConfirmDelete.Location = new Point(796, 2);
+            btnConfirmDelete.Location = new Point(798, 2);
             btnConfirmDelete.Name = "btnConfirmDelete";
             btnConfirmDelete.Padding = new Padding(1, 0, 0, 0);
             btnConfirmDelete.Size = new Size(24, 24);
@@ -3511,9 +3590,9 @@
             label73.ForeColor = Color.DarkGray;
             label73.Location = new Point(417, 0);
             label73.Name = "label73";
-            label73.Size = new Size(198, 15);
+            label73.Size = new Size(182, 15);
             label73.TabIndex = 111;
-            label73.Text = "of the eventual bitcoin supply (21m)";
+            label73.Text = "of the eventual 21 million supply.";
             // 
             // lblFirstTXDate
             // 
@@ -3527,6 +3606,7 @@
             // panelSummaryBTCHeld
             // 
             panelSummaryBTCHeld.BackColor = Color.FromArgb(255, 246, 232);
+            panelSummaryBTCHeld.Controls.Add(label92);
             panelSummaryBTCHeld.Controls.Add(label86);
             panelSummaryBTCHeld.Controls.Add(panel26);
             panelSummaryBTCHeld.Controls.Add(label65);
@@ -3541,6 +3621,17 @@
             panelSummaryBTCHeld.Name = "panelSummaryBTCHeld";
             panelSummaryBTCHeld.Size = new Size(320, 111);
             panelSummaryBTCHeld.TabIndex = 121;
+            // 
+            // label92
+            // 
+            label92.AutoSize = true;
+            label92.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label92.ForeColor = Color.DarkGray;
+            label92.Location = new Point(240, 67);
+            label92.Name = "label92";
+            label92.Size = new Size(10, 15);
+            label92.TabIndex = 111;
+            label92.Text = ".";
             // 
             // label86
             // 
@@ -4372,6 +4463,10 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
+            Controls.Add(panel9);
+            Controls.Add(panelColors);
+            Controls.Add(btnCurrency);
+            Controls.Add(panelCurrency);
             Controls.Add(panel38);
             Controls.Add(panel37);
             Controls.Add(panelTXListFooter);
@@ -4380,17 +4475,13 @@
             Controls.Add(panelChartOuter);
             Controls.Add(panelTXListOuter);
             Controls.Add(panel10);
-            Controls.Add(btnCurrency);
-            Controls.Add(panelCurrency);
             Controls.Add(panelTopControls);
-            Controls.Add(panel9);
-            Controls.Add(panelColors);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(panel16);
             Controls.Add(btnMoveWindow);
-            Controls.Add(panelSummaryContainer);
             Controls.Add(panelHelpTextContainer);
+            Controls.Add(panelSummaryContainer);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;
@@ -4796,5 +4887,11 @@
         private Panel panel38;
         private Panel panel39;
         private Panel panel40;
+        private Label lblBTCTotalValue;
+        private Label lblROI;
+        private Label label91;
+        private Label label51;
+        private Label label92;
+        private Label label93;
     }
 }

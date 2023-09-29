@@ -2,6 +2,7 @@
 
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
+		<DebugType>none</DebugType>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
@@ -22,6 +23,10 @@
 
 	<ItemGroup>
 		<None Remove="BitcoinCBC.Designer.csOLD" />
+		<None Remove="dllEmbeds\Newtonsoft.Json.dll" />
+		<None Remove="dllEmbeds\ScottPlot.dll" />
+		<None Remove="dllEmbeds\ScottPlot.WinForms.dll" />
+		<None Remove="dllEmbeds\System.Drawing.Common.dll" />
 		<None Remove="Resources\BG.png" />
 		<None Remove="Resources\BigBTC.png" />
 		<None Remove="Resources\BitcoinCBCRobotActive5.png" />
@@ -30,6 +35,13 @@
 
 	<ItemGroup>
 	  <Content Include="Resources\Clogo.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="dllEmbeds\Newtonsoft.Json.dll" />
+	  <EmbeddedResource Include="dllEmbeds\ScottPlot.dll" />
+	  <EmbeddedResource Include="dllEmbeds\ScottPlot.WinForms.dll" />
+	  <EmbeddedResource Include="dllEmbeds\System.Drawing.Common.dll" />
 	</ItemGroup>
 
 	<ItemGroup>

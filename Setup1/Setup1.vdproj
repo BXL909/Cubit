@@ -15,12 +15,6 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_04FE208EBEF14E318478FA540BAAC392"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_61C2838086794205887AC6CC15F89437"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -118,6 +112,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -158,26 +160,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_04FE208EBEF14E318478FA540BAAC392"
-            {
-            "SourcePath" = "8:..\\BitcoinCBC\\bin\\Debug\\net6.0-windows\\Cubit.pdb"
-            "TargetName" = "8:Cubit.pdb"
-            "Tag" = "8:"
-            "Folder" = "8:_6A205EFF562443E7B5B93B3555C0F57D"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_61C2838086794205887AC6CC15F89437"
             {
             "SourcePath" = "8:..\\BitcoinCBC\\bin\\Debug\\net6.0-windows\\Cubit.exe"
@@ -346,7 +328,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Cubit"
         "ProductCode" = "8:{CF1DB627-B978-4A0B-9E7F-54D494E4DB71}"
-        "PackageCode" = "8:{39147754-0AA8-4ED2-9F53-C32CB4D51A48}"
+        "PackageCode" = "8:{ECBE1CC7-DD62-4538-B36A-1EBC8C019457}"
         "UpgradeCode" = "8:{0F58AEC6-B0CD-4558-B775-D036451A65C4}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"

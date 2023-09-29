@@ -2,8 +2,7 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-add second Y axis for value of holdings? (need new list pair - 1. date 2. price at the time * btc owned at the time)
-*/
+*/ 
 
 #region Using
 using Newtonsoft.Json;
@@ -18,11 +17,6 @@ using System.Drawing.Drawing2D;
 using Cubit.Properties;
 using ScottPlot;
 using ScottPlot.Plottable;
-using static ScottPlot.Plottable.PopulationPlot;
-using System.Windows.Forms;
-using System.Runtime.Intrinsics.X86;
-using System.Xml.Linq;
-using System.Linq;
 #endregion
 
 namespace Cubit
@@ -57,6 +51,7 @@ namespace Cubit
         double mostBTCReceivedInOneTransaction = 0;
         double mostFiatReceivedInOneTransaction = 0;
         double mostBTCSpentInOneTransaction = 0;
+        decimal rollingBTCAmount;
         readonly Color[] colorCodes = new Color[]
         {
             Color.FromArgb(254, 166, 154),
@@ -556,7 +551,7 @@ namespace Cubit
                     }
                     panelWelcome.Visible = false;
                     panelRobotSpeakOuter.Visible = true;
-                    InterruptAndStartNewRobotSpeak("OK. I'm ready to accept a transaction where you sold/spent bitcoin.");
+                    InterruptAndStartNewRobotSpeak("Ready to accept a transaction where you sold/spent bitcoin.");
                 }
                 else
                 {
@@ -595,7 +590,7 @@ namespace Cubit
                     }
                     panelWelcome.Visible = false;
                     panelRobotSpeakOuter.Visible = true;
-                    InterruptAndStartNewRobotSpeak("OK. I'm ready to accept a transaction where you bought/received bitcoin.");
+                    InterruptAndStartNewRobotSpeak("Ready to accept a transaction where you bought/received bitcoin.");
                 }
             }
 
@@ -1396,13 +1391,37 @@ namespace Cubit
         {
             try
             {
+                int currentRowCount = listViewTransactions.Items.Count;
+
                 DeleteTransactionFromJsonFile(TXDataToDelete);
                 await SetupTransactionsList();
-                panelWelcome.Visible = false;
-                panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("Transaction deleted.");
-                TXDataToDelete = "";
-                BtnCancelDelete_Click(sender, e); // revert buttons back to original state
+                if (listViewTransactions.Items.Count < currentRowCount) // check row was actually deleted
+                {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("Transaction deleted.");
+                    TXDataToDelete = "";
+                    BtnCancelDelete_Click(sender, e); // revert buttons back to original state
+
+
+                    btnDeleteTransaction.Invoke((MethodInvoker)delegate
+                    {
+                        btnDeleteTransaction.Enabled = false;
+                        btnDeleteTransaction.BackColor = Color.FromArgb(234, 234, 234);
+                    });
+                    lblDisabledDeleteButtonText.Invoke((MethodInvoker)delegate
+                    {
+                        lblDisabledDeleteButtonText.Visible = true;
+                        lblDisabledDeleteButtonText.BringToFront();
+                    });
+                }
+                else
+                {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("There was a problem deleting this transaction.");
+                }
+
             }
             catch (Exception ex)
             {
@@ -1714,9 +1733,12 @@ namespace Cubit
             HistoricPrices.Clear();
             await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
-            panelWelcome.Visible = false;
-            panelRobotSpeakOuter.Visible = true;
-            InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
+            if (priceInSelectedCurrency > 0)
+            {
+                panelWelcome.Visible = false;
+                panelRobotSpeakOuter.Visible = true;
+                InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
+            }
         }
 
         #endregion
@@ -1731,6 +1753,9 @@ namespace Cubit
                 var response = await client.GetStringAsync("https://bitcoinexplorer.org/api/price");
                 if (response == null)
                 {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("Failed to get current price. Please try refreshing.");
                     return ("0", "0", "0", "0");
                 }
                 var data = JObject.Parse(response);
@@ -1808,7 +1833,7 @@ namespace Cubit
             {
                 panelWelcome.Visible = false;
                 panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("You don't have this much bitcoin to sell. Are you missed some earlier transactions?");
+                InterruptAndStartNewRobotSpeak("You don't have this much bitcoin to sell. Have you missed some earlier transactions?");
                 return;
             }
 
@@ -1959,6 +1984,26 @@ namespace Cubit
                     {
                         lblFinalCostBasis.Visible = false;
                     });
+                    label51.Invoke((MethodInvoker)delegate
+                    {
+                        label51.Visible = false;
+                    });
+                    label91.Invoke((MethodInvoker)delegate
+                    {
+                        label91.Visible = false;
+                    });
+                    label93.Invoke((MethodInvoker)delegate
+                    {
+                        label93.Visible = false;
+                    });
+                    lblROI.Invoke((MethodInvoker)delegate
+                    {
+                        lblROI.Visible = false;
+                    });
+                    lblBTCTotalValue.Invoke((MethodInvoker)delegate
+                    {
+                        lblBTCTotalValue.Visible = false;
+                    });
 
                     panelScrollbarContainer.Invoke((MethodInvoker)delegate
                     {
@@ -1983,6 +2028,26 @@ namespace Cubit
                 lblFinalCostBasis.Invoke((MethodInvoker)delegate
                 {
                     lblFinalCostBasis.Visible = true;
+                });
+                label51.Invoke((MethodInvoker)delegate
+                {
+                    label51.Visible = true;
+                });
+                label91.Invoke((MethodInvoker)delegate
+                {
+                    label91.Visible = true;
+                });
+                label93.Invoke((MethodInvoker)delegate
+                {
+                    label93.Visible = true;
+                });
+                lblROI.Invoke((MethodInvoker)delegate
+                {
+                    lblROI.Visible = true;
+                });
+                lblBTCTotalValue.Invoke((MethodInvoker)delegate
+                {
+                    lblBTCTotalValue.Visible = true;
                 });
 
                 //LIST VIEW
@@ -2132,7 +2197,7 @@ namespace Cubit
                 // Add the items to the ListView
                 int counterAllTransactions = 0; // used to count rows in list as they're added
                 decimal currentValue = 0;
-                decimal rollingBTCAmount = 0;
+                rollingBTCAmount = 0;
                 decimal rollingOriginalFiatAmount = 0;
                 decimal rollingCostBasis = 0;
                 decimal rollingCurrentValue = 0;
@@ -2279,6 +2344,7 @@ namespace Cubit
                     {
                         lblTotalFiatAmount.Invoke((MethodInvoker)delegate
                         {
+                            lblTotalFiatAmount.BackColor = Color.Honeydew;
                             lblTotalFiatAmount.ForeColor = Color.OliveDrab;
                         });
                     }
@@ -2286,6 +2352,7 @@ namespace Cubit
                     {
                         lblTotalFiatAmount.Invoke((MethodInvoker)delegate
                         {
+                            lblTotalFiatAmount.BackColor = Color.FromArgb(255, 240, 240);
                             lblTotalFiatAmount.ForeColor = Color.IndianRed;
                         });
                     }
@@ -2294,6 +2361,28 @@ namespace Cubit
                         lblTotalFiatAmount.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(rollingOriginalFiatAmount));
                     });
 
+                    if (lblTotalFiatAmount.ForeColor == Color.IndianRed)
+                    {
+                        label93.Invoke((MethodInvoker)delegate
+                        {
+                            label93.Visible = true;
+                        });
+                        lblTotalFiatAmount.Invoke((MethodInvoker)delegate
+                        {
+                            lblTotalFiatAmount.Location = new Point(label93.Location.X + label93.Width - 3, label93.Location.Y);
+                        });
+                    }
+                    else
+                    {
+                        label93.Invoke((MethodInvoker)delegate
+                        {
+                            label93.Visible = false;
+                        });
+                        lblTotalFiatAmount.Invoke((MethodInvoker)delegate
+                        {
+                            lblTotalFiatAmount.Location = new Point(308, 8);
+                        });
+                    }
 
                     #region prepare list of cost basis elements for the graph (transaction date, cost basis)
 
@@ -2333,6 +2422,7 @@ namespace Cubit
                         lblFinalCostBasis.Invoke((MethodInvoker)delegate
                         {
                             lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(formattedRollingCostBasis);
+                            lblFinalCostBasis.BackColor = Color.Honeydew;
                             lblFinalCostBasis.ForeColor = Color.OliveDrab;
                         });
                     }
@@ -2351,6 +2441,7 @@ namespace Cubit
                         lblFinalCostBasis.Invoke((MethodInvoker)delegate
                         {
                             lblFinalCostBasis.Text = selectedCurrencySymbol + Convert.ToString(formattedRollingCostBasis);
+                            lblFinalCostBasis.BackColor = Color.FromArgb(255, 240, 240);
                             lblFinalCostBasis.ForeColor = Color.IndianRed;
                         });
                     }
@@ -2395,6 +2486,62 @@ namespace Cubit
                     counterAllTransactions++;
                 }
 
+                label51.Invoke((MethodInvoker)delegate
+                {
+                    label51.Location = new Point(lblTotalBTCAmount.Location.X + lblTotalBTCAmount.Width, label51.Location.Y);
+                });
+
+                lblBTCTotalValue.Invoke((MethodInvoker)delegate
+                {
+                    double temp = Convert.ToDouble(lblTotalBTCAmount.Text[1..]) * Convert.ToDouble(priceInSelectedCurrency);
+                    temp = Math.Round(temp, 2);
+                    lblBTCTotalValue.Text = selectedCurrencySymbol + Convert.ToString(temp);
+                    lblBTCTotalValue.Location = new Point(label51.Location.X + label51.Width - 3, lblBTCTotalValue.Location.Y);
+                });
+
+                double changeInValue = 0;
+                if (Convert.ToDouble(lblTotalFiatAmount.Text[1..]) != 0)
+                {
+                    changeInValue = (Convert.ToDouble(lblBTCTotalValue.Text[1..]) - Convert.ToDouble(lblTotalFiatAmount.Text[1..])) / Math.Abs(Convert.ToDouble(lblTotalFiatAmount.Text[1..])) * 100;
+                }
+                else
+                {
+                    changeInValue = (Convert.ToDouble(lblBTCTotalValue.Text[1..]) - Convert.ToDouble(lblTotalFiatAmount.Text[1..])) / 1 * 100;
+                }
+                changeInValue = Math.Round(changeInValue, 2);
+                if (changeInValue > 0)
+                {
+                    lblROI.Invoke((MethodInvoker)delegate
+                    {
+                        lblROI.Text = "▲" + Convert.ToString(changeInValue) + "%";
+                        lblROI.ForeColor = Color.OliveDrab;
+                    });
+                }
+                if (changeInValue < 0)
+                {
+                    lblROI.Invoke((MethodInvoker)delegate
+                    {
+                        lblROI.Text = "▼" + Convert.ToString(changeInValue) + "%";
+                        lblROI.ForeColor = Color.IndianRed;
+                    });
+                }
+                if (changeInValue == 0)
+                {
+                    lblROI.Invoke((MethodInvoker)delegate
+                    {
+                        lblROI.Text = Convert.ToString(changeInValue) + "%";
+                        lblROI.ForeColor = Color.Gray;
+                    });
+                }
+                lblROI.Invoke((MethodInvoker)delegate
+                {
+                    lblROI.Location = new Point(lblBTCTotalValue.Location.X + lblBTCTotalValue.Width - 3, lblROI.Location.Y);
+                });
+                label91.Invoke((MethodInvoker)delegate
+                {
+                    label91.Location = new Point(lblROI.Location.X + lblROI.Width - 4, label91.Location.Y);
+                });
+
                 vScrollBar1.Width = 23;
                 vScrollBar1.Maximum = listViewTransactions.Items.Count - 1;
 
@@ -2429,6 +2576,7 @@ namespace Cubit
                 HandleException(ex, "SetupTransactionsList");
             }
         }
+
         #endregion
 
         #region select transaction row on listview
@@ -2466,6 +2614,19 @@ namespace Cubit
                     panelRobotSpeakOuter.Visible = true;
                     InterruptAndStartNewRobotSpeak("Label assigned to transaction: " + Convert.ToString(selectedItem.SubItems[17].Text));
                 }
+            }
+            else
+            {
+                btnDeleteTransaction.Invoke((MethodInvoker)delegate
+                {
+                    btnDeleteTransaction.Enabled = false;
+                    btnDeleteTransaction.BackColor = Color.FromArgb(234, 234, 234);
+                });
+                lblDisabledDeleteButtonText.Invoke((MethodInvoker)delegate
+                {
+                    lblDisabledDeleteButtonText.Visible = true;
+                    lblDisabledDeleteButtonText.BringToFront();
+                });
             }
         }
 
@@ -4515,10 +4676,15 @@ namespace Cubit
             {
                 lblSummaryCostBasis.Text = lblFinalCostBasis.Text;
             });
+            label92.Invoke((MethodInvoker)delegate
+            {
+                label92.Location = new Point(lblSummaryCostBasis.Location.X + lblSummaryCostBasis.Width - 3, label92.Location.Y);
+            });
 
             lblSummaryValueOfBTC.Invoke((MethodInvoker)delegate
             {
-                double temp = Convert.ToDouble(lblTotalBTCAmount.Text[1..]) * Convert.ToDouble(lblCurrentPrice.Text[1..]);
+                //double temp = Convert.ToDouble(lblTotalBTCAmount.Text[1..]) * Convert.ToDouble(lblCurrentPrice.Text[1..]);
+                double temp = Convert.ToDouble(lblTotalBTCAmount.Text[1..]) * Convert.ToDouble(priceInSelectedCurrency);
                 temp = Math.Round(temp, 2);
                 lblSummaryValueOfBTC.Text = selectedCurrencySymbol + Convert.ToString(temp);
             });
@@ -4534,7 +4700,7 @@ namespace Cubit
             });
             label86.Invoke((MethodInvoker)delegate
             {
-                label86.Location = new Point(lblSummaryNetFiatAmount.Location.X + lblSummaryNetFiatAmount.Width, label86.Location.Y);
+                label86.Location = new Point(lblSummaryNetFiatAmount.Location.X + lblSummaryNetFiatAmount.Width - 4, label86.Location.Y);
             });
             string temp = Convert.ToString(Convert.ToDecimal(lblTotalBTCAmount.Text[1..]) / 21000000 * 100);
             lblSummaryPercentOfAllBitcoinOwned.Invoke((MethodInvoker)delegate
@@ -5037,16 +5203,16 @@ namespace Cubit
         {
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
-                panelHelpTextContainer.Location = new Point(panelHelpTextContainer.Location.X, 300);
-                panelHelpTextContainer.Height = 311;
+                panelHelpTextContainer.Location = new Point(panelHelpTextContainer.Location.X, 290);
+                panelHelpTextContainer.Height = 321;
             });
             panelHelp.Invoke((MethodInvoker)delegate
             {
-                panelHelp.Height = 283;
+                panelHelp.Height = 293;
             });
             lblHelpText.Invoke((MethodInvoker)delegate
             {
-                lblHelpText.Height = 267;
+                lblHelpText.Height = 277;
             });
             panelAddTransactionContainer.Enabled = false;
             btnCurrency.Enabled = false;
@@ -5098,7 +5264,7 @@ namespace Cubit
             });
             lblHelpText.Invoke((MethodInvoker)delegate
             {
-                lblHelpText.Text = "The list displays all of your transactions in chronological or reverse-chronological order." + Environment.NewLine + Environment.NewLine + "R/S - Displays Recv (receive) for a transaction where you received bitcoin, or Spnd (spend) for a transaction where you spent bitoin." + Environment.NewLine + Environment.NewLine + "YYYY/MM/DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + Environment.NewLine + "Price - the price paid/received for the transaction (price of 1 bitcoin)." + Environment.NewLine + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, an accurate price was provided." + Environment.NewLine + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. This margin is governed by the amount of price volitility that occurred in the undefined period of time. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + Environment.NewLine + "USD/EUR/GBP/XAU - the amount of fiat currency involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + Environment.NewLine + "USD/EUR/GBP/XAU total - rolling fiat total." + Environment.NewLine + Environment.NewLine + "BTC total - rolling BTC total." + Environment.NewLine + Environment.NewLine + "Cost basis - the rolling cost basis (average purchase price) of your bitcoin holdings." + Environment.NewLine + Environment.NewLine + "CC - shows the colour code, if one was applied." + Environment.NewLine + Environment.NewLine + "🏷️ - denotes whether a label was added to the transaction. If there is a label it can be viewed in full using the button below the table." + Environment.NewLine + Environment.NewLine + "The ▲ button can be used to increase the display area of the transaction list.";
+                lblHelpText.Text = "The list displays all of your transactions in chronological or reverse-chronological order." + Environment.NewLine + Environment.NewLine + "R/S - Displays 'Recv' (receive) for a transaction where you received bitcoin, or 'Spnd' (spend) for a transaction where you spent bitcoin." + Environment.NewLine + Environment.NewLine + "YYYY/MM/DD - The date of the transaction. If a partial date was provided a '-' will display in the missing fields." + Environment.NewLine + Environment.NewLine + "Price - the price paid/received for the transaction (price of 1 bitcoin)." + Environment.NewLine + Environment.NewLine + "Est. - The type of estimate used to determine the price: DA - daily average, MM - monthly median, AM - annual median, N - not estimated, an accurate price was provided." + Environment.NewLine + Environment.NewLine + "Range - If an estimate is being used, this is the potential margin of error. This margin is governed by the amount of price volitility that occurred in the undefined period of time. The more accurate you can be with the date input the lower the margin of error will be." + Environment.NewLine + Environment.NewLine + "USD/EUR/GBP/XAU - the amount of fiat currency involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + Environment.NewLine + "BTC - the amount of bitcoin involved in the transaction. If an estimate was used a 'Y' will show under the 'Est.' column." + Environment.NewLine + Environment.NewLine + "USD/EUR/GBP/XAU total - rolling fiat total." + Environment.NewLine + Environment.NewLine + "BTC total - rolling BTC total." + Environment.NewLine + Environment.NewLine + "Cost basis - the rolling cost basis (average purchase price) of your bitcoin holdings." + Environment.NewLine + Environment.NewLine + "CC - shows the colour code, if one was applied." + Environment.NewLine + Environment.NewLine + "🏷️ - denotes whether a label was added to the transaction. If there is a label it can be viewed in full using the button below the table." + Environment.NewLine + Environment.NewLine + "The ▲ button can be used to increase the display area of the transaction list.";
             });
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
@@ -5137,7 +5303,7 @@ namespace Cubit
             });
             lblHelpText.Invoke((MethodInvoker)delegate
         {
-            lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the selected fiat currency value on the y axis." + Environment.NewLine + Environment.NewLine + "The purple solid lines represents your historic cost basis (average purchase price) of all your bitcoin taking all of your past transactions in to account. The purple horizontal dashed line represents the current cost basis. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The red and green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart." + Environment.NewLine + Environment.NewLine + "The ▼ button can be used to increase the display area of the chart.";
+            lblHelpText.Text = "The orange plotted line on the chart represents the price of 1 bitcoin since its inception to the present day, with the date along the x axis and the selected fiat currency value on the y axis." + Environment.NewLine + Environment.NewLine + "The purple solid line represents your historic cost basis (average purchase price) of all your bitcoin taking all of your past transactions in to account. The purple horizontal dashed line represents the current cost basis. When the value of 1 bitcoin is above this line your bitcoin is worth more in fiat terms than it cost you. The cost basis line can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The vertical green lines show the dates of transactions where you bought or received bitcoin and the red vertical lines show transactions where you sold or spent bitcoin. The transaction lines can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The red and green circles are positioned to show the date of a transaction and the value of bitcoin at the time of the transaction. The radius of the circle is determined by the significance in size of that transaction (in fiat terms) compared to all other transactions of that type. The biggest circles are your biggest transactions. Green circles represent transactions where you've bought or received bitcoin and red circles represent transactions where you've sold or spent bitcoin. The transaction circles can be disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The upper-left of the chart shows the values of the closest plotted point to the mouse cursor. You can select which data is tracked in the options above the chart." + Environment.NewLine + Environment.NewLine + "Price and date gridlines can be individually disabled in the options above the chart." + Environment.NewLine + Environment.NewLine + "The chart can be viewed with either a linear scale or a logarithmic scale at any time with the buttons above the chart." + Environment.NewLine + Environment.NewLine + "The ▼ button can be used to increase the display area of the chart.";
         });
             panelHelpTextContainer.Invoke((MethodInvoker)delegate
             {
