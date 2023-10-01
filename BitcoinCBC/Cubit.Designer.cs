@@ -146,15 +146,15 @@
             label16 = new Label();
             panel13 = new Panel();
             panelTXListLowerRow = new Panel();
+            panelTransactionLabel = new Panel();
+            btnShowHideLabel = new CustomControls.RJControls.RJButton();
+            lblShowHideLabel = new Label();
+            lblTransactionLabel = new Label();
             label93 = new Label();
             lblBTCTotalValue = new Label();
             label91 = new Label();
             label51 = new Label();
             lblROI = new Label();
-            panelTransactionLabel = new Panel();
-            btnShowHideLabel = new CustomControls.RJControls.RJButton();
-            lblShowHideLabel = new Label();
-            lblTransactionLabel = new Label();
             btnListReverse = new CustomControls.RJControls.RJButton();
             lblFinalCostBasis = new Label();
             lblTotalBTCAmount = new Label();
@@ -410,7 +410,7 @@
             comboBoxYearInput.DropDownHeight = 260;
             comboBoxYearInput.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxYearInput.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboBoxYearInput.ForeColor = Color.LightSlateGray;
+            comboBoxYearInput.ForeColor = Color.DimGray;
             comboBoxYearInput.IconColor = Color.MediumSlateBlue;
             comboBoxYearInput.Items.AddRange(new object[] { "2009" });
             comboBoxYearInput.ListBackColor = Color.FromArgb(255, 224, 192);
@@ -433,7 +433,7 @@
             comboBoxMonthInput.DropDownHeight = 260;
             comboBoxMonthInput.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxMonthInput.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboBoxMonthInput.ForeColor = Color.LightSlateGray;
+            comboBoxMonthInput.ForeColor = Color.DimGray;
             comboBoxMonthInput.IconColor = Color.MediumSlateBlue;
             comboBoxMonthInput.Items.AddRange(new object[] { "unknown", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
             comboBoxMonthInput.ListBackColor = Color.FromArgb(255, 224, 192);
@@ -456,7 +456,7 @@
             comboBoxDayInput.DropDownHeight = 260;
             comboBoxDayInput.DropDownStyle = ComboBoxStyle.DropDownList;
             comboBoxDayInput.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            comboBoxDayInput.ForeColor = Color.LightSlateGray;
+            comboBoxDayInput.ForeColor = Color.DimGray;
             comboBoxDayInput.IconColor = Color.MediumSlateBlue;
             comboBoxDayInput.Items.AddRange(new object[] { "unknown", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" });
             comboBoxDayInput.ListBackColor = Color.FromArgb(255, 224, 192);
@@ -474,7 +474,7 @@
             textBoxFiatInput.BackColor = Color.FromArgb(255, 224, 192);
             textBoxFiatInput.BorderStyle = BorderStyle.None;
             textBoxFiatInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxFiatInput.ForeColor = Color.LightSlateGray;
+            textBoxFiatInput.ForeColor = Color.DimGray;
             textBoxFiatInput.Location = new Point(6, 1);
             textBoxFiatInput.Name = "textBoxFiatInput";
             textBoxFiatInput.Size = new Size(100, 18);
@@ -486,7 +486,7 @@
             // lblFiatAmountSpentRecd
             // 
             lblFiatAmountSpentRecd.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblFiatAmountSpentRecd.ForeColor = Color.Gray;
+            lblFiatAmountSpentRecd.ForeColor = Color.DimGray;
             lblFiatAmountSpentRecd.Location = new Point(4, 8);
             lblFiatAmountSpentRecd.Name = "lblFiatAmountSpentRecd";
             lblFiatAmountSpentRecd.Size = new Size(103, 18);
@@ -497,7 +497,7 @@
             // lblBitcoinAmountBoughtSold
             // 
             lblBitcoinAmountBoughtSold.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblBitcoinAmountBoughtSold.ForeColor = Color.Gray;
+            lblBitcoinAmountBoughtSold.ForeColor = Color.DimGray;
             lblBitcoinAmountBoughtSold.Location = new Point(5, 8);
             lblBitcoinAmountBoughtSold.Name = "lblBitcoinAmountBoughtSold";
             lblBitcoinAmountBoughtSold.Size = new Size(103, 18);
@@ -510,7 +510,7 @@
             textBoxBTCInput.BackColor = Color.FromArgb(255, 224, 192);
             textBoxBTCInput.BorderStyle = BorderStyle.None;
             textBoxBTCInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxBTCInput.ForeColor = Color.LightSlateGray;
+            textBoxBTCInput.ForeColor = Color.DimGray;
             textBoxBTCInput.Location = new Point(6, 1);
             textBoxBTCInput.Name = "textBoxBTCInput";
             textBoxBTCInput.Size = new Size(100, 18);
@@ -522,7 +522,7 @@
             // label4
             // 
             label4.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label4.ForeColor = Color.Gray;
+            label4.ForeColor = Color.DimGray;
             label4.Location = new Point(6, 4);
             label4.Name = "label4";
             label4.Size = new Size(97, 18);
@@ -533,7 +533,7 @@
             // 
             label7.BackColor = Color.Transparent;
             label7.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label7.ForeColor = Color.Gray;
+            label7.ForeColor = Color.DimGray;
             label7.Location = new Point(25, 7);
             label7.Name = "label7";
             label7.Size = new Size(105, 18);
@@ -545,7 +545,7 @@
             // 
             label8.BackColor = Color.Transparent;
             label8.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label8.ForeColor = Color.Gray;
+            label8.ForeColor = Color.DimGray;
             label8.Location = new Point(157, 7);
             label8.Name = "label8";
             label8.Size = new Size(90, 18);
@@ -567,7 +567,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label1.ForeColor = Color.Gray;
+            label1.ForeColor = Color.DimGray;
             label1.Location = new Point(7, 8);
             label1.Name = "label1";
             label1.Size = new Size(103, 17);
@@ -580,7 +580,7 @@
             textBoxPriceInput.BackColor = Color.FromArgb(255, 224, 192);
             textBoxPriceInput.BorderStyle = BorderStyle.None;
             textBoxPriceInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxPriceInput.ForeColor = Color.LightSlateGray;
+            textBoxPriceInput.ForeColor = Color.DimGray;
             textBoxPriceInput.Location = new Point(6, 1);
             textBoxPriceInput.Name = "textBoxPriceInput";
             textBoxPriceInput.Size = new Size(100, 18);
@@ -593,7 +593,7 @@
             // 
             label2.BackColor = Color.Transparent;
             label2.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label2.ForeColor = Color.Gray;
+            label2.ForeColor = Color.DimGray;
             label2.Location = new Point(27, 30);
             label2.Name = "label2";
             label2.Size = new Size(83, 18);
@@ -951,7 +951,7 @@
             // 
             label17.BackColor = Color.Transparent;
             label17.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label17.ForeColor = Color.Gray;
+            label17.ForeColor = Color.DimGray;
             label17.Location = new Point(27, 30);
             label17.Name = "label17";
             label17.Size = new Size(83, 18);
@@ -995,7 +995,7 @@
             // 
             label19.BackColor = Color.Transparent;
             label19.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label19.ForeColor = Color.Gray;
+            label19.ForeColor = Color.DimGray;
             label19.Location = new Point(27, 30);
             label19.Name = "label19";
             label19.Size = new Size(83, 18);
@@ -1017,7 +1017,7 @@
             // 
             label18.AutoSize = true;
             label18.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label18.ForeColor = Color.Gray;
+            label18.ForeColor = Color.DimGray;
             label18.Location = new Point(5, 8);
             label18.Name = "label18";
             label18.Size = new Size(90, 17);
@@ -1030,7 +1030,7 @@
             textBoxLabelInput.BackColor = Color.FromArgb(255, 224, 192);
             textBoxLabelInput.BorderStyle = BorderStyle.None;
             textBoxLabelInput.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point);
-            textBoxLabelInput.ForeColor = Color.LightSlateGray;
+            textBoxLabelInput.ForeColor = Color.DimGray;
             textBoxLabelInput.Location = new Point(6, 1);
             textBoxLabelInput.MaxLength = 80;
             textBoxLabelInput.Name = "textBoxLabelInput";
@@ -1188,7 +1188,7 @@
             // 
             // lblHelpText
             // 
-            lblHelpText.ForeColor = Color.DarkGray;
+            lblHelpText.ForeColor = Color.DimGray;
             lblHelpText.Location = new Point(7, 9);
             lblHelpText.Name = "lblHelpText";
             lblHelpText.Size = new Size(727, 457);
@@ -1232,7 +1232,7 @@
             label42.AutoSize = true;
             label42.BackColor = Color.Transparent;
             label42.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label42.ForeColor = Color.LightSlateGray;
+            label42.ForeColor = Color.DimGray;
             label42.Location = new Point(2, 0);
             label42.Name = "label42";
             label42.Padding = new Padding(0, 2, 0, 0);
@@ -1275,7 +1275,7 @@
             // 
             label56.AutoSize = true;
             label56.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label56.ForeColor = Color.Gray;
+            label56.ForeColor = Color.DimGray;
             label56.Location = new Point(112, 8);
             label56.Name = "label56";
             label56.Size = new Size(26, 17);
@@ -1287,7 +1287,7 @@
             // 
             label20.AutoSize = true;
             label20.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label20.ForeColor = Color.Gray;
+            label20.ForeColor = Color.DimGray;
             label20.Location = new Point(5, 33);
             label20.Name = "label20";
             label20.Size = new Size(132, 17);
@@ -1313,7 +1313,7 @@
             // 
             label52.AutoSize = true;
             label52.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label52.ForeColor = Color.Gray;
+            label52.ForeColor = Color.DimGray;
             label52.Location = new Point(118, 8);
             label52.Name = "label52";
             label52.Size = new Size(15, 17);
@@ -1339,7 +1339,7 @@
             // 
             label55.AutoSize = true;
             label55.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label55.ForeColor = Color.Gray;
+            label55.ForeColor = Color.DimGray;
             label55.Location = new Point(118, 8);
             label55.Name = "label55";
             label55.Size = new Size(15, 17);
@@ -1365,7 +1365,7 @@
             // 
             label54.AutoSize = true;
             label54.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label54.ForeColor = Color.Gray;
+            label54.ForeColor = Color.DimGray;
             label54.Location = new Point(118, 8);
             label54.Name = "label54";
             label54.Size = new Size(15, 17);
@@ -1436,7 +1436,7 @@
             label53.AutoSize = true;
             label53.BackColor = Color.Transparent;
             label53.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label53.ForeColor = Color.LightSlateGray;
+            label53.ForeColor = Color.DimGray;
             label53.Location = new Point(2, 0);
             label53.Name = "label53";
             label53.Padding = new Padding(0, 2, 0, 0);
@@ -1682,7 +1682,7 @@
             listViewTransactions.BackColor = Color.White;
             listViewTransactions.BorderStyle = BorderStyle.None;
             listViewTransactions.Font = new Font("Segoe UI", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
-            listViewTransactions.ForeColor = Color.Gray;
+            listViewTransactions.ForeColor = Color.DimGray;
             listViewTransactions.FullRowSelect = true;
             listViewTransactions.HeaderStyle = ColumnHeaderStyle.None;
             listViewTransactions.LabelWrap = false;
@@ -1776,7 +1776,7 @@
             label89.AutoSize = true;
             label89.BackColor = Color.Transparent;
             label89.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label89.ForeColor = Color.LightSlateGray;
+            label89.ForeColor = Color.DimGray;
             label89.Location = new Point(30, 0);
             label89.Name = "label89";
             label89.Padding = new Padding(0, 2, 0, 0);
@@ -1789,7 +1789,7 @@
             // 
             label30.BackColor = Color.Transparent;
             label30.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label30.ForeColor = Color.LightSlateGray;
+            label30.ForeColor = Color.DimGray;
             label30.Location = new Point(811, 0);
             label30.Name = "label30";
             label30.Padding = new Padding(0, 2, 0, 0);
@@ -1802,7 +1802,7 @@
             // 
             label22.BackColor = Color.Transparent;
             label22.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label22.ForeColor = Color.LightSlateGray;
+            label22.ForeColor = Color.DimGray;
             label22.Location = new Point(791, 0);
             label22.Name = "label22";
             label22.Padding = new Padding(0, 2, 0, 0);
@@ -1830,7 +1830,7 @@
             label33.AutoSize = true;
             label33.BackColor = Color.Transparent;
             label33.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label33.ForeColor = Color.LightSlateGray;
+            label33.ForeColor = Color.DimGray;
             label33.Location = new Point(706, 0);
             label33.Name = "label33";
             label33.Padding = new Padding(0, 2, 0, 0);
@@ -1844,7 +1844,7 @@
             label32.AutoSize = true;
             label32.BackColor = Color.Transparent;
             label32.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label32.ForeColor = Color.LightSlateGray;
+            label32.ForeColor = Color.DimGray;
             label32.Location = new Point(611, 0);
             label32.Name = "label32";
             label32.Padding = new Padding(0, 2, 0, 0);
@@ -1858,7 +1858,7 @@
             label31.AutoSize = true;
             label31.BackColor = Color.Transparent;
             label31.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label31.ForeColor = Color.LightSlateGray;
+            label31.ForeColor = Color.DimGray;
             label31.Location = new Point(531, 0);
             label31.Name = "label31";
             label31.Padding = new Padding(0, 2, 0, 0);
@@ -1872,7 +1872,7 @@
             label29.AutoSize = true;
             label29.BackColor = Color.Transparent;
             label29.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label29.ForeColor = Color.LightSlateGray;
+            label29.ForeColor = Color.DimGray;
             label29.Location = new Point(503, 0);
             label29.Name = "label29";
             label29.Padding = new Padding(0, 2, 0, 0);
@@ -1886,7 +1886,7 @@
             label28.AutoSize = true;
             label28.BackColor = Color.Transparent;
             label28.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label28.ForeColor = Color.LightSlateGray;
+            label28.ForeColor = Color.DimGray;
             label28.Location = new Point(408, 0);
             label28.Name = "label28";
             label28.Padding = new Padding(0, 2, 0, 0);
@@ -1900,7 +1900,7 @@
             label27.AutoSize = true;
             label27.BackColor = Color.Transparent;
             label27.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label27.ForeColor = Color.LightSlateGray;
+            label27.ForeColor = Color.DimGray;
             label27.Location = new Point(380, 0);
             label27.Name = "label27";
             label27.Padding = new Padding(0, 2, 0, 0);
@@ -1914,7 +1914,7 @@
             label26.AutoSize = true;
             label26.BackColor = Color.Transparent;
             label26.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label26.ForeColor = Color.LightSlateGray;
+            label26.ForeColor = Color.DimGray;
             label26.Location = new Point(310, 0);
             label26.Name = "label26";
             label26.Padding = new Padding(0, 2, 0, 0);
@@ -1928,7 +1928,7 @@
             label25.AutoSize = true;
             label25.BackColor = Color.Transparent;
             label25.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label25.ForeColor = Color.LightSlateGray;
+            label25.ForeColor = Color.DimGray;
             label25.Location = new Point(260, 0);
             label25.Name = "label25";
             label25.Padding = new Padding(0, 2, 0, 0);
@@ -1942,7 +1942,7 @@
             label24.AutoSize = true;
             label24.BackColor = Color.Transparent;
             label24.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label24.ForeColor = Color.LightSlateGray;
+            label24.ForeColor = Color.DimGray;
             label24.Location = new Point(232, 0);
             label24.Name = "label24";
             label24.Padding = new Padding(0, 2, 0, 0);
@@ -1956,7 +1956,7 @@
             label23.AutoSize = true;
             label23.BackColor = Color.Transparent;
             label23.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label23.ForeColor = Color.LightSlateGray;
+            label23.ForeColor = Color.DimGray;
             label23.Location = new Point(157, 0);
             label23.Name = "label23";
             label23.Padding = new Padding(0, 2, 0, 0);
@@ -1970,7 +1970,7 @@
             label16.AutoSize = true;
             label16.BackColor = Color.Transparent;
             label16.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label16.ForeColor = Color.LightSlateGray;
+            label16.ForeColor = Color.DimGray;
             label16.Location = new Point(65, 0);
             label16.Name = "label16";
             label16.Padding = new Padding(0, 2, 0, 0);
@@ -1991,12 +1991,12 @@
             // panelTXListLowerRow
             // 
             panelTXListLowerRow.BackColor = Color.White;
+            panelTXListLowerRow.Controls.Add(panelTransactionLabel);
             panelTXListLowerRow.Controls.Add(label93);
             panelTXListLowerRow.Controls.Add(lblBTCTotalValue);
             panelTXListLowerRow.Controls.Add(label91);
             panelTXListLowerRow.Controls.Add(label51);
             panelTXListLowerRow.Controls.Add(lblROI);
-            panelTXListLowerRow.Controls.Add(panelTransactionLabel);
             panelTXListLowerRow.Controls.Add(btnListReverse);
             panelTXListLowerRow.Controls.Add(lblFinalCostBasis);
             panelTXListLowerRow.Controls.Add(lblTotalBTCAmount);
@@ -2009,68 +2009,6 @@
             panelTXListLowerRow.Name = "panelTXListLowerRow";
             panelTXListLowerRow.Size = new Size(859, 31);
             panelTXListLowerRow.TabIndex = 145;
-            // 
-            // label93
-            // 
-            label93.AutoSize = true;
-            label93.BackColor = Color.FromArgb(255, 240, 240);
-            label93.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label93.ForeColor = Color.Gray;
-            label93.Location = new Point(308, 8);
-            label93.Name = "label93";
-            label93.Size = new Size(12, 15);
-            label93.TabIndex = 118;
-            label93.Text = "-";
-            toolTip1.SetToolTip(label93, "Fiat total");
-            label93.Visible = false;
-            // 
-            // lblBTCTotalValue
-            // 
-            lblBTCTotalValue.AutoSize = true;
-            lblBTCTotalValue.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            lblBTCTotalValue.ForeColor = Color.Gray;
-            lblBTCTotalValue.Location = new Point(482, 9);
-            lblBTCTotalValue.Name = "lblBTCTotalValue";
-            lblBTCTotalValue.Size = new Size(56, 13);
-            lblBTCTotalValue.TabIndex = 114;
-            lblBTCTotalValue.Text = "Fiat value";
-            toolTip1.SetToolTip(lblBTCTotalValue, "Fiat value");
-            // 
-            // label91
-            // 
-            label91.AutoSize = true;
-            label91.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            label91.ForeColor = Color.Gray;
-            label91.Location = new Point(566, 9);
-            label91.Name = "label91";
-            label91.Size = new Size(10, 13);
-            label91.TabIndex = 117;
-            label91.Text = ")";
-            toolTip1.SetToolTip(label91, "BTC total");
-            // 
-            // label51
-            // 
-            label51.AutoSize = true;
-            label51.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            label51.ForeColor = Color.Gray;
-            label51.Location = new Point(468, 9);
-            label51.Name = "label51";
-            label51.Size = new Size(10, 13);
-            label51.TabIndex = 116;
-            label51.Text = "(";
-            toolTip1.SetToolTip(label51, "BTC total");
-            // 
-            // lblROI
-            // 
-            lblROI.AutoSize = true;
-            lblROI.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            lblROI.ForeColor = Color.Gray;
-            lblROI.Location = new Point(543, 9);
-            lblROI.Name = "lblROI";
-            lblROI.Size = new Size(22, 13);
-            lblROI.TabIndex = 115;
-            lblROI.Text = "0%";
-            toolTip1.SetToolTip(lblROI, "BTC total");
             // 
             // panelTransactionLabel
             // 
@@ -2111,7 +2049,7 @@
             lblShowHideLabel.AutoSize = true;
             lblShowHideLabel.BackColor = Color.Transparent;
             lblShowHideLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblShowHideLabel.ForeColor = Color.Gray;
+            lblShowHideLabel.ForeColor = Color.DimGray;
             lblShowHideLabel.Location = new Point(3, 3);
             lblShowHideLabel.Name = "lblShowHideLabel";
             lblShowHideLabel.Size = new Size(71, 17);
@@ -2122,12 +2060,74 @@
             // lblTransactionLabel
             // 
             lblTransactionLabel.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTransactionLabel.ForeColor = Color.Gray;
+            lblTransactionLabel.ForeColor = Color.DimGray;
             lblTransactionLabel.Location = new Point(104, 3);
             lblTransactionLabel.Name = "lblTransactionLabel";
             lblTransactionLabel.Size = new Size(557, 22);
             lblTransactionLabel.TabIndex = 112;
             lblTransactionLabel.Text = "No transaction selected";
+            // 
+            // label93
+            // 
+            label93.AutoSize = true;
+            label93.BackColor = Color.FromArgb(255, 240, 240);
+            label93.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            label93.ForeColor = Color.Gray;
+            label93.Location = new Point(308, 8);
+            label93.Name = "label93";
+            label93.Size = new Size(12, 15);
+            label93.TabIndex = 118;
+            label93.Text = "-";
+            toolTip1.SetToolTip(label93, "Fiat total");
+            label93.Visible = false;
+            // 
+            // lblBTCTotalValue
+            // 
+            lblBTCTotalValue.AutoSize = true;
+            lblBTCTotalValue.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            lblBTCTotalValue.ForeColor = Color.DimGray;
+            lblBTCTotalValue.Location = new Point(482, 9);
+            lblBTCTotalValue.Name = "lblBTCTotalValue";
+            lblBTCTotalValue.Size = new Size(56, 13);
+            lblBTCTotalValue.TabIndex = 114;
+            lblBTCTotalValue.Text = "Fiat value";
+            toolTip1.SetToolTip(lblBTCTotalValue, "Fiat value");
+            // 
+            // label91
+            // 
+            label91.AutoSize = true;
+            label91.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            label91.ForeColor = Color.DimGray;
+            label91.Location = new Point(566, 9);
+            label91.Name = "label91";
+            label91.Size = new Size(10, 13);
+            label91.TabIndex = 117;
+            label91.Text = ")";
+            toolTip1.SetToolTip(label91, "BTC total");
+            // 
+            // label51
+            // 
+            label51.AutoSize = true;
+            label51.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            label51.ForeColor = Color.DimGray;
+            label51.Location = new Point(468, 9);
+            label51.Name = "label51";
+            label51.Size = new Size(10, 13);
+            label51.TabIndex = 116;
+            label51.Text = "(";
+            toolTip1.SetToolTip(label51, "BTC total");
+            // 
+            // lblROI
+            // 
+            lblROI.AutoSize = true;
+            lblROI.Font = new Font("Segoe UI", 8F, FontStyle.Regular, GraphicsUnit.Point);
+            lblROI.ForeColor = Color.DimGray;
+            lblROI.Location = new Point(543, 9);
+            lblROI.Name = "lblROI";
+            lblROI.Size = new Size(22, 13);
+            lblROI.TabIndex = 115;
+            lblROI.Text = "0%";
+            toolTip1.SetToolTip(lblROI, "BTC total");
             // 
             // btnListReverse
             // 
@@ -2183,7 +2183,7 @@
             lblTotalFiatAmount.AutoSize = true;
             lblTotalFiatAmount.BackColor = Color.FromArgb(255, 240, 240);
             lblTotalFiatAmount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblTotalFiatAmount.ForeColor = Color.Gray;
+            lblTotalFiatAmount.ForeColor = Color.DimGray;
             lblTotalFiatAmount.Location = new Point(308, 8);
             lblTotalFiatAmount.Name = "lblTotalFiatAmount";
             lblTotalFiatAmount.Size = new Size(53, 15);
@@ -2454,7 +2454,7 @@
             // 
             // label78
             // 
-            label78.ForeColor = Color.Gray;
+            label78.ForeColor = Color.DimGray;
             label78.Location = new Point(16, 5);
             label78.Name = "label78";
             label78.Size = new Size(576, 25);
@@ -2506,7 +2506,7 @@
             label50.AutoSize = true;
             label50.BackColor = Color.Transparent;
             label50.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label50.ForeColor = Color.Gray;
+            label50.ForeColor = Color.DimGray;
             label50.Location = new Point(3, 2);
             label50.Name = "label50";
             label50.Size = new Size(88, 17);
@@ -2518,7 +2518,7 @@
             label46.AutoSize = true;
             label46.BackColor = Color.Transparent;
             label46.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label46.ForeColor = Color.Gray;
+            label46.ForeColor = Color.DimGray;
             label46.Location = new Point(397, 2);
             label46.Name = "label46";
             label46.Size = new Size(40, 17);
@@ -2574,7 +2574,7 @@
             label43.AutoSize = true;
             label43.BackColor = Color.Transparent;
             label43.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label43.ForeColor = Color.Gray;
+            label43.ForeColor = Color.DimGray;
             label43.Location = new Point(144, 2);
             label43.Name = "label43";
             label43.Size = new Size(36, 17);
@@ -2608,7 +2608,7 @@
             label44.AutoSize = true;
             label44.BackColor = Color.Transparent;
             label44.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label44.ForeColor = Color.Gray;
+            label44.ForeColor = Color.DimGray;
             label44.Location = new Point(204, 2);
             label44.Name = "label44";
             label44.Size = new Size(76, 17);
@@ -2620,7 +2620,7 @@
             label45.AutoSize = true;
             label45.BackColor = Color.Transparent;
             label45.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label45.ForeColor = Color.Gray;
+            label45.ForeColor = Color.DimGray;
             label45.Location = new Point(304, 2);
             label45.Name = "label45";
             label45.Size = new Size(69, 17);
@@ -2690,7 +2690,7 @@
             label48.AutoSize = true;
             label48.BackColor = Color.Transparent;
             label48.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label48.ForeColor = Color.Gray;
+            label48.ForeColor = Color.DimGray;
             label48.Location = new Point(3, 2);
             label48.Name = "label48";
             label48.Size = new Size(56, 17);
@@ -2724,7 +2724,7 @@
             label37.AutoSize = true;
             label37.BackColor = Color.Transparent;
             label37.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label37.ForeColor = Color.Gray;
+            label37.ForeColor = Color.DimGray;
             label37.Location = new Point(121, 2);
             label37.Name = "label37";
             label37.Size = new Size(76, 17);
@@ -2758,7 +2758,7 @@
             label38.AutoSize = true;
             label38.BackColor = Color.Transparent;
             label38.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label38.ForeColor = Color.Gray;
+            label38.ForeColor = Color.DimGray;
             label38.Location = new Point(218, 2);
             label38.Name = "label38";
             label38.Size = new Size(69, 17);
@@ -2780,7 +2780,7 @@
             lblShowCostBasis.AutoSize = true;
             lblShowCostBasis.BackColor = Color.Transparent;
             lblShowCostBasis.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            lblShowCostBasis.ForeColor = Color.Gray;
+            lblShowCostBasis.ForeColor = Color.DimGray;
             lblShowCostBasis.Location = new Point(7, 2);
             lblShowCostBasis.Name = "lblShowCostBasis";
             lblShowCostBasis.Size = new Size(68, 17);
@@ -2850,7 +2850,7 @@
             label49.AutoSize = true;
             label49.BackColor = Color.Transparent;
             label49.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label49.ForeColor = Color.Gray;
+            label49.ForeColor = Color.DimGray;
             label49.Location = new Point(3, 2);
             label49.Name = "label49";
             label49.Size = new Size(35, 17);
@@ -2884,7 +2884,7 @@
             label40.AutoSize = true;
             label40.BackColor = Color.Transparent;
             label40.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label40.ForeColor = Color.Gray;
+            label40.ForeColor = Color.DimGray;
             label40.Location = new Point(91, 2);
             label40.Name = "label40";
             label40.Size = new Size(76, 17);
@@ -2896,7 +2896,7 @@
             label41.AutoSize = true;
             label41.BackColor = Color.Transparent;
             label41.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label41.ForeColor = Color.Gray;
+            label41.ForeColor = Color.DimGray;
             label41.Location = new Point(191, 2);
             label41.Name = "label41";
             label41.Size = new Size(69, 17);
@@ -2966,7 +2966,7 @@
             label47.AutoSize = true;
             label47.BackColor = Color.Transparent;
             label47.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label47.ForeColor = Color.Gray;
+            label47.ForeColor = Color.DimGray;
             label47.Location = new Point(3, 2);
             label47.Name = "label47";
             label47.Size = new Size(62, 17);
@@ -3104,7 +3104,7 @@
             label39.AutoSize = true;
             label39.BackColor = Color.Transparent;
             label39.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label39.ForeColor = Color.LightSlateGray;
+            label39.ForeColor = Color.DimGray;
             label39.Location = new Point(26, 0);
             label39.Name = "label39";
             label39.Padding = new Padding(0, 2, 0, 0);
@@ -3211,7 +3211,7 @@
             // labelWelcomeText
             // 
             labelWelcomeText.Font = new Font("OCR A Extended", 8F, FontStyle.Regular, GraphicsUnit.Point);
-            labelWelcomeText.ForeColor = Color.Gray;
+            labelWelcomeText.ForeColor = Color.DimGray;
             labelWelcomeText.Location = new Point(1, 46);
             labelWelcomeText.Name = "labelWelcomeText";
             labelWelcomeText.Size = new Size(159, 46);
@@ -3242,7 +3242,7 @@
             // 
             lblRobotSpeak.BackColor = Color.Transparent;
             lblRobotSpeak.Font = new Font("OCR A Extended", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblRobotSpeak.ForeColor = Color.Orange;
+            lblRobotSpeak.ForeColor = Color.DarkOrange;
             lblRobotSpeak.Location = new Point(0, 0);
             lblRobotSpeak.Name = "lblRobotSpeak";
             lblRobotSpeak.Size = new Size(165, 92);
@@ -3366,7 +3366,7 @@
             // 
             lblCurrentPrice.AutoSize = true;
             lblCurrentPrice.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblCurrentPrice.ForeColor = Color.DarkGray;
+            lblCurrentPrice.ForeColor = Color.DimGray;
             lblCurrentPrice.Location = new Point(34, 10);
             lblCurrentPrice.Name = "lblCurrentPrice";
             lblCurrentPrice.Size = new Size(86, 17);
@@ -3431,7 +3431,7 @@
             label58.AutoSize = true;
             label58.BackColor = Color.Transparent;
             label58.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label58.ForeColor = Color.LightSlateGray;
+            label58.ForeColor = Color.DimGray;
             label58.Location = new Point(2, 0);
             label58.Name = "label58";
             label58.Padding = new Padding(0, 2, 0, 0);
@@ -3490,7 +3490,7 @@
             // lblSummaryCostToValue
             // 
             lblSummaryCostToValue.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
-            lblSummaryCostToValue.ForeColor = Color.FromArgb(255, 192, 128);
+            lblSummaryCostToValue.ForeColor = Color.DarkOrange;
             lblSummaryCostToValue.Location = new Point(9, 60);
             lblSummaryCostToValue.Name = "lblSummaryCostToValue";
             lblSummaryCostToValue.Size = new Size(292, 17);
@@ -3513,7 +3513,7 @@
             label90.AutoSize = true;
             label90.BackColor = Color.Transparent;
             label90.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label90.ForeColor = Color.LightSlateGray;
+            label90.ForeColor = Color.DimGray;
             label90.Location = new Point(2, 0);
             label90.Name = "label90";
             label90.Padding = new Padding(0, 2, 0, 0);
@@ -3524,7 +3524,7 @@
             // lblSummaryPercentageChangeInValue
             // 
             lblSummaryPercentageChangeInValue.Font = new Font("Segoe UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
-            lblSummaryPercentageChangeInValue.ForeColor = Color.FromArgb(255, 192, 128);
+            lblSummaryPercentageChangeInValue.ForeColor = Color.DarkOrange;
             lblSummaryPercentageChangeInValue.Location = new Point(13, 24);
             lblSummaryPercentageChangeInValue.Name = "lblSummaryPercentageChangeInValue";
             lblSummaryPercentageChangeInValue.Size = new Size(292, 37);
@@ -3547,7 +3547,7 @@
             // label57
             // 
             label57.AutoSize = true;
-            label57.ForeColor = Color.DarkGray;
+            label57.ForeColor = Color.DimGray;
             label57.Location = new Point(0, 0);
             label57.Name = "label57";
             label57.Size = new Size(184, 15);
@@ -3557,7 +3557,7 @@
             // label85
             // 
             label85.AutoSize = true;
-            label85.ForeColor = Color.DarkGray;
+            label85.ForeColor = Color.DimGray;
             label85.Location = new Point(194, 0);
             label85.Name = "label85";
             label85.Size = new Size(150, 15);
@@ -3567,7 +3567,7 @@
             // lblSummaryTransactionCount
             // 
             lblSummaryTransactionCount.AutoSize = true;
-            lblSummaryTransactionCount.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTransactionCount.ForeColor = Color.DarkOrange;
             lblSummaryTransactionCount.Location = new Point(181, 0);
             lblSummaryTransactionCount.Name = "lblSummaryTransactionCount";
             lblSummaryTransactionCount.Size = new Size(13, 15);
@@ -3577,7 +3577,7 @@
             // lblSummaryPercentOfAllBitcoinOwned
             // 
             lblSummaryPercentOfAllBitcoinOwned.AutoSize = true;
-            lblSummaryPercentOfAllBitcoinOwned.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryPercentOfAllBitcoinOwned.ForeColor = Color.DarkOrange;
             lblSummaryPercentOfAllBitcoinOwned.Location = new Point(343, 0);
             lblSummaryPercentOfAllBitcoinOwned.Name = "lblSummaryPercentOfAllBitcoinOwned";
             lblSummaryPercentOfAllBitcoinOwned.Size = new Size(74, 15);
@@ -3587,7 +3587,7 @@
             // label73
             // 
             label73.AutoSize = true;
-            label73.ForeColor = Color.DarkGray;
+            label73.ForeColor = Color.DimGray;
             label73.Location = new Point(417, 0);
             label73.Name = "label73";
             label73.Size = new Size(182, 15);
@@ -3596,7 +3596,7 @@
             // 
             // lblFirstTXDate
             // 
-            lblFirstTXDate.ForeColor = Color.DarkGray;
+            lblFirstTXDate.ForeColor = Color.DimGray;
             lblFirstTXDate.Location = new Point(10, 244);
             lblFirstTXDate.Name = "lblFirstTXDate";
             lblFirstTXDate.Size = new Size(649, 34);
@@ -3626,7 +3626,7 @@
             // 
             label92.AutoSize = true;
             label92.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label92.ForeColor = Color.DarkGray;
+            label92.ForeColor = Color.DimGray;
             label92.Location = new Point(240, 67);
             label92.Name = "label92";
             label92.Size = new Size(10, 15);
@@ -3637,7 +3637,7 @@
             // 
             label86.AutoSize = true;
             label86.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label86.ForeColor = Color.DarkGray;
+            label86.ForeColor = Color.DimGray;
             label86.Location = new Point(112, 50);
             label86.Name = "label86";
             label86.Size = new Size(10, 15);
@@ -3659,7 +3659,7 @@
             label72.AutoSize = true;
             label72.BackColor = Color.Transparent;
             label72.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label72.ForeColor = Color.LightSlateGray;
+            label72.ForeColor = Color.DimGray;
             label72.Location = new Point(2, 0);
             label72.Name = "label72";
             label72.Padding = new Padding(0, 2, 0, 0);
@@ -3671,7 +3671,7 @@
             // 
             label65.AutoSize = true;
             label65.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label65.ForeColor = Color.DarkGray;
+            label65.ForeColor = Color.DimGray;
             label65.Location = new Point(9, 34);
             label65.Name = "label65";
             label65.Size = new Size(104, 15);
@@ -3682,7 +3682,7 @@
             // 
             labelSummary1.AutoSize = true;
             labelSummary1.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            labelSummary1.ForeColor = Color.DarkGray;
+            labelSummary1.ForeColor = Color.DimGray;
             labelSummary1.Location = new Point(8, 67);
             labelSummary1.Name = "labelSummary1";
             labelSummary1.Size = new Size(224, 15);
@@ -3693,7 +3693,7 @@
             // 
             label66.AutoSize = true;
             label66.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label66.ForeColor = Color.DarkGray;
+            label66.ForeColor = Color.DimGray;
             label66.Location = new Point(23, 50);
             label66.Name = "label66";
             label66.Size = new Size(75, 15);
@@ -3704,7 +3704,7 @@
             // 
             label71.AutoSize = true;
             label71.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            label71.ForeColor = Color.DarkGray;
+            label71.ForeColor = Color.DimGray;
             label71.Location = new Point(141, 34);
             label71.Name = "label71";
             label71.Size = new Size(127, 15);
@@ -3715,7 +3715,7 @@
             // 
             lblSummaryBTCHeld.AutoSize = true;
             lblSummaryBTCHeld.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSummaryBTCHeld.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryBTCHeld.ForeColor = Color.DarkOrange;
             lblSummaryBTCHeld.Location = new Point(130, 34);
             lblSummaryBTCHeld.Name = "lblSummaryBTCHeld";
             lblSummaryBTCHeld.Size = new Size(13, 15);
@@ -3726,7 +3726,7 @@
             // 
             lblSummaryValueOfBTC.AutoSize = true;
             lblSummaryValueOfBTC.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSummaryValueOfBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryValueOfBTC.ForeColor = Color.DarkOrange;
             lblSummaryValueOfBTC.Location = new Point(9, 50);
             lblSummaryValueOfBTC.Name = "lblSummaryValueOfBTC";
             lblSummaryValueOfBTC.Size = new Size(13, 15);
@@ -3737,7 +3737,7 @@
             // 
             lblSummaryCostBasis.AutoSize = true;
             lblSummaryCostBasis.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSummaryCostBasis.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryCostBasis.ForeColor = Color.DarkOrange;
             lblSummaryCostBasis.Location = new Point(229, 67);
             lblSummaryCostBasis.Name = "lblSummaryCostBasis";
             lblSummaryCostBasis.Size = new Size(13, 15);
@@ -3748,7 +3748,7 @@
             // 
             lblSummaryNetFiatAmount.AutoSize = true;
             lblSummaryNetFiatAmount.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
-            lblSummaryNetFiatAmount.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryNetFiatAmount.ForeColor = Color.DarkOrange;
             lblSummaryNetFiatAmount.Location = new Point(98, 50);
             lblSummaryNetFiatAmount.Name = "lblSummaryNetFiatAmount";
             lblSummaryNetFiatAmount.Size = new Size(13, 15);
@@ -3786,7 +3786,7 @@
             // lblSummaryMostBTCSpentInOneTX
             // 
             lblSummaryMostBTCSpentInOneTX.AutoSize = true;
-            lblSummaryMostBTCSpentInOneTX.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryMostBTCSpentInOneTX.ForeColor = Color.DarkOrange;
             lblSummaryMostBTCSpentInOneTX.Location = new Point(227, 168);
             lblSummaryMostBTCSpentInOneTX.Name = "lblSummaryMostBTCSpentInOneTX";
             lblSummaryMostBTCSpentInOneTX.Size = new Size(13, 15);
@@ -3796,7 +3796,7 @@
             // lblSummaryMostFiatReceivedInOneTX
             // 
             lblSummaryMostFiatReceivedInOneTX.AutoSize = true;
-            lblSummaryMostFiatReceivedInOneTX.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryMostFiatReceivedInOneTX.ForeColor = Color.DarkOrange;
             lblSummaryMostFiatReceivedInOneTX.Location = new Point(227, 152);
             lblSummaryMostFiatReceivedInOneTX.Name = "lblSummaryMostFiatReceivedInOneTX";
             lblSummaryMostFiatReceivedInOneTX.Size = new Size(13, 15);
@@ -3806,7 +3806,7 @@
             // label87
             // 
             label87.AutoSize = true;
-            label87.ForeColor = Color.DarkGray;
+            label87.ForeColor = Color.DimGray;
             label87.Location = new Point(19, 168);
             label87.Name = "label87";
             label87.Size = new Size(158, 15);
@@ -3816,7 +3816,7 @@
             // label88
             // 
             label88.AutoSize = true;
-            label88.ForeColor = Color.DarkGray;
+            label88.ForeColor = Color.DimGray;
             label88.Location = new Point(19, 152);
             label88.Name = "label88";
             label88.Size = new Size(153, 15);
@@ -3826,7 +3826,7 @@
             // lblSummaryLowestPriceSold
             // 
             lblSummaryLowestPriceSold.AutoSize = true;
-            lblSummaryLowestPriceSold.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryLowestPriceSold.ForeColor = Color.DarkOrange;
             lblSummaryLowestPriceSold.Location = new Point(227, 136);
             lblSummaryLowestPriceSold.Name = "lblSummaryLowestPriceSold";
             lblSummaryLowestPriceSold.Size = new Size(13, 15);
@@ -3836,7 +3836,7 @@
             // lblSummaryHighestPriceSold
             // 
             lblSummaryHighestPriceSold.AutoSize = true;
-            lblSummaryHighestPriceSold.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryHighestPriceSold.ForeColor = Color.DarkOrange;
             lblSummaryHighestPriceSold.Location = new Point(227, 120);
             lblSummaryHighestPriceSold.Name = "lblSummaryHighestPriceSold";
             lblSummaryHighestPriceSold.Size = new Size(13, 15);
@@ -3846,7 +3846,7 @@
             // label83
             // 
             label83.AutoSize = true;
-            label83.ForeColor = Color.DarkGray;
+            label83.ForeColor = Color.DimGray;
             label83.Location = new Point(19, 136);
             label83.Name = "label83";
             label83.Size = new Size(98, 15);
@@ -3856,7 +3856,7 @@
             // label84
             // 
             label84.AutoSize = true;
-            label84.ForeColor = Color.DarkGray;
+            label84.ForeColor = Color.DimGray;
             label84.Location = new Point(19, 120);
             label84.Name = "label84";
             label84.Size = new Size(102, 15);
@@ -3878,7 +3878,7 @@
             label80.AutoSize = true;
             label80.BackColor = Color.Transparent;
             label80.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label80.ForeColor = Color.LightSlateGray;
+            label80.ForeColor = Color.DimGray;
             label80.Location = new Point(2, 0);
             label80.Name = "label80";
             label80.Padding = new Padding(0, 2, 0, 0);
@@ -3889,7 +3889,7 @@
             // label75
             // 
             label75.AutoSize = true;
-            label75.ForeColor = Color.DarkGray;
+            label75.ForeColor = Color.DimGray;
             label75.Location = new Point(171, 34);
             label75.Name = "label75";
             label75.Size = new Size(39, 15);
@@ -3899,7 +3899,7 @@
             // label59
             // 
             label59.AutoSize = true;
-            label59.ForeColor = Color.DarkGray;
+            label59.ForeColor = Color.DimGray;
             label59.Location = new Point(9, 34);
             label59.Name = "label59";
             label59.Size = new Size(141, 15);
@@ -3909,7 +3909,7 @@
             // label64
             // 
             label64.AutoSize = true;
-            label64.ForeColor = Color.DarkGray;
+            label64.ForeColor = Color.DimGray;
             label64.Location = new Point(19, 56);
             label64.Name = "label64";
             label64.Size = new Size(182, 15);
@@ -3919,7 +3919,7 @@
             // lblSummaryAvgFiatAmtReceivedPerSellTransaction
             // 
             lblSummaryAvgFiatAmtReceivedPerSellTransaction.AutoSize = true;
-            lblSummaryAvgFiatAmtReceivedPerSellTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgFiatAmtReceivedPerSellTransaction.ForeColor = Color.DarkOrange;
             lblSummaryAvgFiatAmtReceivedPerSellTransaction.Location = new Point(227, 72);
             lblSummaryAvgFiatAmtReceivedPerSellTransaction.Name = "lblSummaryAvgFiatAmtReceivedPerSellTransaction";
             lblSummaryAvgFiatAmtReceivedPerSellTransaction.Size = new Size(13, 15);
@@ -3929,7 +3929,7 @@
             // label63
             // 
             label63.AutoSize = true;
-            label63.ForeColor = Color.DarkGray;
+            label63.ForeColor = Color.DimGray;
             label63.Location = new Point(19, 72);
             label63.Name = "label63";
             label63.Size = new Size(177, 15);
@@ -3939,7 +3939,7 @@
             // lblSummaryAvgBTCSpentPerSellTransaction
             // 
             lblSummaryAvgBTCSpentPerSellTransaction.AutoSize = true;
-            lblSummaryAvgBTCSpentPerSellTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgBTCSpentPerSellTransaction.ForeColor = Color.DarkOrange;
             lblSummaryAvgBTCSpentPerSellTransaction.Location = new Point(227, 56);
             lblSummaryAvgBTCSpentPerSellTransaction.Name = "lblSummaryAvgBTCSpentPerSellTransaction";
             lblSummaryAvgBTCSpentPerSellTransaction.Size = new Size(13, 15);
@@ -3949,7 +3949,7 @@
             // label70
             // 
             label70.AutoSize = true;
-            label70.ForeColor = Color.DarkGray;
+            label70.ForeColor = Color.DimGray;
             label70.Location = new Point(19, 88);
             label70.Name = "label70";
             label70.Size = new Size(99, 15);
@@ -3959,7 +3959,7 @@
             // lblSummaryTotalBTCSpentFromSellTransactions
             // 
             lblSummaryTotalBTCSpentFromSellTransactions.AutoSize = true;
-            lblSummaryTotalBTCSpentFromSellTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalBTCSpentFromSellTransactions.ForeColor = Color.DarkOrange;
             lblSummaryTotalBTCSpentFromSellTransactions.Location = new Point(227, 104);
             lblSummaryTotalBTCSpentFromSellTransactions.Name = "lblSummaryTotalBTCSpentFromSellTransactions";
             lblSummaryTotalBTCSpentFromSellTransactions.Size = new Size(13, 15);
@@ -3969,7 +3969,7 @@
             // label69
             // 
             label69.AutoSize = true;
-            label69.ForeColor = Color.DarkGray;
+            label69.ForeColor = Color.DimGray;
             label69.Location = new Point(19, 104);
             label69.Name = "label69";
             label69.Size = new Size(104, 15);
@@ -3979,7 +3979,7 @@
             // lblSummaryTotalFiatReceivedOnSellTransactions
             // 
             lblSummaryTotalFiatReceivedOnSellTransactions.AutoSize = true;
-            lblSummaryTotalFiatReceivedOnSellTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalFiatReceivedOnSellTransactions.ForeColor = Color.DarkOrange;
             lblSummaryTotalFiatReceivedOnSellTransactions.Location = new Point(227, 88);
             lblSummaryTotalFiatReceivedOnSellTransactions.Name = "lblSummaryTotalFiatReceivedOnSellTransactions";
             lblSummaryTotalFiatReceivedOnSellTransactions.Size = new Size(13, 15);
@@ -3989,7 +3989,7 @@
             // lblSummaryTXCountSpentBTC
             // 
             lblSummaryTXCountSpentBTC.AutoSize = true;
-            lblSummaryTXCountSpentBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTXCountSpentBTC.ForeColor = Color.DarkOrange;
             lblSummaryTXCountSpentBTC.Location = new Point(147, 34);
             lblSummaryTXCountSpentBTC.Name = "lblSummaryTXCountSpentBTC";
             lblSummaryTXCountSpentBTC.Size = new Size(13, 15);
@@ -4027,7 +4027,7 @@
             // lblSummaryMostBTCReceivedInOneTX
             // 
             lblSummaryMostBTCReceivedInOneTX.AutoSize = true;
-            lblSummaryMostBTCReceivedInOneTX.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryMostBTCReceivedInOneTX.ForeColor = Color.DarkOrange;
             lblSummaryMostBTCReceivedInOneTX.Location = new Point(244, 168);
             lblSummaryMostBTCReceivedInOneTX.Name = "lblSummaryMostBTCReceivedInOneTX";
             lblSummaryMostBTCReceivedInOneTX.Size = new Size(13, 15);
@@ -4037,7 +4037,7 @@
             // lblSummaryMostFiatSpentInOneTX
             // 
             lblSummaryMostFiatSpentInOneTX.AutoSize = true;
-            lblSummaryMostFiatSpentInOneTX.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryMostFiatSpentInOneTX.ForeColor = Color.DarkOrange;
             lblSummaryMostFiatSpentInOneTX.Location = new Point(244, 152);
             lblSummaryMostFiatSpentInOneTX.Name = "lblSummaryMostFiatSpentInOneTX";
             lblSummaryMostFiatSpentInOneTX.Size = new Size(13, 15);
@@ -4047,7 +4047,7 @@
             // label82
             // 
             label82.AutoSize = true;
-            label82.ForeColor = Color.DarkGray;
+            label82.ForeColor = Color.DimGray;
             label82.Location = new Point(19, 168);
             label82.Name = "label82";
             label82.Size = new Size(173, 15);
@@ -4057,7 +4057,7 @@
             // label81
             // 
             label81.AutoSize = true;
-            label81.ForeColor = Color.DarkGray;
+            label81.ForeColor = Color.DimGray;
             label81.Location = new Point(19, 152);
             label81.Name = "label81";
             label81.Size = new Size(138, 15);
@@ -4079,7 +4079,7 @@
             label79.AutoSize = true;
             label79.BackColor = Color.Transparent;
             label79.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
-            label79.ForeColor = Color.LightSlateGray;
+            label79.ForeColor = Color.DimGray;
             label79.Location = new Point(2, 0);
             label79.Name = "label79";
             label79.Padding = new Padding(0, 2, 0, 0);
@@ -4090,7 +4090,7 @@
             // lblSummaryLowestPricePaid
             // 
             lblSummaryLowestPricePaid.AutoSize = true;
-            lblSummaryLowestPricePaid.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryLowestPricePaid.ForeColor = Color.DarkOrange;
             lblSummaryLowestPricePaid.Location = new Point(244, 136);
             lblSummaryLowestPricePaid.Name = "lblSummaryLowestPricePaid";
             lblSummaryLowestPricePaid.Size = new Size(13, 15);
@@ -4100,7 +4100,7 @@
             // label74
             // 
             label74.AutoSize = true;
-            label74.ForeColor = Color.DarkGray;
+            label74.ForeColor = Color.DimGray;
             label74.Location = new Point(194, 34);
             label74.Name = "label74";
             label74.Size = new Size(39, 15);
@@ -4110,7 +4110,7 @@
             // lblSummaryHighestPricePaid
             // 
             lblSummaryHighestPricePaid.AutoSize = true;
-            lblSummaryHighestPricePaid.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryHighestPricePaid.ForeColor = Color.DarkOrange;
             lblSummaryHighestPricePaid.Location = new Point(244, 120);
             lblSummaryHighestPricePaid.Name = "lblSummaryHighestPricePaid";
             lblSummaryHighestPricePaid.Size = new Size(13, 15);
@@ -4120,7 +4120,7 @@
             // label60
             // 
             label60.AutoSize = true;
-            label60.ForeColor = Color.DarkGray;
+            label60.ForeColor = Color.DimGray;
             label60.Location = new Point(9, 34);
             label60.Name = "label60";
             label60.Size = new Size(173, 15);
@@ -4130,7 +4130,7 @@
             // label61
             // 
             label61.AutoSize = true;
-            label61.ForeColor = Color.DarkGray;
+            label61.ForeColor = Color.DimGray;
             label61.Location = new Point(19, 56);
             label61.Name = "label61";
             label61.Size = new Size(197, 15);
@@ -4140,7 +4140,7 @@
             // label77
             // 
             label77.AutoSize = true;
-            label77.ForeColor = Color.DarkGray;
+            label77.ForeColor = Color.DimGray;
             label77.Location = new Point(19, 136);
             label77.Name = "label77";
             label77.Size = new Size(99, 15);
@@ -4150,7 +4150,7 @@
             // label62
             // 
             label62.AutoSize = true;
-            label62.ForeColor = Color.DarkGray;
+            label62.ForeColor = Color.DimGray;
             label62.Location = new Point(19, 72);
             label62.Name = "label62";
             label62.Size = new Size(162, 15);
@@ -4160,7 +4160,7 @@
             // label76
             // 
             label76.AutoSize = true;
-            label76.ForeColor = Color.DarkGray;
+            label76.ForeColor = Color.DimGray;
             label76.Location = new Point(19, 120);
             label76.Name = "label76";
             label76.Size = new Size(103, 15);
@@ -4170,7 +4170,7 @@
             // label67
             // 
             label67.AutoSize = true;
-            label67.ForeColor = Color.DarkGray;
+            label67.ForeColor = Color.DimGray;
             label67.Location = new Point(19, 88);
             label67.Name = "label67";
             label67.Size = new Size(84, 15);
@@ -4180,7 +4180,7 @@
             // label68
             // 
             label68.AutoSize = true;
-            label68.ForeColor = Color.DarkGray;
+            label68.ForeColor = Color.DimGray;
             label68.Location = new Point(19, 104);
             label68.Name = "label68";
             label68.Size = new Size(119, 15);
@@ -4190,7 +4190,7 @@
             // lblSummaryAvgBTCRecdPerBuyTransaction
             // 
             lblSummaryAvgBTCRecdPerBuyTransaction.AutoSize = true;
-            lblSummaryAvgBTCRecdPerBuyTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgBTCRecdPerBuyTransaction.ForeColor = Color.DarkOrange;
             lblSummaryAvgBTCRecdPerBuyTransaction.Location = new Point(244, 56);
             lblSummaryAvgBTCRecdPerBuyTransaction.Name = "lblSummaryAvgBTCRecdPerBuyTransaction";
             lblSummaryAvgBTCRecdPerBuyTransaction.Size = new Size(13, 15);
@@ -4200,7 +4200,7 @@
             // lblSummaryTXCountRecdBTC
             // 
             lblSummaryTXCountRecdBTC.AutoSize = true;
-            lblSummaryTXCountRecdBTC.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTXCountRecdBTC.ForeColor = Color.DarkOrange;
             lblSummaryTXCountRecdBTC.Location = new Point(179, 34);
             lblSummaryTXCountRecdBTC.Name = "lblSummaryTXCountRecdBTC";
             lblSummaryTXCountRecdBTC.Size = new Size(13, 15);
@@ -4210,7 +4210,7 @@
             // lblSummaryAvgFiatAmtSpentPerBuyTransaction
             // 
             lblSummaryAvgFiatAmtSpentPerBuyTransaction.AutoSize = true;
-            lblSummaryAvgFiatAmtSpentPerBuyTransaction.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryAvgFiatAmtSpentPerBuyTransaction.ForeColor = Color.DarkOrange;
             lblSummaryAvgFiatAmtSpentPerBuyTransaction.Location = new Point(244, 72);
             lblSummaryAvgFiatAmtSpentPerBuyTransaction.Name = "lblSummaryAvgFiatAmtSpentPerBuyTransaction";
             lblSummaryAvgFiatAmtSpentPerBuyTransaction.Size = new Size(13, 15);
@@ -4220,7 +4220,7 @@
             // lblSummaryTotalFiatSpentOnBuyTransactions
             // 
             lblSummaryTotalFiatSpentOnBuyTransactions.AutoSize = true;
-            lblSummaryTotalFiatSpentOnBuyTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalFiatSpentOnBuyTransactions.ForeColor = Color.DarkOrange;
             lblSummaryTotalFiatSpentOnBuyTransactions.Location = new Point(244, 88);
             lblSummaryTotalFiatSpentOnBuyTransactions.Name = "lblSummaryTotalFiatSpentOnBuyTransactions";
             lblSummaryTotalFiatSpentOnBuyTransactions.Size = new Size(13, 15);
@@ -4230,7 +4230,7 @@
             // lblSummaryTotalBTCRecdFromBuyTransactions
             // 
             lblSummaryTotalBTCRecdFromBuyTransactions.AutoSize = true;
-            lblSummaryTotalBTCRecdFromBuyTransactions.ForeColor = Color.FromArgb(255, 128, 0);
+            lblSummaryTotalBTCRecdFromBuyTransactions.ForeColor = Color.DarkOrange;
             lblSummaryTotalBTCRecdFromBuyTransactions.Location = new Point(244, 104);
             lblSummaryTotalBTCRecdFromBuyTransactions.Name = "lblSummaryTotalBTCRecdFromBuyTransactions";
             lblSummaryTotalBTCRecdFromBuyTransactions.Size = new Size(13, 15);
@@ -4463,6 +4463,8 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1178, 759);
+            Controls.Add(panel10);
+            Controls.Add(panelSummaryContainer);
             Controls.Add(panel9);
             Controls.Add(panelColors);
             Controls.Add(btnCurrency);
@@ -4474,14 +4476,12 @@
             Controls.Add(panelAddTransactionContainer);
             Controls.Add(panelChartOuter);
             Controls.Add(panelTXListOuter);
-            Controls.Add(panel10);
             Controls.Add(panelTopControls);
             Controls.Add(pictureBox2);
             Controls.Add(pictureBox1);
             Controls.Add(panel16);
             Controls.Add(btnMoveWindow);
             Controls.Add(panelHelpTextContainer);
-            Controls.Add(panelSummaryContainer);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;

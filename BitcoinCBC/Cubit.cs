@@ -2,7 +2,7 @@
 ╔═╗╦ ╦╔╗ ╦╔╦╗
 ║  ║ ║╠╩╗║ ║ 
 ╚═╝╚═╝╚═╝╩ ╩
-*/ 
+*/
 
 #region Using
 using Newtonsoft.Json;
@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "0.9";
+        readonly string CurrentVersion = "0.91";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -52,6 +52,7 @@ namespace Cubit
         double mostFiatReceivedInOneTransaction = 0;
         double mostBTCSpentInOneTransaction = 0;
         decimal rollingBTCAmount;
+        bool dateValid;
         readonly Color[] colorCodes = new Color[]
         {
             Color.FromArgb(254, 166, 154),
@@ -120,6 +121,7 @@ namespace Cubit
             "I'm reading a book on gravity. I can't put it down.",
             "Dev says you should check out btcdir.org",
             "Dev says you should check out satsuma.btcdir.org",
+            "There is no spoon.",
         };
         private readonly List<System.Drawing.Image> welcomeImages = new()
         {
@@ -145,6 +147,7 @@ namespace Cubit
             Properties.Resources.gravity,
             Properties.Resources.btcdir,
             Properties.Resources.Satsuma,
+            Properties.Resources.Spoon,
         };
         List<double> listBuyBTCTransactionDate = new();
         List<double> listBuyBTCTransactionFiatAmount = new();
@@ -674,6 +677,46 @@ namespace Cubit
                 }
             }
             #endregion
+            #region check date isn't an impossible date (e.g 31st feb)
+            if (comboBoxMonthInput.SelectedIndex > 0 && comboBoxDayInput.SelectedIndex > 0) // a specific date has been selected
+            {
+                int Year = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
+                int Month = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
+                int Day = Convert.ToInt16(comboBoxDayInput.SelectedIndex);
+                if (!IsValidDate(Year, Month, Day))
+                {
+                    dateValid = false;
+                    lblDisabledAddButtonText.Invoke((MethodInvoker)delegate
+                    {
+                        lblDisabledAddButtonText.Visible = true;
+                    });
+                    btnAddTransaction.Invoke((MethodInvoker)delegate
+                    {
+                        btnAddTransaction.Enabled = false;
+                        btnAddTransaction.BackColor = Color.FromArgb(234, 234, 234);
+                    });
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("Invalid date!");
+                    return;
+                }
+                else
+                {
+                    dateValid = true;
+                    lblDisabledAddButtonText.Invoke((MethodInvoker)delegate
+                    {
+                        lblDisabledAddButtonText.Visible = false;
+                    });
+                    btnAddTransaction.Invoke((MethodInvoker)delegate
+                    {
+                        btnAddTransaction.Enabled = true;
+                        btnAddTransaction.BackColor = Color.FromArgb(255, 192, 128);
+                    });
+                }
+            }
+
+
+            #endregion
             #endregion
             if (comboBoxYearInput.SelectedIndex >= 0)
             {
@@ -722,6 +765,28 @@ namespace Cubit
             }
             GetPriceForDate();
         }
+
+        private bool IsValidDate(int year, int month, int day)
+        {
+            if (month < 1 || month > 12 || day < 1)
+            {
+                return false;
+            }
+
+            int[] daysInMonth = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+            if (IsLeapYear(year) && month == 2)
+            {
+                return day <= 29;
+            }
+
+            return day <= daysInMonth[month];
+        }
+
+        private bool IsLeapYear(int year)
+        {
+            return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+        }
         #endregion
 
         #region transaction amounts input
@@ -729,10 +794,19 @@ namespace Cubit
         {
             if (btnUsePriceEstimateFlag.Text == "✔️")
             {
-                textBoxPriceInput.Invoke((MethodInvoker)delegate
+                if (lblEstimatedPrice.Text != "(unavailable)")
                 {
-                    textBoxPriceInput.Text = Convert.ToString(estimate);
-                });
+                    textBoxPriceInput.Invoke((MethodInvoker)delegate
+                    {
+                        textBoxPriceInput.Text = Convert.ToString(estimate);
+                    });
+                }
+                else
+                {
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("Sorry, no estimate available at this time.");
+                }
             }
         }
 
@@ -901,41 +975,50 @@ namespace Cubit
             }
             else
             {
-                btnUsePriceEstimateFlag.Invoke((MethodInvoker)delegate
+                if (lblEstimatedPrice.Text != "(unavailable)")
                 {
-                    btnUsePriceEstimateFlag.Text = "✔️";
-                });
-                textBoxPriceInput.Invoke((MethodInvoker)delegate
-                {
-                    textBoxPriceInput.Enabled = false;
-                    textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
-                    textBoxPriceInput.BackColor = Color.FromArgb(240, 240, 240);
-                });
-                panel6.Invoke((MethodInvoker)delegate
-                {
-                    panel6.BackColor = Color.FromArgb(240, 240, 240);
-                });
-                if (priceEstimateType == "DA")
-                {
-                    lblAddDataRange.Invoke((MethodInvoker)delegate
+                    btnUsePriceEstimateFlag.Invoke((MethodInvoker)delegate
                     {
-                        lblAddDataRange.Text = "0%*";
+                        btnUsePriceEstimateFlag.Text = "✔️";
                     });
+                    textBoxPriceInput.Invoke((MethodInvoker)delegate
+                    {
+                        textBoxPriceInput.Enabled = false;
+                        textBoxPriceInput.Text = Convert.ToString(selectedMedianPrice);
+                        textBoxPriceInput.BackColor = Color.FromArgb(240, 240, 240);
+                    });
+                    panel6.Invoke((MethodInvoker)delegate
+                    {
+                        panel6.BackColor = Color.FromArgb(240, 240, 240);
+                    });
+                    if (priceEstimateType == "DA")
+                    {
+                        lblAddDataRange.Invoke((MethodInvoker)delegate
+                        {
+                            lblAddDataRange.Text = "0%*";
+                        });
+                    }
+                    else
+                    {
+                        lblAddDataRange.Invoke((MethodInvoker)delegate
+                        {
+                            lblAddDataRange.Text = Convert.ToString(selectedRangePercentage) + "%";
+                        });
+                    }
+                    lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                    {
+                        lblAddDataPriceEstimateType.Text = priceEstimateType;
+                    });
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
                 }
                 else
                 {
-                    lblAddDataRange.Invoke((MethodInvoker)delegate
-                    {
-                        lblAddDataRange.Text = Convert.ToString(selectedRangePercentage) + "%";
-                    });
+                    panelWelcome.Visible = false;
+                    panelRobotSpeakOuter.Visible = true;
+                    InterruptAndStartNewRobotSpeak("Sorry, no estimate available at this time.");
                 }
-                lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
-                {
-                    lblAddDataPriceEstimateType.Text = priceEstimateType;
-                });
-                panelWelcome.Visible = false;
-                panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("OK, let's use the best price estimate I could manage for the date provided.");
             }
         }
 
@@ -1327,7 +1410,8 @@ namespace Cubit
             if (lblAddDataYear.Text != "" && lblAddDataYear.Text != "-"
             && lblAddDataPrice.Text != "" && lblAddDataPrice.Text != "-"
             && lblAddDataFiat.Text != "" && lblAddDataFiat.Text != "-"
-            && lblAddDataBTC.Text != "" && lblAddDataBTC.Text != "-")
+            && lblAddDataBTC.Text != "" && lblAddDataBTC.Text != "-"
+            && dateValid == true)
             {
                 lblDisabledAddButtonText.Invoke((MethodInvoker)delegate
                 {
@@ -1566,59 +1650,15 @@ namespace Cubit
 
             if (comboBoxMonthInput.SelectedIndex < 1 && comboBoxDayInput.SelectedIndex < 1) // only the year has been set
             {
-                selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
-
-                List<PriceCoordsAndFormattedDateList> PricesForSelectedYear = HistoricPrices
-                    .Where(pricelist => pricelist.FormattedDate?.Length >= 4 && Convert.ToInt16(pricelist.FormattedDate[..4]) == selectedYear)
-                    .ToList();
-
-                decimal[] prices = PricesForSelectedYear.Select(p => p.Y).ToArray();
-
-                (decimal median, decimal range, decimal rangePercent) = GetMedianRangeAndPercentageDifference(prices);
-
-                lblEstimatedPrice.Invoke((MethodInvoker)delegate
-                {
-                    lblEstimatedPrice.Text = "(" + Convert.ToString(median) + " +/-" + Convert.ToString(rangePercent) + "%)";
-                });
-                if (btnUsePriceEstimateFlag.Text == "✔️")
-                {
-                    lblAddDataRange.Invoke((MethodInvoker)delegate
-                    {
-                        lblAddDataRange.Text = Convert.ToString(rangePercent) + "%";
-                    });
-                    lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
-                    {
-                        lblAddDataPriceEstimateType.Text = "AM";
-                    });
-                }
-                else
-                {
-                    lblAddDataRange.Invoke((MethodInvoker)delegate
-                    {
-                        lblAddDataRange.Text = "-";
-                    });
-                }
-                priceEstimateType = "AM";
-
-                CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
-                panelWelcome.Visible = false;
-                panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
-            }
-            else
-            {
-                if (comboBoxMonthInput.SelectedIndex > 0 && comboBoxDayInput.SelectedIndex < 1) // year and month have been set
+                try
                 {
                     selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
-                    selectedMonthNumeric = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
-                    selectedMonth = months[comboBoxMonthInput.SelectedIndex - 1];
 
-                    List<PriceCoordsAndFormattedDateList> PricesForSelectedYearMonth = HistoricPrices
-                    .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?[..4]) == selectedYear)
-                    .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?.Substring(4, 2)) == selectedMonthNumeric)
-                    .ToList();
+                    List<PriceCoordsAndFormattedDateList> PricesForSelectedYear = HistoricPrices
+                        .Where(pricelist => pricelist.FormattedDate?.Length >= 4 && Convert.ToInt16(pricelist.FormattedDate[..4]) == selectedYear)
+                        .ToList();
 
-                    decimal[] prices = PricesForSelectedYearMonth.Select(p => p.Y).ToArray();
+                    decimal[] prices = PricesForSelectedYear.Select(p => p.Y).ToArray();
 
                     (decimal median, decimal range, decimal rangePercent) = GetMedianRangeAndPercentageDifference(prices);
 
@@ -1634,7 +1674,7 @@ namespace Cubit
                         });
                         lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
                         {
-                            lblAddDataPriceEstimateType.Text = "MM";
+                            lblAddDataPriceEstimateType.Text = "AM";
                         });
                     }
                     else
@@ -1644,80 +1684,180 @@ namespace Cubit
                             lblAddDataRange.Text = "-";
                         });
                     }
-                    priceEstimateType = "MM";
+                    priceEstimateType = "AM";
+
                     CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
                     panelWelcome.Visible = false;
                     panelRobotSpeakOuter.Visible = true;
-                    InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedMonth + " " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
+                    InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
+                }
+                catch (Exception)
+                {
+                    lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                    {
+                        lblEstimatedPrice.Text = "(unavailable)";
+                    });
+                    lblAddDataRange.Invoke((MethodInvoker)delegate
+                    {
+                        lblAddDataRange.Text = "-";
+                    });
+                    lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                    {
+                        lblAddDataPriceEstimateType.Text = "N";
+                    });
+                }
+
+            }
+            else
+            {
+                if (comboBoxMonthInput.SelectedIndex > 0 && comboBoxDayInput.SelectedIndex < 1) // year and month have been set
+                {
+                    try
+                    {
+                        selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
+                        selectedMonthNumeric = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
+                        selectedMonth = months[comboBoxMonthInput.SelectedIndex - 1];
+
+                        List<PriceCoordsAndFormattedDateList> PricesForSelectedYearMonth = HistoricPrices
+                        .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?[..4]) == selectedYear)
+                        .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?.Substring(4, 2)) == selectedMonthNumeric)
+                        .ToList();
+
+                        decimal[] prices = PricesForSelectedYearMonth.Select(p => p.Y).ToArray();
+
+                        (decimal median, decimal range, decimal rangePercent) = GetMedianRangeAndPercentageDifference(prices);
+
+                        lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                        {
+                            lblEstimatedPrice.Text = "(" + Convert.ToString(median) + " +/-" + Convert.ToString(rangePercent) + "%)";
+                        });
+                        if (btnUsePriceEstimateFlag.Text == "✔️")
+                        {
+                            lblAddDataRange.Invoke((MethodInvoker)delegate
+                            {
+                                lblAddDataRange.Text = Convert.ToString(rangePercent) + "%";
+                            });
+                            lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                            {
+                                lblAddDataPriceEstimateType.Text = "MM";
+                            });
+                        }
+                        else
+                        {
+                            lblAddDataRange.Invoke((MethodInvoker)delegate
+                            {
+                                lblAddDataRange.Text = "-";
+                            });
+                        }
+                        priceEstimateType = "MM";
+                        CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
+                        panelWelcome.Visible = false;
+                        panelRobotSpeakOuter.Visible = true;
+                        InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedMonth + " " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
+                    }
+                    catch (Exception)
+                    {
+                        lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                        {
+                            lblEstimatedPrice.Text = "(unavailable)";
+                        });
+                        lblAddDataRange.Invoke((MethodInvoker)delegate
+                        {
+                            lblAddDataRange.Text = "-";
+                        });
+                        lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                        {
+                            lblAddDataPriceEstimateType.Text = "N";
+                        });
+                    }
+
                 }
                 else
                 {
                     if (comboBoxMonthInput.SelectedIndex > 0 && comboBoxDayInput.SelectedIndex > 0) // year, month and day have been set
                     {
-                        selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
-                        selectedMonthNumeric = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
-                        selectedMonth = months[comboBoxMonthInput.SelectedIndex - 1];
-                        selectedDay = Convert.ToString(comboBoxDayInput.SelectedIndex);
-
-                        string dateString = selectedDay + "-" + selectedMonthNumeric + "-" + selectedYear;
-                        string apiUrl = "https://api.coingecko.com/api/v3/coins/bitcoin/history?date=" + dateString + "&localization=false";
-
-                        using HttpClient client = new();
-                        HttpResponseMessage response = await client.GetAsync(apiUrl);
-
-                        if (response.IsSuccessStatusCode)
+                        try
                         {
-                            string jsonResponse = await response.Content.ReadAsStringAsync();
-                            JObject bitcoinData = JObject.Parse(jsonResponse);
+                            selectedYear = 2008 + (int)comboBoxYearInput.SelectedIndex + 1;
+                            selectedMonthNumeric = Convert.ToInt16(monthsNumeric[comboBoxMonthInput.SelectedIndex - 1]);
+                            selectedMonth = months[comboBoxMonthInput.SelectedIndex - 1];
+                            selectedDay = Convert.ToString(comboBoxDayInput.SelectedIndex);
 
-                            decimal? usdPrice = bitcoinData?["market_data"]?["current_price"]?["usd"]?.Value<decimal>();
-                            if (usdPrice.HasValue)
+                            string dateString = selectedDay + "-" + selectedMonthNumeric + "-" + selectedYear;
+                            string apiUrl = "https://api.coingecko.com/api/v3/coins/bitcoin/history?date=" + dateString + "&localization=false";
+
+                            using HttpClient client = new();
+                            HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+                            if (response.IsSuccessStatusCode)
                             {
-                                selectedMedianPrice = (Math.Round((decimal)usdPrice, 2));
-                                selectedRangePercentage = 0;
-                                estimatedPrice = Convert.ToString(Math.Round((decimal)usdPrice, 2));
-                                lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                                string jsonResponse = await response.Content.ReadAsStringAsync();
+                                JObject bitcoinData = JObject.Parse(jsonResponse);
+
+                                decimal? usdPrice = bitcoinData?["market_data"]?["current_price"]?["usd"]?.Value<decimal>();
+                                if (usdPrice.HasValue)
                                 {
-                                    lblEstimatedPrice.Text = "(" + estimatedPrice + ")";
-                                });
-                                lblAddDataRange.Invoke((MethodInvoker)delegate
-                                {
-                                    lblAddDataRange.Text = "0%";
-                                });
-                                if (btnUsePriceEstimateFlag.Text == "✔️")
-                                {
-                                    lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                                    selectedMedianPrice = (Math.Round((decimal)usdPrice, 2));
+                                    selectedRangePercentage = 0;
+                                    estimatedPrice = Convert.ToString(Math.Round((decimal)usdPrice, 2));
+                                    lblEstimatedPrice.Invoke((MethodInvoker)delegate
                                     {
-                                        lblAddDataPriceEstimateType.Text = "DA";
+                                        lblEstimatedPrice.Text = "(" + estimatedPrice + ")";
                                     });
                                     lblAddDataRange.Invoke((MethodInvoker)delegate
                                     {
-                                        lblAddDataRange.Text = "0%*";
+                                        lblAddDataRange.Text = "0%";
                                     });
+                                    if (btnUsePriceEstimateFlag.Text == "✔️")
+                                    {
+                                        lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                                        {
+                                            lblAddDataPriceEstimateType.Text = "DA";
+                                        });
+                                        lblAddDataRange.Invoke((MethodInvoker)delegate
+                                        {
+                                            lblAddDataRange.Text = "0%*";
+                                        });
+                                    }
+                                    priceEstimateType = "DA";
+                                    CopyPriceEstimateToInputIfNecessary(estimatedPrice);
+                                    panelWelcome.Visible = false;
+                                    panelRobotSpeakOuter.Visible = true;
+                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $" + estimatedPrice);
                                 }
-                                priceEstimateType = "DA";
-                                CopyPriceEstimateToInputIfNecessary(estimatedPrice);
-                                panelWelcome.Visible = false;
-                                panelRobotSpeakOuter.Visible = true;
-                                InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $" + estimatedPrice);
+                                else
+                                {
+                                    lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                                    {
+                                        lblEstimatedPrice.Text = "0.00";
+                                    });
+                                    CopyPriceEstimateToInputIfNecessary(estimatedPrice);
+                                    panelWelcome.Visible = false;
+                                    panelRobotSpeakOuter.Visible = true;
+                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $0.0");
+                                }
                             }
                             else
                             {
-                                lblEstimatedPrice.Invoke((MethodInvoker)delegate
-                                {
-                                    lblEstimatedPrice.Text = "0.00";
-                                });
-                                CopyPriceEstimateToInputIfNecessary(estimatedPrice);
                                 panelWelcome.Visible = false;
                                 panelRobotSpeakOuter.Visible = true;
-                                InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $0.0");
+                                InterruptAndStartNewRobotSpeak($"Failed to fetch data. Status code: {response.StatusCode}");
                             }
                         }
-                        else
+                        catch (Exception)
                         {
-                            panelWelcome.Visible = false;
-                            panelRobotSpeakOuter.Visible = true;
-                            InterruptAndStartNewRobotSpeak($"Failed to fetch data. Status code: {response.StatusCode}");
+                            lblEstimatedPrice.Invoke((MethodInvoker)delegate
+                            {
+                                lblEstimatedPrice.Text = "(unavailable)";
+                            });
+                            lblAddDataRange.Invoke((MethodInvoker)delegate
+                            {
+                                lblAddDataRange.Text = "-";
+                            });
+                            lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+                            {
+                                lblAddDataPriceEstimateType.Text = "N";
+                            });
                         }
                     }
                 }
@@ -2530,7 +2670,7 @@ namespace Cubit
                     lblROI.Invoke((MethodInvoker)delegate
                     {
                         lblROI.Text = Convert.ToString(changeInValue) + "%";
-                        lblROI.ForeColor = Color.Gray;
+                        lblROI.ForeColor = Color.DimGray;
                     });
                 }
                 lblROI.Invoke((MethodInvoker)delegate
@@ -2717,7 +2857,7 @@ namespace Cubit
                         }
                         else
                         {
-                            using Brush backgroundBrush = new SolidBrush(Color.Gray);
+                            using Brush backgroundBrush = new SolidBrush(Color.DimGray);
                             e.Graphics.FillRectangle(backgroundBrush, e.SubItem.Bounds);
                         }
                     }
@@ -2862,7 +3002,7 @@ namespace Cubit
                         }
                         else
                         {
-                            using Brush backgroundBrush = new SolidBrush(Color.DarkGray);
+                            using Brush backgroundBrush = new SolidBrush(Color.DimGray);
                             e.Graphics.FillRectangle(backgroundBrush, e.SubItem.Bounds);
                             e.SubItem.ForeColor = Color.White;
                         }
@@ -3157,7 +3297,7 @@ namespace Cubit
                 figureBackground: Color.Transparent,
                 dataBackground: Color.White,
                 titleLabel: Color.Black,
-                axisLabel: Color.Gray);
+                axisLabel: Color.DimGray);
 
             Color newGridlineColor = Color.FromArgb(235, 235, 235);
             formsPlot1.Plot.Style(grid: newGridlineColor);
@@ -3394,7 +3534,7 @@ namespace Cubit
                             hline.DragEnabled = false;
 
                             var CBline = formsPlot1.Plot.AddText("Cost basis: " + Convert.ToString(costBasis), x: xValues.Min(), y: costBasis, color: Color.FromArgb(255, 224, 192));
-                            CBline.Font.Color = Color.LightSlateGray;
+                            CBline.Font.Color = Color.DimGray;
                             CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
                             CBline.BackgroundFill = true;
                             CBline.BorderSize = 0;
@@ -3593,7 +3733,7 @@ namespace Cubit
                             hline.DragEnabled = false;
 
                             var CBline = formsPlot1.Plot.AddText("Cost basis: " + Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.FromArgb(255, 224, 192));
-                            CBline.Font.Color = Color.LightSlateGray; ;
+                            CBline.Font.Color = Color.DimGray;
                             CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
                             CBline.BackgroundFill = true;
                             CBline.BorderSize = 0;
@@ -3928,7 +4068,7 @@ namespace Cubit
                                 actualAnnotation.BorderColor = Color.White;
                                 actualAnnotation.MarginX = 2;
                                 actualAnnotation.MarginY = 2;
-                                actualAnnotation.Font.Color = Color.Gray;
+                                actualAnnotation.Font.Color = Color.DimGray;
                                 actualAnnotation.BackgroundColor = Color.White;
                             }
                             else
@@ -3951,7 +4091,7 @@ namespace Cubit
                                 actualAnnotation.BorderColor = Color.White;
                                 actualAnnotation.MarginX = 2;
                                 actualAnnotation.MarginY = 2;
-                                actualAnnotation.Font.Color = Color.Gray;
+                                actualAnnotation.Font.Color = Color.DimGray;
                                 actualAnnotation.BackgroundColor = Color.White;
                             }
                             formsPlot1.Render();
@@ -4162,16 +4302,33 @@ namespace Cubit
             }
             if (panelToShrink == panelTransactionLabel)
             {
-                panelMinWidth = 105;
+                panelMinWidth = 106;
                 currentWidthShrinkingPanel -= 6; // twice as fast for this panel
             }
 
-            if (currentWidthShrinkingPanel <= panelMinWidth) // expanding is complete
+            if (currentWidthShrinkingPanel <= panelMinWidth) // shrinking is complete
             {
                 panelToShrink.Invoke((MethodInvoker)delegate
                 {
                     panelToShrink.Width = panelMinWidth;
                     panelToShrink.Invalidate();
+
+                    panel21.Invoke((MethodInvoker)delegate
+                    {
+                        panel21.Location = new Point(panel18.Location.X + panel18.Width + 8, panel21.Location.Y);
+                    });
+                    panel22.Invoke((MethodInvoker)delegate
+                    {
+                        panel22.Location = new Point(panel21.Location.X + panel21.Width + 8, panel22.Location.Y);
+                    });
+                    panel23.Invoke((MethodInvoker)delegate
+                    {
+                        panel23.Location = new Point(panel22.Location.X + panel22.Width + 8, panel23.Location.Y);
+                    });
+                    panel24.Invoke((MethodInvoker)delegate
+                    {
+                        panel24.Location = new Point(panel23.Location.X + panel23.Width + 8, panel24.Location.Y);
+                    });
                 });
 
                 ShrinkPanelTimer.Stop();
@@ -4186,19 +4343,19 @@ namespace Cubit
                     //shift the other panels along
                     panel21.Invoke((MethodInvoker)delegate
                     {
-                        panel21.Location = new Point(panel18.Location.X + panel18.Width + 10, panel21.Location.Y);
+                        panel21.Location = new Point(panel18.Location.X + panel18.Width + 8, panel21.Location.Y);
                     });
                     panel22.Invoke((MethodInvoker)delegate
                     {
-                        panel22.Location = new Point(panel21.Location.X + panel21.Width + 10, panel22.Location.Y);
+                        panel22.Location = new Point(panel21.Location.X + panel21.Width + 8, panel22.Location.Y);
                     });
                     panel23.Invoke((MethodInvoker)delegate
                     {
-                        panel23.Location = new Point(panel22.Location.X + panel22.Width + 10, panel23.Location.Y);
+                        panel23.Location = new Point(panel22.Location.X + panel22.Width + 8, panel23.Location.Y);
                     });
                     panel24.Invoke((MethodInvoker)delegate
                     {
-                        panel24.Location = new Point(panel23.Location.X + panel23.Width + 10, panel24.Location.Y);
+                        panel24.Location = new Point(panel23.Location.X + panel23.Width + 8, panel24.Location.Y);
                     });
                 }
             }
@@ -4744,7 +4901,7 @@ namespace Cubit
                 lblSummaryPercentageChangeInValue.Invoke((MethodInvoker)delegate
                 {
                     lblSummaryPercentageChangeInValue.Text = Convert.ToString(changeInValue) + "%";
-                    lblSummaryPercentageChangeInValue.ForeColor = Color.Gray;
+                    lblSummaryPercentageChangeInValue.ForeColor = Color.DimGray;
                 });
             }
 
