@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "0.91";
+        readonly string CurrentVersion = "0.92";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -766,7 +766,7 @@ namespace Cubit
             GetPriceForDate();
         }
 
-        private bool IsValidDate(int year, int month, int day)
+        private static bool IsValidDate(int year, int month, int day)
         {
             if (month < 1 || month > 12 || day < 1)
             {
@@ -783,7 +783,7 @@ namespace Cubit
             return day <= daysInMonth[month];
         }
 
-        private bool IsLeapYear(int year)
+        private static bool IsLeapYear(int year)
         {
             return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
         }
@@ -1868,17 +1868,29 @@ namespace Cubit
 
         #region refresh current price
 
-        private async void BtnPriceRefresh_Click(object sender, EventArgs e)
+        private void BtnPriceRefresh_Click(object sender, EventArgs e)
         {
             HistoricPrices.Clear();
-            await GetHistoricPricesAsyncWrapper();
-            await SetupTransactionsList();
-            if (priceInSelectedCurrency > 0)
+            if (selectedCurrencyName == "USD")
             {
-                panelWelcome.Visible = false;
-                panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("Retrieved up to date price and adjusted my calculations.");
+                BtnUSD_Click(sender, e);
             }
+            if (selectedCurrencyName == "EUR")
+            {
+                BtnEUR_Click(sender, e);
+            }
+            if (selectedCurrencyName == "GBP")
+            {
+                BtnGBP_Click(sender, e);
+            }
+            if (selectedCurrencyName == "XAU")
+            {
+                BtnXAU_Click(sender, e);
+            }
+            //await GetHistoricPricesAsyncWrapper();
+            //await SetupTransactionsList();
+            
+
         }
 
         #endregion
@@ -5248,7 +5260,7 @@ namespace Cubit
             {
                 panelWelcome.Visible = false;
                 panelRobotSpeakOuter.Visible = true;
-                InterruptAndStartNewRobotSpeak("Currency set to " + selectedCurrencyName + " and saved as your default currency.");
+                InterruptAndStartNewRobotSpeak("Retrieved the current price denominated in your default currency (" + selectedCurrencyName + ").");
             }
             initialCurrencySetup = false;
         }
