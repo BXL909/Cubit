@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "0.92";
+        readonly string CurrentVersion = "1.0";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -1592,8 +1592,6 @@ namespace Cubit
                 var valuesToken = jsonObj["values"]!;
                 if (valuesToken != null && valuesToken.Type == JTokenType.Array)
                 {
-
-
                     HistoricPrices = new List<PriceCoordsAndFormattedDateList>();
 
                     foreach (var priceToken in valuesToken)
@@ -1658,6 +1656,11 @@ namespace Cubit
                         .Where(pricelist => pricelist.FormattedDate?.Length >= 4 && Convert.ToInt16(pricelist.FormattedDate[..4]) == selectedYear)
                         .ToList();
 
+                    foreach (var item in PricesForSelectedYear)
+                    {
+                        item.Y *= exchangeRate;
+                    }
+
                     decimal[] prices = PricesForSelectedYear.Select(p => p.Y).ToArray();
 
                     (decimal median, decimal range, decimal rangePercent) = GetMedianRangeAndPercentageDifference(prices);
@@ -1689,7 +1692,7 @@ namespace Cubit
                     CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
                     panelWelcome.Visible = false;
                     panelRobotSpeakOuter.Visible = true;
-                    InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
+                    InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedYear + " was " + selectedCurrencySymbol + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
                 }
                 catch (Exception)
                 {
@@ -1723,6 +1726,11 @@ namespace Cubit
                         .Where(pricelist => Convert.ToInt16(pricelist.FormattedDate?.Substring(4, 2)) == selectedMonthNumeric)
                         .ToList();
 
+                        foreach (var item in PricesForSelectedYearMonth)
+                        {
+                            item.Y *= exchangeRate;
+                        }
+
                         decimal[] prices = PricesForSelectedYearMonth.Select(p => p.Y).ToArray();
 
                         (decimal median, decimal range, decimal rangePercent) = GetMedianRangeAndPercentageDifference(prices);
@@ -1753,7 +1761,7 @@ namespace Cubit
                         CopyPriceEstimateToInputIfNecessary(Convert.ToString(median));
                         panelWelcome.Visible = false;
                         panelRobotSpeakOuter.Visible = true;
-                        InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedMonth + " " + selectedYear + " was $" + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
+                        InterruptAndStartNewRobotSpeak("The median price of 1 bitcoin through " + selectedMonth + " " + selectedYear + " was " + selectedCurrencySymbol + Convert.ToString(median) + ", with a range of +/-" + Convert.ToString(range));
                     }
                     catch (Exception)
                     {
@@ -1797,6 +1805,7 @@ namespace Cubit
                                 decimal? usdPrice = bitcoinData?["market_data"]?["current_price"]?["usd"]?.Value<decimal>();
                                 if (usdPrice.HasValue)
                                 {
+                                    usdPrice *= exchangeRate;
                                     selectedMedianPrice = (Math.Round((decimal)usdPrice, 2));
                                     selectedRangePercentage = 0;
                                     estimatedPrice = Convert.ToString(Math.Round((decimal)usdPrice, 2));
@@ -1823,7 +1832,7 @@ namespace Cubit
                                     CopyPriceEstimateToInputIfNecessary(estimatedPrice);
                                     panelWelcome.Visible = false;
                                     panelRobotSpeakOuter.Visible = true;
-                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $" + estimatedPrice);
+                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was " + selectedCurrencySymbol + estimatedPrice);
                                 }
                                 else
                                 {
@@ -1834,7 +1843,7 @@ namespace Cubit
                                     CopyPriceEstimateToInputIfNecessary(estimatedPrice);
                                     panelWelcome.Visible = false;
                                     panelRobotSpeakOuter.Visible = true;
-                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was $0.0");
+                                    InterruptAndStartNewRobotSpeak("The average price of 1 bitcoin for " + selectedDay + " " + selectedMonth + ", " + selectedYear + " was " + selectedCurrencySymbol + "0.0");
                                 }
                             }
                             else
@@ -1889,7 +1898,7 @@ namespace Cubit
             }
             //await GetHistoricPricesAsyncWrapper();
             //await SetupTransactionsList();
-            
+
 
         }
 
@@ -5137,6 +5146,7 @@ namespace Cubit
 
         private async void BtnUSD_Click(object sender, EventArgs e)
         {
+            BtnClearInput_Click(sender, e);
             EnableCurrencyButtons();
             btnUSD.Enabled = false;
             currentHeightShrinkingPanel = panelCurrency.Height;
@@ -5151,6 +5161,7 @@ namespace Cubit
 
         private async void BtnEUR_Click(object sender, EventArgs e)
         {
+            BtnClearInput_Click(sender, e);
             EnableCurrencyButtons();
             btnEUR.Enabled = false;
             currentHeightShrinkingPanel = panelCurrency.Height;
@@ -5165,6 +5176,7 @@ namespace Cubit
 
         private async void BtnGBP_Click(object sender, EventArgs e)
         {
+            BtnClearInput_Click(sender, e);
             EnableCurrencyButtons();
             btnGBP.Enabled = false;
             currentHeightShrinkingPanel = panelCurrency.Height;
@@ -5179,6 +5191,7 @@ namespace Cubit
 
         private async void BtnXAU_Click(object sender, EventArgs e)
         {
+            BtnClearInput_Click(sender, e);
             EnableCurrencyButtons();
             btnXAU.Enabled = false;
             currentHeightShrinkingPanel = panelCurrency.Height;
