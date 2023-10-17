@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "1.0";
+        readonly string CurrentVersion = "1.01";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -338,7 +338,7 @@ namespace Cubit
             #endregion
 
             #region get historic price list
-            await GetHistoricPricesAsyncWrapper();
+           // await GetHistoricPricesAsyncWrapper();
             #endregion
 
             #region start any required timers
@@ -2014,6 +2014,8 @@ namespace Cubit
             // Write the updated list of transactions back to the JSON file
             WriteTransactionsToJsonFile(transactions);
             BtnClearInput_Click(sender, e);
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
             await SetupTransactionsList();
             isRobotSpeaking = false;
             panelWelcome.Visible = false;
