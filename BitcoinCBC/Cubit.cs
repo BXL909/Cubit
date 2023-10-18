@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "1.01";
+        readonly string CurrentVersion = "1.02";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -92,6 +92,7 @@ namespace Cubit
         private int currentHeightShrinkingPanel = 0; // panel animation vertical
         bool initialCurrencySetup = true; // used to avoid robot message when currency is initially set
         bool currencyAlreadySavedInFile = false; // is ANY currency saved in the settings file
+        bool justAddedATransaction = false; // avoid 'inputs cleared' message when adding a transaction
         string selectedCurrencyName = "USD"; // initial value. Can be changed and saved
         string currencyInFile = "USD"; // the currency save in the settings file
         string selectedCurrencySymbol = "$"; // initial value.
@@ -1401,6 +1402,138 @@ namespace Cubit
             panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Ready for a new transaction!");
         }
+
+        private void BtnClearInputWithoutMessage()
+        {
+            btnAddTransaction.Invoke((MethodInvoker)delegate
+            {
+                btnAddTransaction.Enabled = false;
+            });
+            comboBoxYearInput.Invoke((MethodInvoker)delegate
+            {
+                comboBoxYearInput.SelectedIndex = -1;
+                comboBoxYearInput.Texts = "Year";
+            });
+            comboBoxMonthInput.Invoke((MethodInvoker)delegate
+            {
+                comboBoxMonthInput.SelectedIndex = -1;
+                comboBoxMonthInput.Texts = "Month";
+            });
+            comboBoxDayInput.Invoke((MethodInvoker)delegate
+            {
+                comboBoxDayInput.SelectedIndex = -1;
+                comboBoxDayInput.Texts = "Day";
+            });
+            textBoxPriceInput.Invoke((MethodInvoker)delegate
+            {
+                textBoxPriceInput.Text = "";
+                textBoxPriceInput.Enabled = true;
+                textBoxPriceInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel6.Invoke((MethodInvoker)delegate
+            {
+                panel6.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            textBoxFiatInput.Invoke((MethodInvoker)delegate
+            {
+                textBoxFiatInput.Text = "";
+                textBoxFiatInput.Enabled = true;
+                textBoxFiatInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel5.Invoke((MethodInvoker)delegate
+            {
+                panel5.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            textBoxBTCInput.Invoke((MethodInvoker)delegate
+            {
+                textBoxBTCInput.Text = "";
+                textBoxBTCInput.Enabled = true;
+                textBoxBTCInput.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            panel4.Invoke((MethodInvoker)delegate
+            {
+                panel4.BackColor = Color.FromArgb(255, 224, 192);
+            });
+            textBoxLabelInput.Invoke((MethodInvoker)delegate
+            {
+                textBoxLabelInput.Text = "";
+            });
+            lblEstimatedPrice.Invoke((MethodInvoker)delegate
+            {
+                lblEstimatedPrice.Text = "";
+            });
+            lblEstimatedFiat.Invoke((MethodInvoker)delegate
+            {
+                lblEstimatedFiat.Text = "";
+            });
+            lblEstimatedBTC.Invoke((MethodInvoker)delegate
+            {
+                lblEstimatedBTC.Text = "";
+            });
+            lblAddDataYear.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataYear.Text = "-";
+            });
+            lblAddDataMonth.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataMonth.Text = "-";
+            });
+            lblAddDataDay.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataDay.Text = "-";
+            });
+            lblAddDataPrice.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataPrice.Text = "-";
+            });
+            lblAddDataRange.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataRange.Text = "0%";
+            });
+            lblAddDataFiat.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataFiat.Text = "-";
+            });
+            lblAddDataFiatEstimateFlag.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataFiatEstimateFlag.Text = "N";
+            });
+            lblAddDataBTC.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataBTC.Text = "-";
+            });
+            lblAddDataBTCEstimateFlag.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataBTCEstimateFlag.Text = "N";
+            });
+            lblAddDataPriceEstimateType.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataPriceEstimateType.Text = "N";
+            });
+            priceEstimateType = "N";
+            lblAddDataLabel.Invoke((MethodInvoker)delegate
+            {
+                lblAddDataLabel.Text = "-";
+            });
+            btnUseBTCEstimateFlag.Invoke((MethodInvoker)delegate
+            {
+                btnUseBTCEstimateFlag.Text = "✖️";
+            });
+            btnUseFiatEstimateFlag.Invoke((MethodInvoker)delegate
+            {
+                btnUseFiatEstimateFlag.Text = "✖️";
+            });
+            btnUsePriceEstimateFlag.Invoke((MethodInvoker)delegate
+            {
+                btnUsePriceEstimateFlag.Text = "✖️";
+            });
+            btnLabelColor.Invoke((MethodInvoker)delegate
+            {
+                btnLabelColor.BackColor = Color.FromArgb(255, 192, 128);
+            });
+            selectedColor = "9"; // no colour is assigned to 9. This translates to 'no color code' selected.
+
+        }
         #endregion
 
         #region check conditions to enable 'add' button
@@ -2013,14 +2146,17 @@ namespace Cubit
 
             // Write the updated list of transactions back to the JSON file
             WriteTransactionsToJsonFile(transactions);
-            BtnClearInput_Click(sender, e);
-            HistoricPrices.Clear();
-            await GetHistoricPricesAsyncWrapper();
-            await SetupTransactionsList();
+            justAddedATransaction = true;
+            BtnClearInputWithoutMessage();
+            justAddedATransaction = false;
             isRobotSpeaking = false;
             panelWelcome.Visible = false;
             panelRobotSpeakOuter.Visible = true;
             InterruptAndStartNewRobotSpeak("Transaction added to list and saved.");
+            HistoricPrices.Clear();
+            await GetHistoricPricesAsyncWrapper();
+            await SetupTransactionsList();
+
         }
 
         #endregion
@@ -3380,26 +3516,7 @@ namespace Cubit
                 formsPlot1.Plot.ResetLayout();
                 formsPlot1.Plot.AxisAuto();
 
-                #region price line
 
-                int pointCount;
-                if (GotHistoricPrices == true)
-                {
-                    pointCount = HistoricPrices.Count;
-                }
-
-                // create arrays of doubles of the prices and the dates
-                double[] yValues = HistoricPrices.Select(h => (double)(h.Y)).ToArray();
-
-                // create a new list of the dates, this time in DateTime format
-                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X!)).LocalDateTime).ToList();
-                double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
-
-                formsPlot1.Plot.SetAxisLimits(xValues.Min(), xValues.Max(), 0, yValues.Max() * 1.05);
-
-                scatter = formsPlot1.Plot.AddScatter(xValues, yValues, color: Color.Orange, lineWidth: 1, markerSize: 1);
-
-                #endregion
 
                 #region transaction (buy) bubbles
 
@@ -3540,6 +3657,27 @@ namespace Cubit
                         formsPlot1.Plot.Add(vlinesSellBTC);
                     }
                 }
+
+                #endregion
+
+                #region price line
+
+                int pointCount;
+                if (GotHistoricPrices == true)
+                {
+                    pointCount = HistoricPrices.Count;
+                }
+
+                // create arrays of doubles of the prices and the dates
+                double[] yValues = HistoricPrices.Select(h => (double)(h.Y)).ToArray();
+
+                // create a new list of the dates, this time in DateTime format
+                List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X!)).LocalDateTime).ToList();
+                double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
+
+                formsPlot1.Plot.SetAxisLimits(xValues.Min(), xValues.Max(), 0, yValues.Max() * 1.05);
+
+                scatter = formsPlot1.Plot.AddScatter(xValues, yValues, color: Color.Orange, lineWidth: 1, markerSize: 1);
 
                 #endregion
 
@@ -3686,30 +3824,7 @@ namespace Cubit
                 List<DateTime> dateTimes = HistoricPrices.Select(h => DateTimeOffset.FromUnixTimeSeconds(long.Parse(h.X!)).LocalDateTime).ToList();
                 double[] xValues = dateTimes.Select(x => x.ToOADate()).ToArray();
 
-                #region price line
 
-                List<double> filteredYValues = new();
-                List<double> filteredXValues = new();
-
-                for (int i = 0; i < HistoricPrices.Count; i++)
-                {
-                    double yValue = (double)HistoricPrices[i].Y;
-                    if (yValue > 0)
-                    {
-                        filteredYValues.Add(Math.Log10(yValue));
-                        filteredXValues.Add(xValues[i]);
-                    }
-                }
-
-                double[] yValues = filteredYValues.ToArray();
-                double[] xValuesFiltered = filteredXValues.ToArray();
-
-                double minY = yValues.Min();
-                double maxY = yValues.Max() * 1.05;
-                formsPlot1.Plot.SetAxisLimits(xValuesFiltered.Min(), xValuesFiltered.Max(), minY, maxY);
-                scatter = formsPlot1.Plot.AddScatter(xValuesFiltered, yValues, lineWidth: 1, markerSize: 1);
-
-                #endregion
 
                 // Use a custom formatter to control the label for each tick mark
                 static string logTickLabels(double y) => Math.Pow(10, y).ToString("N0");
@@ -3742,82 +3857,7 @@ namespace Cubit
                 formsPlot1.Plot.XAxis.Ticks(true);
                 formsPlot1.Plot.XAxis.Label("");
 
-                #region cost basis horizontal line and stepped history line
 
-                if (showCostBasis)
-                {
-                    #region current cost basis - horizontal line
-                    if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
-                    {
-                        if (costBasis > 0)
-                        {
-                            var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.FromArgb(213, 167, 239), width: 1, style: LineStyle.Dash, label: "H");
-                            hline.PositionLabel = false;
-                            hline.DragEnabled = false;
-
-                            var CBline = formsPlot1.Plot.AddText("Cost basis: " + Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.FromArgb(255, 224, 192));
-                            CBline.Font.Color = Color.DimGray;
-                            CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
-                            CBline.BackgroundFill = true;
-                            CBline.BorderSize = 0;
-                        }
-                        else
-                        {
-                            // don't draw the line because it's off the range (negative) of the chart.
-                        }
-
-                    }
-                    #endregion
-
-                    #region cost basis history stepped line
-                    if (listCostBasisAmounts.Count > 0)
-                    {
-                        #region add an extra record with todays date and the last cost basis. This forces the cost basis line to the end of the chart
-                        double currentDate = DateTime.Now.ToOADate();
-                        double lastDateInList = listTransactionDate.Last();
-
-                        if (lastDateInList != currentDate) // if there isn't already a transaction on the current date
-                        {
-                            listTransactionDate.Add(currentDate);
-                            // Get the last value from yArrayCostBasisPrice
-                            double lastValue = listCostBasisAmounts.Last();
-                            listCostBasisAmounts.Add(lastValue);
-                        }
-                        #endregion
-
-                        #region sort the dates array bubt keep the costbasis array in sync with it
-                        double[] xArrayCostBasisDate = listTransactionDate.ToArray(); //date
-                        double[] yArrayCostBasisPrice = listCostBasisAmounts.ToArray(); //cost basis
-
-                        // Create a list of pairs (date, price)
-                        var pairs = xArrayCostBasisDate
-                            .Select((x, index) => new KeyValuePair<double, double>(x, yArrayCostBasisPrice[index]))
-                            .ToList();
-
-                        // Sort the list by date (ascending order)
-                        pairs.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
-
-                        // Update the arrays based on the sorted list of pairs
-                        for (int i = 0; i < pairs.Count; i++)
-                        {
-                            xArrayCostBasisDate[i] = pairs[i].Key;
-                            if (pairs[i].Value == 0)
-                            {
-                                yArrayCostBasisPrice[i] = 0;
-                            }
-                            else
-                            {
-                                yArrayCostBasisPrice[i] = Math.Log10(pairs[i].Value);
-                            }
-                        }
-                        #endregion 
-                        scatter2 = formsPlot1.Plot.AddScatter(xArrayCostBasisDate, yArrayCostBasisPrice, color: Color.FromArgb(213, 167, 239), lineWidth: 2, markerSize: 1);
-                        scatter2.StepDisplay = true;
-                    }
-                    #endregion
-                }
-
-                #endregion
 
                 #region green vertical lines at the time of each buy btc transaction
 
@@ -3991,6 +4031,108 @@ namespace Cubit
                             );
                         }
                     }
+                }
+
+                #endregion
+
+                #region price line
+
+                List<double> filteredYValues = new();
+                List<double> filteredXValues = new();
+
+                for (int i = 0; i < HistoricPrices.Count; i++)
+                {
+                    double yValue = (double)HistoricPrices[i].Y;
+                    if (yValue > 0)
+                    {
+                        filteredYValues.Add(Math.Log10(yValue));
+                        filteredXValues.Add(xValues[i]);
+                    }
+                }
+
+                double[] yValues = filteredYValues.ToArray();
+                double[] xValuesFiltered = filteredXValues.ToArray();
+
+                double minY = yValues.Min();
+                double maxY = yValues.Max() * 1.05;
+                formsPlot1.Plot.SetAxisLimits(xValuesFiltered.Min(), xValuesFiltered.Max(), minY, maxY);
+                scatter = formsPlot1.Plot.AddScatter(xValuesFiltered, yValues, lineWidth: 1, markerSize: 1);
+
+                #endregion
+
+                #region cost basis horizontal line and stepped history line
+
+                if (showCostBasis)
+                {
+                    #region current cost basis - horizontal line
+                    if (double.TryParse(lblFinalCostBasis.Text[1..], out double costBasis))
+                    {
+                        if (costBasis > 0)
+                        {
+                            var hline = formsPlot1.Plot.AddHorizontalLine(y: Math.Log10(costBasis), color: Color.FromArgb(213, 167, 239), width: 1, style: LineStyle.Dash, label: "H");
+                            hline.PositionLabel = false;
+                            hline.DragEnabled = false;
+
+                            var CBline = formsPlot1.Plot.AddText("Cost basis: " + Convert.ToString(costBasis), x: xValuesFiltered.Min(), y: Math.Log10(costBasis), color: Color.FromArgb(255, 224, 192));
+                            CBline.Font.Color = Color.DimGray;
+                            CBline.BackgroundColor = Color.FromArgb(255, 224, 192);
+                            CBline.BackgroundFill = true;
+                            CBline.BorderSize = 0;
+                        }
+                        else
+                        {
+                            // don't draw the line because it's off the range (negative) of the chart.
+                        }
+
+                    }
+                    #endregion
+
+                    #region cost basis history stepped line
+                    if (listCostBasisAmounts.Count > 0)
+                    {
+                        #region add an extra record with todays date and the last cost basis. This forces the cost basis line to the end of the chart
+                        double currentDate = DateTime.Now.ToOADate();
+                        double lastDateInList = listTransactionDate.Last();
+
+                        if (lastDateInList != currentDate) // if there isn't already a transaction on the current date
+                        {
+                            listTransactionDate.Add(currentDate);
+                            // Get the last value from yArrayCostBasisPrice
+                            double lastValue = listCostBasisAmounts.Last();
+                            listCostBasisAmounts.Add(lastValue);
+                        }
+                        #endregion
+
+                        #region sort the dates array bubt keep the costbasis array in sync with it
+                        double[] xArrayCostBasisDate = listTransactionDate.ToArray(); //date
+                        double[] yArrayCostBasisPrice = listCostBasisAmounts.ToArray(); //cost basis
+
+                        // Create a list of pairs (date, price)
+                        var pairs = xArrayCostBasisDate
+                            .Select((x, index) => new KeyValuePair<double, double>(x, yArrayCostBasisPrice[index]))
+                            .ToList();
+
+                        // Sort the list by date (ascending order)
+                        pairs.Sort((pair1, pair2) => pair1.Key.CompareTo(pair2.Key));
+
+                        // Update the arrays based on the sorted list of pairs
+                        for (int i = 0; i < pairs.Count; i++)
+                        {
+                            xArrayCostBasisDate[i] = pairs[i].Key;
+                            if (pairs[i].Value == 0)
+                            {
+                                yArrayCostBasisPrice[i] = 0;
+                            }
+                            else
+                            {
+                                yArrayCostBasisPrice[i] = Math.Log10(pairs[i].Value);
+                            }
+                        }
+                        #endregion 
+                        scatter2 = formsPlot1.Plot.AddScatter(xArrayCostBasisDate, yArrayCostBasisPrice, color: Color.FromArgb(213, 167, 239), lineWidth: 2, markerSize: 1);
+                        scatter2.StepDisplay = true;
+                    }
+                    #endregion
                 }
 
                 #endregion
@@ -4172,8 +4314,8 @@ namespace Cubit
 
         private void PanelChartOuter_Paint(object sender, PaintEventArgs e)
         {
-            if (chartChangingSize)
-            {
+            //if (chartChangingSize)
+           // {
                 panelChartContainer.Invoke((MethodInvoker)delegate
                 {
                     panelChartContainer.Height = panelChartOuter.Height - 2;
@@ -4183,7 +4325,7 @@ namespace Cubit
                 {
                     formsPlot1.Height = panelChartOuter.Height - 27;
                 });
-            }
+           // }
         }
         #endregion
 
@@ -5931,17 +6073,20 @@ namespace Cubit
 
         private void ExpandPanelTimerVert_Tick(object sender, EventArgs e)
         {
-            currentHeightExpandingPanel += 8;
+            
             if (panelToExpandVert == panelCurrency)
             {
+                currentHeightExpandingPanel += 8;
                 panelMaxHeight = 129;
             }
             if (panelToExpandVert == panelColors)
             {
+                currentHeightExpandingPanel += 8;
                 panelMaxHeight = 129;
             }
             if (panelToExpandVert == panelChartOuter)
             {
+                currentHeightExpandingPanel += 10;
                 panelMaxHeight = 692;
             }
             if (currentHeightExpandingPanel >= panelMaxHeight) // expanding is complete
@@ -5949,6 +6094,7 @@ namespace Cubit
                 panelToExpandVert.Invoke((MethodInvoker)delegate
                 {
                     panelToExpandVert.Height = panelMaxHeight;
+                    panelToExpandVert.Invalidate();
                 });
                 ExpandPanelTimerVert.Stop();
                 if (chartChangingSize == true)
@@ -5977,14 +6123,16 @@ namespace Cubit
 
         private void ShrinkPanelTimerVert_Tick(object sender, EventArgs e)
         {
-            currentHeightShrinkingPanel -= 8;
-            if (panelToShrinkVert == panelCurrency || panelToShrink == panelColors)
+            
+            if (panelToShrinkVert == panelCurrency || panelToShrinkVert == panelColors)
             {
+                currentHeightShrinkingPanel -= 8;
                 panelMinHeight = 0;
             }
 
             if (panelToShrinkVert == panelChartOuter)
             {
+                currentHeightShrinkingPanel -= 800;
                 panelMinHeight = 435;
             }
             if (currentHeightShrinkingPanel <= panelMinHeight) // shrinking is complete
@@ -6052,9 +6200,10 @@ namespace Cubit
 
         private void MovePanelUpTimer_Tick(object sender, EventArgs e)
         {
-            currentLocationMovingPanel -= 8;
+            
             if (panelToMoveUp == panelTXListOuter)
             {
+                currentLocationMovingPanel -= 800;
                 panelTopLocation = 55;
             }
             if (currentLocationMovingPanel <= panelTopLocation) // moving up is complete
@@ -6097,7 +6246,7 @@ namespace Cubit
 
         private void MovePanelDownTimer_Tick(object sender, EventArgs e)
         {
-            currentLocationMovingPanel += 8;
+            currentLocationMovingPanel += 800;
             if (panelToMoveDown == panelTXListOuter)
             {
                 panelBottomLocation = 510;
