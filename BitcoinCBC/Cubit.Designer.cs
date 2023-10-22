@@ -4601,6 +4601,7 @@
             BackgroundImageLayout = ImageLayout.Stretch;
             CancelButton = btnExit;
             ClientSize = new Size(1346, 1012);
+            Controls.Add(panelSummaryContainer);
             Controls.Add(panel10);
             Controls.Add(panel9);
             Controls.Add(panelColors);
@@ -4619,7 +4620,6 @@
             Controls.Add(panel16);
             Controls.Add(btnMoveWindow);
             Controls.Add(panelHelpTextContainer);
-            Controls.Add(panelSummaryContainer);
             DoubleBuffered = true;
             ForeColor = Color.FromArgb(255, 192, 128);
             FormBorderStyle = FormBorderStyle.None;

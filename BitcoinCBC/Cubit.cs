@@ -23,7 +23,7 @@ namespace Cubit
 {
     public partial class Cubit : Form
     {
-        readonly string CurrentVersion = "1.02";
+        readonly string CurrentVersion = "1.03";
 
         #region variable declaration
         List<PriceCoordsAndFormattedDateList> HistoricPrices = new();
@@ -92,7 +92,6 @@ namespace Cubit
         private int currentHeightShrinkingPanel = 0; // panel animation vertical
         bool initialCurrencySetup = true; // used to avoid robot message when currency is initially set
         bool currencyAlreadySavedInFile = false; // is ANY currency saved in the settings file
-        bool justAddedATransaction = false; // avoid 'inputs cleared' message when adding a transaction
         string selectedCurrencyName = "USD"; // initial value. Can be changed and saved
         string currencyInFile = "USD"; // the currency save in the settings file
         string selectedCurrencySymbol = "$"; // initial value.
@@ -339,7 +338,7 @@ namespace Cubit
             #endregion
 
             #region get historic price list
-           // await GetHistoricPricesAsyncWrapper();
+            // await GetHistoricPricesAsyncWrapper();
             #endregion
 
             #region start any required timers
@@ -2146,9 +2145,7 @@ namespace Cubit
 
             // Write the updated list of transactions back to the JSON file
             WriteTransactionsToJsonFile(transactions);
-            justAddedATransaction = true;
             BtnClearInputWithoutMessage();
-            justAddedATransaction = false;
             isRobotSpeaking = false;
             panelWelcome.Visible = false;
             panelRobotSpeakOuter.Visible = true;
@@ -4315,17 +4312,17 @@ namespace Cubit
         private void PanelChartOuter_Paint(object sender, PaintEventArgs e)
         {
             //if (chartChangingSize)
-           // {
-                panelChartContainer.Invoke((MethodInvoker)delegate
-                {
-                    panelChartContainer.Height = panelChartOuter.Height - 2;
-                    panelChartContainer.Invalidate();
-                });
-                formsPlot1.Invoke((MethodInvoker)delegate
-                {
-                    formsPlot1.Height = panelChartOuter.Height - 27;
-                });
-           // }
+            // {
+            panelChartContainer.Invoke((MethodInvoker)delegate
+            {
+                panelChartContainer.Height = panelChartOuter.Height - 2;
+                panelChartContainer.Invalidate();
+            });
+            formsPlot1.Invoke((MethodInvoker)delegate
+            {
+                formsPlot1.Height = panelChartOuter.Height - 27;
+            });
+            // }
         }
         #endregion
 
@@ -5079,7 +5076,7 @@ namespace Cubit
             {
                 lblSummaryTotalFiatSpentOnBuyTransactions.Invoke((MethodInvoker)delegate
                 {
-                    lblSummaryTotalFiatSpentOnBuyTransactions.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(totalFiatSpentOnBuyTransactions));
+                    lblSummaryTotalFiatSpentOnBuyTransactions.Text = selectedCurrencySymbol + Convert.ToString(Math.Abs(Math.Round(totalFiatSpentOnBuyTransactions, 2)));
                 });
                 lblSummaryTotalBTCRecdFromBuyTransactions.Invoke((MethodInvoker)delegate
                 {
@@ -6073,7 +6070,7 @@ namespace Cubit
 
         private void ExpandPanelTimerVert_Tick(object sender, EventArgs e)
         {
-            
+
             if (panelToExpandVert == panelCurrency)
             {
                 currentHeightExpandingPanel += 8;
@@ -6123,7 +6120,7 @@ namespace Cubit
 
         private void ShrinkPanelTimerVert_Tick(object sender, EventArgs e)
         {
-            
+
             if (panelToShrinkVert == panelCurrency || panelToShrinkVert == panelColors)
             {
                 currentHeightShrinkingPanel -= 8;
@@ -6200,7 +6197,7 @@ namespace Cubit
 
         private void MovePanelUpTimer_Tick(object sender, EventArgs e)
         {
-            
+
             if (panelToMoveUp == panelTXListOuter)
             {
                 currentLocationMovingPanel -= 800;
