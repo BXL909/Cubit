@@ -136,20 +136,35 @@
   <data name="comboBackground" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\comboBackground.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="BitcoinCBCRobotActive2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\BitcoinCBCRobotActive2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RefreshHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RefreshHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="numbers" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\numbers.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Refresh" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Refresh.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Settings" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Settings.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="21m" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\21m.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="SettingsDisabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SettingsDisabled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BitcoinCBCRobot" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BitcoinCBCRobot.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="404" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\404.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="btcdir" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\btcdir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,17 +187,20 @@
   <data name="NoTransactions2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\NoTransactions.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="halving" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\halving.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Spoon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Spoon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="brrr" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\brrr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="clippy" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\clippy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BG" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BG.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BitcoinLogo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BitcoinLogo.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Untitled-2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Untitled-2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="comboBackgroundSmaller" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\comboBackgroundSmaller.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,17 +226,20 @@
   <data name="comboBackground2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\comboBackground2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="btcdir" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\btcdir.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="brrr" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\brrr.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="clippy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\clippy.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="RefreshDisabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\RefreshDisabled.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="BigBTC" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\BigBTC.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="BitcoinCBCRobotActive2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\BitcoinCBCRobotActive2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="SettingsHover" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\SettingsHover.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="halving" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\halving.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Satsuma" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Satsuma.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -226,7 +247,7 @@
   <data name="Rick" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Rick.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Spoon" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Spoon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="NoTransactions3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\NoTransactions.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

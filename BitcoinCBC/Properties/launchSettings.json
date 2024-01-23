@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Cubit": {
+      "commandName": "Project",
+      "nativeDebugging": false
+    }
+  }
+}
